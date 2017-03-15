@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="press.wein.home.model"/>
+    </typeAliases>
+    <!--加载数据库配置信息-->
+    <!--<mappers>-->
+        <!--&lt;!&ndash;<package name="mappers"/>-->
+        <!--<dao resource="mappers/VoucherDao.xml"/>&ndash;&gt;-->
+    <!--</mappers>-->
+</configuration>

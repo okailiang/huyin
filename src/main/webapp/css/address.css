@@ -1,0 +1,46 @@
+.order-btn-group {
+    padding-bottom: 15px;
+}
+.address-header {
+	padding: 8px;
+	background-color: #d9edf7;
+	margin-bottom:4px;
+}
+.order-header .order-checkbox,.order-header .order-discription{
+	display:inline-block;
+	margin-right:20px;
+	color: #666;
+}
+.order-header #printer-address-del-span,.order-header #printer-address-add-span{
+	margin-right:8px;
+	float:right;
+}
+#address-all{
+	border:1px #d9edf7 solid;
+	box-shadow: 0 0 5px #d9edf7;
+	-webkit-box-shadow: 0 0 5px #d9edf7;
+	-moz-box-shadow: 0 0 5px #5bc0de; 
+}
+#address-child{
+	border:1px #d9edf7 solid;
+	box-shadow: 0 0 5px #d9edf7;
+	-webkit-box-shadow: 0 0 5px #d9edf7;
+	-moz-box-shadow: 0 0 5px #5bc0de;
+	width:180px;
+	height:150px;
+	margin:5px 5px;
+}
+.deledit-discription{
+	float:right;
+	padding-bottom:0px;
+}
+#printer-more{
+	float:right;
+	
+}
+#printer-address-child{
+	border:1px #d9edf7 solid;
+	box-shadow: 0 0 5px #d9edf7;
+	-webkit-box-shadow: 0 0 5px #d9edf7;
+	-moz-box-shadow: 0 0 5px #5bc0de;
+}

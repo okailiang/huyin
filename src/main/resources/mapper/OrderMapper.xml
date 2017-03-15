@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="press.wein.home.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="press.wein.home.model.Order">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="printer_id" jdbcType="BIGINT" property="printerId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="deliver_address_id" jdbcType="BIGINT" property="deliverAddressId" />
+    <result column="print_shop_id" jdbcType="BIGINT" property="printShopId" />
+    <result column="order_state" jdbcType="TINYINT" property="orderState" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="copies" jdbcType="INTEGER" property="copies" />
+    <result column="print_time" jdbcType="TIMESTAMP" property="printTime" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="delivery_way" jdbcType="TINYINT" property="deliveryWay" />
+    <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime" />
+    <result column="pages" jdbcType="INTEGER" property="pages" />
+    <result column="pay_way" jdbcType="TINYINT" property="payWay" />
+    <result column="direct_print" jdbcType="TINYINT" property="directPrint" />
+    <result column="order_type" jdbcType="TINYINT" property="orderType" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifier_id" jdbcType="BIGINT" property="modifierId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, printer_id, order_no, deliver_address_id, print_shop_id, order_state, 
+    pay_time, total_price, copies, print_time, finish_time, delivery_way, delivery_time, 
+    pages, pay_way, direct_print, order_type, remark, discount, is_deleted, create_time, 
+    modify_time, creator_id, creator, modifier, modifier_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from h_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from h_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="press.wein.home.model.Order">
+    insert into h_order (id, user_id, printer_id, 
+      order_no, deliver_address_id, print_shop_id, 
+      order_state, pay_time, total_price, 
+      copies, print_time, finish_time, 
+      delivery_way, delivery_time, pages, 
+      pay_way, direct_print, order_type, 
+      remark, discount, is_deleted, 
+      create_time, modify_time, creator_id, 
+      creator, modifier, modifier_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{printerId,jdbcType=BIGINT}, 
+      #{orderNo,jdbcType=VARCHAR}, #{deliverAddressId,jdbcType=BIGINT}, #{printShopId,jdbcType=BIGINT}, 
+      #{orderState,jdbcType=TINYINT}, #{payTime,jdbcType=TIMESTAMP}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{copies,jdbcType=INTEGER}, #{printTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{deliveryWay,jdbcType=TINYINT}, #{deliveryTime,jdbcType=VARCHAR}, #{pages,jdbcType=INTEGER}, 
+      #{payWay,jdbcType=TINYINT}, #{directPrint,jdbcType=TINYINT}, #{orderType,jdbcType=TINYINT}, 
+      #{remark,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL}, #{isDeleted,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=BIGINT}, 
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{modifierId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="press.wein.home.model.Order">
+    insert into h_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="printerId != null">
+        printer_id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="deliverAddressId != null">
+        deliver_address_id,
+      </if>
+      <if test="printShopId != null">
+        print_shop_id,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+      <if test="copies != null">
+        copies,
+      </if>
+      <if test="printTime != null">
+        print_time,
+      </if>
+      <if test="finishTime != null">
+        finish_time,
+      </if>
+      <if test="deliveryWay != null">
+        delivery_way,
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time,
+      </if>
+      <if test="pages != null">
+        pages,
+      </if>
+      <if test="payWay != null">
+        pay_way,
+      </if>
+      <if test="directPrint != null">
+        direct_print,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifierId != null">
+        modifier_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="printerId != null">
+        #{printerId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverAddressId != null">
+        #{deliverAddressId,jdbcType=BIGINT},
+      </if>
+      <if test="printShopId != null">
+        #{printShopId,jdbcType=BIGINT},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="copies != null">
+        #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="printTime != null">
+        #{printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryWay != null">
+        #{deliveryWay,jdbcType=TINYINT},
+      </if>
+      <if test="deliveryTime != null">
+        #{deliveryTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pages != null">
+        #{pages,jdbcType=INTEGER},
+      </if>
+      <if test="payWay != null">
+        #{payWay,jdbcType=TINYINT},
+      </if>
+      <if test="directPrint != null">
+        #{directPrint,jdbcType=TINYINT},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null">
+        #{modifierId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.Order">
+    update h_order
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="printerId != null">
+        printer_id = #{printerId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverAddressId != null">
+        deliver_address_id = #{deliverAddressId,jdbcType=BIGINT},
+      </if>
+      <if test="printShopId != null">
+        print_shop_id = #{printShopId,jdbcType=BIGINT},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="copies != null">
+        copies = #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="printTime != null">
+        print_time = #{printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryWay != null">
+        delivery_way = #{deliveryWay,jdbcType=TINYINT},
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pages != null">
+        pages = #{pages,jdbcType=INTEGER},
+      </if>
+      <if test="payWay != null">
+        pay_way = #{payWay,jdbcType=TINYINT},
+      </if>
+      <if test="directPrint != null">
+        direct_print = #{directPrint,jdbcType=TINYINT},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null">
+        modifier_id = #{modifierId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.Order">
+    update h_order
+    set user_id = #{userId,jdbcType=BIGINT},
+      printer_id = #{printerId,jdbcType=BIGINT},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      deliver_address_id = #{deliverAddressId,jdbcType=BIGINT},
+      print_shop_id = #{printShopId,jdbcType=BIGINT},
+      order_state = #{orderState,jdbcType=TINYINT},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      copies = #{copies,jdbcType=INTEGER},
+      print_time = #{printTime,jdbcType=TIMESTAMP},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      delivery_way = #{deliveryWay,jdbcType=TINYINT},
+      delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+      pages = #{pages,jdbcType=INTEGER},
+      pay_way = #{payWay,jdbcType=TINYINT},
+      direct_print = #{directPrint,jdbcType=TINYINT},
+      order_type = #{orderType,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=DECIMAL},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modifier_id = #{modifierId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

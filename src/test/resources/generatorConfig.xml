@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry location="/Users/oukailiang/tools/maven-localRepository/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar"/>
+    <!-- <classPathEntry location="C:\oracle\product\10.2.0\db_1\jdbc\lib\ojdbc14.jar" />-->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 数据库链接URL、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/wein" userId="root" password="Admin@123">
+            <!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:orcl" userId="" password="">-->
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 生成实体类的包名和位置，这里配置将生成的实体类放在me.gacl.domain这个包下 -->
+        <javaModelGenerator targetPackage="press.wein.home.model" targetProject="/Users/oukailiang/IdeaProjects/works/wein/src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <!--<property name="trimStrings" value="true" />-->
+        </javaModelGenerator>
+        <!-- 生成的SQL映射文件包名和位置，这里配置将生成的SQL映射文件放在me.gacl.mapping这个包下 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="/Users/oukailiang/IdeaProjects/works/wein/src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- 生成DAO的包名和位置，这里配置将生成的dao类放在me.gacl.dao这个包下 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="press.wein.home.dao" targetProject="/Users/oukailiang/IdeaProjects/works/wein/src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--<table tableName="h_print_shop_setting" domainObjectName="PrintShopSetting" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_user_info" domainObjectName="UserInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_config" domainObjectName="SysConfig" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_log" domainObjectName="SysLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <table tableName="h_sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--<property name="useActualColumnNames" value="true" />-->
+        </table>
+        <table tableName="h_sys_role_menu" domainObjectName="SysRoleMenu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--<property name="useActualColumnNames" value="true" />-->
+        </table>
+        <table tableName="h_sys_role_user" domainObjectName="SysRoleUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--<property name="useActualColumnNames" value="true" />-->
+        </table>
+
+        <!--<table tableName="h_sys_menu" domainObjectName="Menu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_files" domainObjectName="Files" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_user" domainObjectName="SysUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_print_shop" domainObjectName="PrintShop" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_delivery_address" domainObjectName="DeliveryAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="china_address" domainObjectName="ChinaAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_feedback_info" domainObjectName="FeedbackInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_order_file" domainObjectName="OrderFile" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_price" domainObjectName="Price" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_printer" domainObjectName="Printer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_print_shop_notice" domainObjectName="PrintShopNotice" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

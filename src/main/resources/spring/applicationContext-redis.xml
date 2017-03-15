@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <!-- 使用redis缓存 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 可用连接实例的最大数目，默认值为8 -->
+        <property name="maxTotal" value="200"/>
+        <!-- 控制一个pool最多有多少个状态为idle(空闲的)的jedis实例 -->
+        <property name="maxIdle" value="1024"/>
+        <property name="minIdle" value="100"/>
+        <!-- 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时 -->
+        <property name="maxWaitMillis" value="3000"/>
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg name="host" value="127.0.0.1"/>
+                    <constructor-arg name="port" value="6379"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    <!-- end使用redis缓存 -->
+</beans>

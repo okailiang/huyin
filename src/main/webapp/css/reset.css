@@ -1,0 +1,184 @@
+html { 
+    height: 100%;
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.8;
+    background: #fffffd url(../images/bg.jpg) center repeat;
+}
+
+body,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,.nav-title {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+}
+
+body,button,input,select,textarea {
+    -ms-text-autospace:ideograph-alpha ideograph-numeric ideograph-parenthesis;
+    text-autospace:ideograph-alpha ideograph-numeric ideograph-parenthesis;
+}
+
+::selection { background-color: #317eac; color: #fff;}
+::-moz-selection { background-color: #317eac; color: #fff;}
+
+::-webkit-scrollbar-track-piece{background-color: #d5d5d5}
+::-webkit-scrollbar{width: 6px;height: 6px}
+::-webkit-scrollbar-thumb{height:40px;background-color: #888}
+::-webkit-scrollbar-thumb:hover{background-color: #888}
+
+h1 small {
+	font-size: 16px;
+	padding-left: 20px;
+}
+
+a,a:hover,a:focus {
+    text-decoration: none;
+    color: #2fa4e7;
+}
+a:hover {
+
+}
+a:focus {
+    outline: 0;
+}
+
+a img:hover {
+    filter: alpha(Opacity=60);
+    -moz-opacity: 0.6;
+    opacity: 0.6
+}
+
+.container {
+    background-color: transparent
+}
+
+.pull-left {
+    margin-right: 20px
+}
+
+.pull-right {
+    margin-left: 20px
+}
+
+.clear {
+    clear: both;
+    line-height: 0;
+    font-size: 0;
+}
+
+.unvisible {
+	visibility: hidden;
+}
+
+.error {
+	color: #d95b43;
+}
+
+hr, .hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #f6f6f6;
+    border-bottom: 1px solid #b4b4b4;
+}
+
+.btn:hover {
+    -webkit-transition: ease-in-out 200ms;
+    -o-transition: ease-in-out 200ms;
+    transition: ease-in-out 200ms;
+}
+
+.btn a {
+	color: #fff;
+}
+
+.btn.disable, .btn.disable:hover {
+    color: #999;
+    background: #f0f0f0;
+    border: 1px solid #b9b9b9;
+}
+
+.btn-link {
+    padding: 6px 0;
+}
+
+.alert {
+    padding: 6px 12px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+.alert .glyphicon-ok {
+	color: #9de0ad;
+}
+.alert .glyphicon-remove {
+	color: #a94442;
+}
+
+.table {
+	margin-bottom: 0;
+}
+
+.table td {
+	max-width: 160px;
+	text-overflow: ellipsis;
+}
+
+.table-responsive {
+	border-top: 1px #ddd solid;
+	table-layout: fixed;
+	margin-bottom: 10px;
+}
+
+.table-responsive th, .table-responsive td{
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	text-align: left;
+	vertical-align: middle;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+}
+
+td img {
+	width: 30px;
+}
+.input-group-addon {
+	background-color: #fff;
+}
+span.input-group-addon {
+	cursor: pointer;
+	-moz-user-select:none;/*火狐*/
+	-webkit-user-select:none;/*webkit浏览器*/
+	-ms-user-select:none;/*IE10*/
+	-khtml-user-select:none;/*早期浏览器*/
+	user-select:none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+.checkbox label, .radio label {
+    padding-top: 8px;
+    display: block;
+}
+
+.form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline {
+    padding-top: 0;
+}
+
+.size-choose-btn input[type=radio] {
+    margin: 0 -18px;
+}

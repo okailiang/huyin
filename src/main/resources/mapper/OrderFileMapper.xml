@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="press.wein.home.dao.OrderFileMapper">
+  <resultMap id="BaseResultMap" type="press.wein.home.model.OrderFile">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="file_id" jdbcType="BIGINT" property="fileId" />
+    <result column="per_file_copies" jdbcType="INTEGER" property="perFileCopies" />
+    <result column="print_type" jdbcType="TINYINT" property="printType" />
+    <result column="per_file_price" jdbcType="DECIMAL" property="perFilePrice" />
+    <result column="compact_print" jdbcType="TINYINT" property="compactPrint" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_size" jdbcType="INTEGER" property="fileSize" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_pages" jdbcType="INTEGER" property="filePages" />
+    <result column="image_size" jdbcType="TINYINT" property="imageSize" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_id, file_id, per_file_copies, print_type, per_file_price, compact_print, 
+    file_name, file_size, file_path, file_pages, image_size, is_deleted, create_time, 
+    modify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from h_order_file
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from h_order_file
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="press.wein.home.model.OrderFile">
+    insert into h_order_file (id, order_id, file_id, 
+      per_file_copies, print_type, per_file_price, 
+      compact_print, file_name, file_size, 
+      file_path, file_pages, image_size, 
+      is_deleted, create_time, modify_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{fileId,jdbcType=BIGINT}, 
+      #{perFileCopies,jdbcType=INTEGER}, #{printType,jdbcType=TINYINT}, #{perFilePrice,jdbcType=DECIMAL}, 
+      #{compactPrint,jdbcType=TINYINT}, #{fileName,jdbcType=VARCHAR}, #{fileSize,jdbcType=INTEGER}, 
+      #{filePath,jdbcType=VARCHAR}, #{filePages,jdbcType=INTEGER}, #{imageSize,jdbcType=TINYINT}, 
+      #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="press.wein.home.model.OrderFile">
+    insert into h_order_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="perFileCopies != null">
+        per_file_copies,
+      </if>
+      <if test="printType != null">
+        print_type,
+      </if>
+      <if test="perFilePrice != null">
+        per_file_price,
+      </if>
+      <if test="compactPrint != null">
+        compact_print,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="fileSize != null">
+        file_size,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="filePages != null">
+        file_pages,
+      </if>
+      <if test="imageSize != null">
+        image_size,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="fileId != null">
+        #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="perFileCopies != null">
+        #{perFileCopies,jdbcType=INTEGER},
+      </if>
+      <if test="printType != null">
+        #{printType,jdbcType=TINYINT},
+      </if>
+      <if test="perFilePrice != null">
+        #{perFilePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="compactPrint != null">
+        #{compactPrint,jdbcType=TINYINT},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="filePages != null">
+        #{filePages,jdbcType=INTEGER},
+      </if>
+      <if test="imageSize != null">
+        #{imageSize,jdbcType=TINYINT},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.OrderFile">
+    update h_order_file
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="fileId != null">
+        file_id = #{fileId,jdbcType=BIGINT},
+      </if>
+      <if test="perFileCopies != null">
+        per_file_copies = #{perFileCopies,jdbcType=INTEGER},
+      </if>
+      <if test="printType != null">
+        print_type = #{printType,jdbcType=TINYINT},
+      </if>
+      <if test="perFilePrice != null">
+        per_file_price = #{perFilePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="compactPrint != null">
+        compact_print = #{compactPrint,jdbcType=TINYINT},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        file_size = #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="filePages != null">
+        file_pages = #{filePages,jdbcType=INTEGER},
+      </if>
+      <if test="imageSize != null">
+        image_size = #{imageSize,jdbcType=TINYINT},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.OrderFile">
+    update h_order_file
+    set order_id = #{orderId,jdbcType=BIGINT},
+      file_id = #{fileId,jdbcType=BIGINT},
+      per_file_copies = #{perFileCopies,jdbcType=INTEGER},
+      print_type = #{printType,jdbcType=TINYINT},
+      per_file_price = #{perFilePrice,jdbcType=DECIMAL},
+      compact_print = #{compactPrint,jdbcType=TINYINT},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=INTEGER},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      file_pages = #{filePages,jdbcType=INTEGER},
+      image_size = #{imageSize,jdbcType=TINYINT},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
