@@ -15,6 +15,10 @@ import press.wein.home.dao.PrinterMapper;
 import press.wein.home.dao.SysUserMapper;
 import press.wein.home.dao.UserMapper;
 import press.wein.home.enumerate.Enums;
+import press.wein.home.exception.BusinessException;
+import press.wein.home.exception.ExceptionCode;
+import press.wein.home.exception.ExceptionUtil;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
 import press.wein.home.model.User;
 import press.wein.home.model.bo.UserSession;
@@ -23,6 +27,7 @@ import press.wein.home.model.vo.UserVo;
 import press.wein.home.redis.RedisClient;
 import press.wein.home.service.LoginService;
 import press.wein.home.service.MenuService;
+import press.wein.home.service.UserService;
 import press.wein.home.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +53,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PrinterMapper printerMapper;
@@ -115,9 +123,75 @@ public class LoginServiceImpl implements LoginService {
             result = setCookieManager(userLoginVo, cookieManager);
         } catch (Exception e) {
             LOG.error("login error", e);
-            result = ExceptionConstant.SYSTEM_ERROR;
+            result = ExceptionCode.SYS_ERROR.getMsg();
         }
         return result;
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userLoginVo
+     * @return
+     * @throws BusinessException
+     * @throws ServiceException
+     */
+    @Override
+    public String register(UserLoginVo userLoginVo) throws BusinessException, ServiceException {
+        //检验参数
+        checkParamNull(userLoginVo.getAccount(), userLoginVo.getPassword(), userLoginVo.getRegisterCode());
+        //检验验证码
+        String registerCode = redisClient.get(Constants.REGISTER_EMAIL_CODE + userLoginVo.getAccount());
+        if (StringUtils.isBlank(registerCode) || !registerCode.equals(userLoginVo.getRegisterCode())) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.KAPTCHA_CODE_ERROR);
+        }
+
+        //校验该手机号或邮箱是否已注册
+        this.checkAccountExist(userLoginVo.getAccount());
+
+        User user = new User();
+        this.matchAccount(user, userLoginVo.getAccount());
+
+        user.setEmail(userLoginVo.getAccount());
+        user.setPassword(MD5Util.md5Hex(userLoginVo.getPassword()));
+        user.setRole(Enums.UserRole.USER.getValue().byteValue());
+        user.setUserName(userLoginVo.getUserName());
+
+        userMapper.insertSelective(user);
+
+        return Constants.SUCCESS;
+    }
+
+    /**
+     * 检验该手机号或邮箱是否已经注册
+     *
+     * @param account
+     */
+    private void checkAccountExist(String account) throws ServiceException {
+        User user = new User();
+        if (CommonUtil.isMatchEmail(account)) {
+            user.setEmail(account);
+            if (userMapper.getUserByUserName(user) != null) {
+                throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_EXIST);
+            }
+        } else if (CommonUtil.isMatchPhoneNo(account)) {
+            user.setPhoneNo(account);
+            if (userMapper.getUserByUserName(user) != null) {
+                throw ExceptionUtil.createServiceException(ExceptionCode.PHONE_EXIST);
+            }
+        } else {
+            user.setUserName(account);
+            if (userMapper.getUserByUserName(user) != null) {
+                throw ExceptionUtil.createServiceException(ExceptionCode.USERNAME_EXIST);
+            }
+        }
+
+    }
+
+    private void checkParamNull(Object... args) throws ServiceException {
+        if (CommonUtil.isExistBlank(args)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PARAM_NULL);
+        }
     }
 
     /**
@@ -129,13 +203,7 @@ public class LoginServiceImpl implements LoginService {
     private void setUserLoginVoByType(UserLoginVo userLoginVo) {
         String account = userLoginVo.getAccount();
         User user = new User();
-        if (CommonUtil.isMatchEmail(account)) {
-            user.setEmail(account);
-        } else if (CommonUtil.isMatchPhoneNo(account)) {
-            user.setPhoneNo(account);
-        } else {
-            user.setUserName(account);
-        }
+        this.matchAccount(user, userLoginVo.getAccount());
         User currentUser = null;
         if (userLoginVo.getType() == 1) {
             currentUser = userMapper.getUserByUserName(user);
@@ -143,6 +211,16 @@ public class LoginServiceImpl implements LoginService {
         userLoginVo.setId(currentUser.getId());
         userLoginVo.setPasswordMd5(currentUser.getPassword());
         userLoginVo.setErrorTimes(currentUser.getErrorTimes());
+    }
+
+    private void matchAccount(User user, String account) {
+        if (CommonUtil.isMatchEmail(account)) {
+            user.setEmail(account);
+        } else if (CommonUtil.isMatchPhoneNo(account)) {
+            user.setPhoneNo(account);
+        } else {
+            user.setUserName(account);
+        }
     }
 
     /**
@@ -163,7 +241,7 @@ public class LoginServiceImpl implements LoginService {
                 //提示几分钟后再试
                 if (times != null && times >= 3) {
                     long remainingTime = redisClient.ttl(Constants.USER_ERROR_TIMES + "_" + userLoginVo.getAccount());
-                    return String.format(ExceptionConstant.PASSWORD_ERROR_TIME_TIP, ExceptionConstant.PASSWORD_ERROR_TIME, remainingTime / 60 + 1);
+                    return String.format(ExceptionCode.PASSWORD_ERROR_TIME_TIP.getMsg(), Constants.PASSWORD_ERROR_TIME, remainingTime / 60 + 1);
                 }
             } catch (Exception e) {
                 LOG.info("login checkUserAndPassWord error", e);
@@ -185,14 +263,13 @@ public class LoginServiceImpl implements LoginService {
         }
         //锁住五分钟
         redisClient.set(Constants.USER_ERROR_TIMES + "_" + userLoginVo.getAccount(), errorTimes, 5);
-        if (errorTimes > ExceptionConstant.PASSWORD_ERROR_TIME) {
-            result = String.format(ExceptionConstant.PASSWORD_ERROR_TIME_TIP, ExceptionConstant.PASSWORD_ERROR_TIME, 5);
+        if (errorTimes > Constants.PASSWORD_ERROR_TIME) {
+            result = String.format(ExceptionCode.PASSWORD_ERROR_TIME_TIP.getMsg(), Constants.PASSWORD_ERROR_TIME, 5);
         } else {
-            result = ExceptionConstant.ACCOUNT_PASSWORD_ERROR;
+            result = ExceptionCode.ACCOUNT_PASSWORD_ERROR.getMsg();
         }
         return result;
     }
-
 
     /**
      * 生成Cookie
@@ -217,7 +294,7 @@ public class LoginServiceImpl implements LoginService {
                     memcachedKey, SysConfigProperty.getProperty(Constants.DOMAIN_NAME), -1);
         } catch (Exception e) {
             LOG.error("cookieManager.setCookie error . memcachedKey : " + memcachedKey, e);
-            result = ExceptionConstant.SYSTEM_ERROR;
+            result = ExceptionCode.SYS_ERROR.getMsg();
         }
         // 设置登录名3天有效
         String cookieName = userLoginVo.isCheckFlag() == true ? userLoginVo.getAccount() : "";
@@ -250,7 +327,7 @@ public class LoginServiceImpl implements LoginService {
             return result;
         }
         if (StringUtils.isBlank(code) || !StringUtils.equals(kaptchaCode, code)) {
-            result = ExceptionConstant.KAPTCHA_CODE_ERROR;
+            result = ExceptionCode.KAPTCHA_CODE_ERROR.getMsg();
         }
         return result;
     }
@@ -349,7 +426,7 @@ public class LoginServiceImpl implements LoginService {
             }
         });
         //给一级菜单添加子菜单个数提示
-        oneLevelMenuList.stream().forEach(oneMenu->{
+        oneLevelMenuList.stream().forEach(oneMenu -> {
             oneMenu.setAlert(String.valueOf(oneMenu.getChildMenu().size()));
             oneMenu.setLabel("label label-info");
         });

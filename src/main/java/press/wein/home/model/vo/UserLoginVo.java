@@ -43,12 +43,12 @@ public class UserLoginVo implements Serializable {
     /**
      * 前台传递密码
      */
-    private String password;
+    private transient String password;
 
     /**
      * 加密后密码
      */
-    private String passwordMd5;
+    private transient String passwordMd5;
 
     private String email;
 
@@ -63,6 +63,8 @@ public class UserLoginVo implements Serializable {
     private int type;
 
     private String token;
+
+    private String registerCode;
 
     public UserLoginVo() {
     }
@@ -177,5 +179,13 @@ public class UserLoginVo implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRegisterCode() {
+        return registerCode;
+    }
+
+    public void setRegisterCode(String registerCode) {
+        this.registerCode = registerCode;
     }
 }

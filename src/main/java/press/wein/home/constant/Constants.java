@@ -11,6 +11,11 @@ import java.util.Set;
  */
 
 public class Constants {
+
+    /**
+     * 服务器的地址 http://localhost:8088/wein/ http://www.wein.press/wein/
+     */
+    public static final String WEIN_SERVER_ADDRESS = "http://localhost:8080/";
     /**
      * 字符集编码
      */
@@ -60,17 +65,25 @@ public class Constants {
      */
     public static final String CREDIT_USERINFO_COOKIE_NAME = "weinUserCookie";
 
-
     /**
      * 菜单角色缓存
      */
     public static final String CACHE_MENU_ROLE = "menu_role_";
+    /**
+     * 邮箱注册验证码
+     */
+    public static final String REGISTER_EMAIL_CODE = "register_email_code_";
+
+    /**=============================end redis缓存key end========================================**/
 
     /**
      *
      */
     public static final String HTTP_HEADERS = "Content-Type,X-Requested-With,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers, HTTP_CONSUMER_KEY, HTTP_DEVICE_ID, HTTP_SIGNATURE, HTTP_ACCESS_TOKEN, HTTP_TIMESTAMP";
 
+
+    public static final Integer PASSWORD_ERROR_TIME = 3;
+    /**=============================start 不需要拦截的url start========================================**/
     /**
      * 登录页面url
      */
@@ -96,10 +109,16 @@ public class Constants {
      */
     public static final String LOGIN_VERIFY_URI = "/user/login";
 
+    public static final String REGISTER_SEND_EMAIL_CODE = "/send/emailCode";
+
+    public static final String REGISTER = "/register";
+
     /**
      * 健康检查url
      */
     public static final String HEALTH_CHECK_URI = "/healthCheck";
+
+    /**=============================end 不需要拦截的url end========================================**/
 
     /**
      * 不需要登录验证的uri列表
@@ -112,6 +131,8 @@ public class Constants {
         notAuthFilterURIList.add(LOGIN_VERIFY_URI);
         notAuthFilterURIList.add(UPLOADFILE_URI);
         notAuthFilterURIList.add(HEALTH_CHECK_URI);
+        notAuthFilterURIList.add(REGISTER_SEND_EMAIL_CODE);
+        notAuthFilterURIList.add(REGISTER);
     }
 
     public static Set<String> getNotAuthFilterURIList() {

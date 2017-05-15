@@ -5,7 +5,7 @@ public class UserVo extends BaseVo {
 
     private String userName;
 
-    private String password;
+    private transient String password;
 
     private String email;
 

@@ -1,7 +1,6 @@
 package press.wein.home.controller;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import press.wein.home.model.Menu;
 import press.wein.home.model.bo.RoleMenu;
 import press.wein.home.redis.RedisClient;
 import press.wein.home.util.CollectionUtil;
+import press.wein.home.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/menu")
-public class MenuController {
+public class MenuController extends BaseController{
 
     private static final Logger LOG = LoggerFactory.getLogger(MenuController.class);
 
@@ -55,8 +55,8 @@ public class MenuController {
             convertToRoleMenu(menuList, roleMenuList);
             return JSON.toJSONString(roleMenuList);
         }
-        String rolemenu = redisClient.get(Constants.CACHE_MENU_ROLE);
-        return rolemenu;
+        String roleMenu = redisClient.get(Constants.CACHE_MENU_ROLE);
+        return roleMenu;
     }
 
     /**
@@ -94,13 +94,13 @@ public class MenuController {
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setText(menu.getMenuName());
         roleMenu.setSref(menu.getUrl());
-        if (StringUtils.isNotBlank(menu.getIcon())) {
+        if (StringUtil.isNotBlank(menu.getIcon())) {
             roleMenu.setIcon(menu.getIcon());
         }
-        if (StringUtils.isNotBlank(menu.getLabel()) && menu.getLevel().intValue() == Enums.MenuLevel.ONE_LEVEL.getValue()) {
+        if (StringUtil.isNotBlank(menu.getLabel()) && menu.getLevel().intValue() == Enums.MenuLevel.ONE_LEVEL.getValue()) {
             roleMenu.setLabel(menu.getLabel());
         }
-        if (StringUtils.isNotBlank(menu.getTranslate())) {
+        if (StringUtil.isNotBlank(menu.getTranslate())) {
             roleMenu.setTranslate(menu.getTranslate());
         }
         return roleMenu;

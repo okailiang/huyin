@@ -14,7 +14,7 @@ import java.util.Date;
  * @create 2017-02-16 下午5:44
  */
 
-public class BaseVo extends Paper implements Serializable {
+public class BaseVo implements Serializable {
     private static final long serialVersionUID = 4617372132750613663L;
 
     private Byte isDeleted;

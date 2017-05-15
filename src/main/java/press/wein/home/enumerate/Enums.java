@@ -7,6 +7,41 @@ package press.wein.home.enumerate;
  * @create 2017-02-16 下午7:39
  */
 public interface Enums {
+
+    /**
+     * 共用状态
+     */
+    enum UserRole {
+        USER(1, "系统管理员"),
+        PRINTER(2, "打印店员"),
+        ADMIN(3, "普通用户");
+
+        private Integer value;
+        private String name;
+
+        UserRole(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public static String getNameByValue(int value) {
+            for (Status item : Status.values()) {
+                if (item.getValue() == value) {
+                    return item.getName();
+                }
+            }
+            return null;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     /**
      * 共用状态
      */

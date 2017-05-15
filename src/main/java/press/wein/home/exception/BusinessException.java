@@ -14,7 +14,7 @@ import java.util.List;
 public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = -8013200853461709878L;
-    private String errCode;
+    private String code;
 
     private String[] params;
 
@@ -28,37 +28,37 @@ public class BusinessException extends RuntimeException {
         super(message, cause);
     }
 
-    public BusinessException(String errCode) {
-        this.errCode = errCode;
+    public BusinessException(String code) {
+        this.code = code;
         if (message == null) {
-            this.message = errCode;
+            this.message = code;
         }
     }
 
-    public BusinessException(String errCode, List<String> params) {
-        this.errCode = errCode;
+    public BusinessException(String code, List<String> params) {
+        this.code = code;
         this.params = (String[]) params.toArray();
         if (message == null) {
-            this.message = errCode;
+            this.message = code;
         }
     }
 
-    public BusinessException(String errCode, String... params) {
-        this.errCode = errCode;
+    public BusinessException(String code, String... params) {
+        this.code = code;
         this.params = params;
         if (message == null) {
-            this.message = errCode;
+            this.message = code;
         }
     }
 
-    public String getErrCode() {
-        return errCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setErrCode(String errCode) {
-        this.errCode = errCode;
+    public void setCode(String code) {
+        this.code = code;
         if (message == null) {
-            this.message = errCode;
+            this.message = code;
         }
     }
 

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import press.wein.home.controller.BaseController;
 import press.wein.home.model.User;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping(value = "/user")
-public class UserController {
+public class UserController extends BaseController{
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)

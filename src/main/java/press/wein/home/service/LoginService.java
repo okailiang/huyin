@@ -1,5 +1,7 @@
 package press.wein.home.service;
 
+import press.wein.home.exception.BusinessException;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.vo.UserLoginVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +18,22 @@ public interface LoginService {
 
     /**
      * 用户登录
+     *
      * @param userLoginVo
      * @param request
      * @param response
      * @return
      */
-    String login(UserLoginVo userLoginVo ,HttpServletRequest request,
+    String login(UserLoginVo userLoginVo, HttpServletRequest request,
                  HttpServletResponse response);
+
+    /**
+     * 用户注册
+     *
+     * @param userLoginVo
+     * @return
+     * @throws BusinessException
+     * @throws ServiceException
+     */
+    String register(UserLoginVo userLoginVo) throws BusinessException, ServiceException;
 }

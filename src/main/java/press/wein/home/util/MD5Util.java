@@ -139,4 +139,8 @@ public class MD5Util
             throw new BusinessException("MD5签名过程中出现错误,指定的编码集不对,您目前指定的编码集是:" + charset);
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(md5Hex("Admin@123"));
+    }
 }

@@ -41,6 +41,15 @@ public class CommonUtil {
         return stringBuffer.toString();
     }
 
+    /**
+     * 获得六位随机数
+     * @return
+     */
+    public static String getSixRandom() {
+        Random random = new Random();
+        return String.valueOf(random.nextInt(899999) + 100000);
+    }
+
 
     /**
      * @param args

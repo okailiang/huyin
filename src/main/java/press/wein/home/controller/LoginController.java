@@ -6,21 +6,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.common.CookieManager;
 import press.wein.home.common.SysConfigProperty;
 import press.wein.home.constant.Constants;
+import press.wein.home.exception.ExceptionCode;
+import press.wein.home.exception.ExceptionUtil;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.User;
-import press.wein.home.model.UserInfo;
 import press.wein.home.model.vo.UserLoginVo;
 import press.wein.home.redis.RedisClient;
 import press.wein.home.service.LoginService;
-import sun.rmi.runtime.Log;
+import press.wein.home.service.UserService;
+import press.wein.home.util.CommonUtil;
+import press.wein.home.util.EmailVerifyUtil;
+import press.wein.home.util.ResponseUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -29,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Date;
+import java.util.Random;
 
 /**
  * 用户登录controller
@@ -38,15 +42,66 @@ import java.util.Date;
  * @create 2017-02-22 下午4:15
  */
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private LoginService loginService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private RedisClient redisClient;
     @Autowired
     private Producer captchaProducer;
+
+    /**
+     * 邮箱注册用户发送验证码
+     *
+     * @param request
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "/send/emailCode", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity sendEmailRegisterCode(HttpServletRequest request, @RequestParam(value = "email") String email) throws ServiceException {
+        LOG.info("sendEmailRegisterCode email : " + email);
+        if (email == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PARAM_NULL);
+        }
+        if (!CommonUtil.isMatchEmail(email)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_ERROR);
+        }
+        User user = new User();
+        user.setEmail(email);
+        if (userService.getUserByUserName(user) != null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_EXIST);
+        }
+
+        try {
+            String code = CommonUtil.getSixRandom();
+            redisClient.set(Constants.REGISTER_EMAIL_CODE + email, code, 5);
+            EmailVerifyUtil.verifyEmail(email, code);
+        } catch (Exception e) {
+            ResponseUtils.error("发送注册邮箱验证码失败！");
+            LOG.error("sendEmailRegisterCode error!", e.getMessage());
+        }
+
+        return ResponseUtils.success("注册邮箱验证码发送成功");
+    }
+
+    /**
+     * 邮箱注册用户发送验证码
+     *
+     * @param request
+     * @param userLoginVo
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity register(HttpServletRequest request, @RequestBody UserLoginVo userLoginVo) throws ServiceException {
+        loginService.register(userLoginVo);
+        return ResponseUtils.success("注册成功，请登录");
+    }
 
     /**
      * 用户登录
@@ -58,7 +113,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String login(UserLoginVo userLoginVo, HttpServletRequest request, HttpServletResponse response) {
+    public String login(@RequestBody UserLoginVo userLoginVo, HttpServletRequest request, HttpServletResponse response) {
 //        System.out.println("1Hello world");
 //        user.setUserName("小明1");
 //        user.setCreateTime(new Date());
