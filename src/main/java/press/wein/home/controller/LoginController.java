@@ -19,6 +19,7 @@ import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.User;
 import press.wein.home.model.vo.UserLoginVo;
+import press.wein.home.model.vo.UserVo;
 import press.wein.home.redis.RedisClient;
 import press.wein.home.service.LoginService;
 import press.wein.home.service.UserService;
@@ -33,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -102,6 +105,101 @@ public class LoginController extends BaseController {
         loginService.register(userLoginVo);
         return ResponseUtils.success("注册成功，请登录");
     }
+
+    /**
+     *  重置密码发送验证码验证
+     *
+     * @param request
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "/resetPassword/code", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity resetPasswordCode(HttpServletRequest request, @RequestParam(value = "email") String email) throws ServiceException {
+        LOG.info("resetPasswordCode email : " + email);
+        if (email == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PARAM_NULL);
+        }
+        if (!CommonUtil.isMatchEmail(email)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_ERROR);
+        }
+        User user = new User();
+        user.setEmail(email);
+        user = userService.getUserByUserName(user);
+        if (user == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_NOT_EXIST);
+        }
+
+        try {
+            String code = CommonUtil.getSixRandom();
+            redisClient.set(Constants.REGISTER_EMAIL_CODE + email, code, 5);
+            EmailVerifyUtil.verifyEmail(email, code);
+        } catch (Exception e) {
+            ResponseUtils.error("发送验证码失败！");
+            LOG.error("resetPasswordCode error!", e.getMessage());
+        }
+        return ResponseUtils.success("验证码发送成功");
+    }
+
+    /**
+     *  重置密码发送验证码验证
+     *
+     * @param request
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "/resetPassword/checkCode", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity resetPasswordCheckCode(HttpServletRequest request, @RequestParam(value = "email") String email
+            , @RequestParam(value = "code") String code) throws ServiceException {
+        LOG.info("resetPasswordCheckCode email : " + email);
+        if (email == null || code == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PARAM_NULL);
+        }
+        if (!CommonUtil.isMatchEmail(email)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_ERROR);
+        }
+        User user = new User();
+        user.setEmail(email);
+        user = userService.getUserByUserName(user);
+        if (user == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_NOT_EXIST);
+        }
+
+        try {
+            String resetCode = redisClient.get(Constants.REGISTER_EMAIL_CODE + email);
+            if (resetCode == null || !resetCode.equals(code)) {
+                throw ExceptionUtil.createServiceException(ExceptionCode.KAPTCHA_CODE_ERROR);
+            }
+        } catch (Exception e) {
+            ResponseUtils.error("重置密码验证码验证失败！");
+            LOG.error("resetPasswordCheckCode error!", e.getMessage());
+        }
+        Map resultMap = new HashMap<>();
+        resultMap.put("id", user.getId());
+        resultMap.put("email", user.getEmail());
+        resultMap.put("message", "验证码校验成功");
+        UserVo userVo = new UserVo();
+        userVo.setId(user.getId());
+        userVo.setPassword(user.getPassword());
+        resultMap.put("user", userVo);
+        return ResponseUtils.success(resultMap);
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param request
+     * @param userLoginVo
+     * @return
+     */
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity resetPassword(HttpServletRequest request, @RequestBody UserLoginVo userLoginVo) throws ServiceException {
+        loginService.resetPassword(userLoginVo);
+        return ResponseUtils.success("密码修改成功，请重新登录");
+    }
+
 
     /**
      * 用户登录

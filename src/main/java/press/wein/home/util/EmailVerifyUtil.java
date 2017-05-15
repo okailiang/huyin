@@ -10,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -19,17 +18,17 @@ public class EmailVerifyUtil {
 
     private final static Logger LOG = LoggerFactory.getLogger(EmailVerifyUtil.class);
     /**
-     * a4print@163.com @A4printT
+     * a4print@163.com  密码：@A4printT
      */
     private static final String A4PRINT_EMAIL = "a4print@163.com";
     /**
-     * 第三方授权码
+     * 第三方授权码 A4printT 和密码不一样
      */
-    private static final String A4PRINT_EMAIL_PASSWORD = "A4prinT1";
+    private static final String A4PRINT_EMAIL_PASSWORD = "A4printT";
 
     private static final String EMAIL_HOST = "smtp.163.com";
 
-    public static final String SUBJECT = "验证微印社在线打印注册邮箱";
+    public static final String SUBJECT = "微印社验证";
 
     public static final String NICK = "微印社";
 
@@ -44,7 +43,9 @@ public class EmailVerifyUtil {
         Properties prop = new Properties();
         prop.setProperty("mail.host", EMAIL_HOST);
         prop.setProperty("mail.transport.protocol", "smtp");
+        prop.put("mail.store.protocol", "imap");
         prop.setProperty("mail.smtp.auth", "true");
+        //prop.setProperty("mail.smtp.starttls.enable", "true");
         // 使用JavaMail发送邮件的5个步骤
         // 1、创建session
         Session session = Session.getInstance(prop);
@@ -92,7 +93,7 @@ public class EmailVerifyUtil {
         return message;
     }
 
-    /**
+    /**A4printT
      * 邮箱验证码
      *
      * @param code
@@ -100,7 +101,7 @@ public class EmailVerifyUtil {
      */
     private static String getEmailContent(String code) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<h2 style='color:#58b2dc'>您的邮箱注册验证码为：</strong>").append(code).append("</strong>，五分钟内有效！</h2>");
+        sb.append("<h2 style='color:#58b2dc'>您的注册码为：</strong>").append(code).append("</strong>，五分钟内有效！</h2>");
         return sb.toString();
     }
 

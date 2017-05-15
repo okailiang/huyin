@@ -36,4 +36,14 @@ public interface LoginService {
      * @throws ServiceException
      */
     String register(UserLoginVo userLoginVo) throws BusinessException, ServiceException;
+
+    /**
+     * 重置密码
+     *
+     * @param userLoginVo
+     * @return
+     * @throws BusinessException
+     * @throws ServiceException
+     */
+    String resetPassword(UserLoginVo userLoginVo) throws BusinessException, ServiceException;
 }

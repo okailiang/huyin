@@ -139,7 +139,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public String register(UserLoginVo userLoginVo) throws BusinessException, ServiceException {
         //检验参数
-        checkParamNull(userLoginVo.getAccount(), userLoginVo.getPassword(), userLoginVo.getRegisterCode());
+        checkParamNull(userLoginVo.getAccount(), userLoginVo.getUserName(), userLoginVo.getPassword(), userLoginVo.getRegisterCode());
         //检验验证码
         String registerCode = redisClient.get(Constants.REGISTER_EMAIL_CODE + userLoginVo.getAccount());
         if (StringUtils.isBlank(registerCode) || !registerCode.equals(userLoginVo.getRegisterCode())) {
@@ -148,6 +148,8 @@ public class LoginServiceImpl implements LoginService {
 
         //校验该手机号或邮箱是否已注册
         this.checkAccountExist(userLoginVo.getAccount());
+        //校验用户名是否被注册
+        this.checkAccountExist(userLoginVo.getUserName());
 
         User user = new User();
         this.matchAccount(user, userLoginVo.getAccount());
@@ -159,6 +161,27 @@ public class LoginServiceImpl implements LoginService {
 
         userMapper.insertSelective(user);
 
+        return Constants.SUCCESS;
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param userLoginVo
+     * @return
+     * @throws BusinessException
+     * @throws ServiceException
+     */
+    @Override
+    public String resetPassword(UserLoginVo userLoginVo) throws BusinessException, ServiceException {
+        //检验参数
+        checkParamNull(userLoginVo.getId(), userLoginVo.getEmail(), userLoginVo.getPassword());
+        User user = userMapper.selectByPrimaryKey(userLoginVo.getId());
+        if (user == null || !userLoginVo.getEmail().equals(user.getEmail())) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.INVALID_PARAM);
+        }
+        user.setPassword(MD5Util.md5Hex(userLoginVo.getPassword()));
+        userMapper.updateByPrimaryKeySelective(user);
         return Constants.SUCCESS;
     }
 
