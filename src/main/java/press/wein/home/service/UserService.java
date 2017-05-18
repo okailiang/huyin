@@ -1,6 +1,6 @@
 package press.wein.home.service;
 
-import press.wein.home.common.Paper;
+import press.wein.home.common.Page;
 import press.wein.home.model.User;
 import press.wein.home.model.vo.UserVo;
 
@@ -78,7 +78,7 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    Paper<UserVo> listUsersWithPage(Paper<UserVo> paper, UserVo userVo);
+    Page<UserVo> listUsersWithPage(Page<UserVo> page, UserVo userVo);
 
     /**
      * 根据查询条件查询

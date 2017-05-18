@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import press.wein.home.common.Paper;
+import press.wein.home.common.Page;
 import press.wein.home.dao.MenuMapper;
 import press.wein.home.model.Menu;
 import press.wein.home.model.vo.MenuVo;
@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Paper<MenuVo> listMenusWithPage(Paper<MenuVo> paper, MenuVo menuVo) {
+    public Page<MenuVo> listMenusWithPage(Page<MenuVo> page, MenuVo menuVo) {
         return null;
     }
 

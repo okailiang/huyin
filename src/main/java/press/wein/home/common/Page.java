@@ -11,7 +11,7 @@ import java.util.List;
  * @create 2017-02-16 下午5:03
  */
 
-public class Paper<T> {
+public class Page<T> {
 
     private List<T> resultList = Collections.emptyList();
     public static final String DIRECTION_DESC = "DESC";
@@ -26,12 +26,12 @@ public class Paper<T> {
     /**
      * 记录开始的rowNum，从零开始
      */
-    private int start;
+    private int start = 0;
 
     /**
      * 每页显示数量limit
      */
-    private int pageSize = 50;
+    private int pageSize = 20;
 
     /**
      * 排序asc,desc

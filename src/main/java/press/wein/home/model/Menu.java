@@ -1,14 +1,10 @@
 package press.wein.home.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Menu implements Serializable {
-
-    private static final long serialVersionUID = -2418569281196055984L;
-
+public class Menu {
     private Integer id;
 
     private String menuName;
@@ -55,7 +51,6 @@ public class Menu implements Serializable {
     private List<Menu> childMenu = new ArrayList<Menu>();
 
     private List<RealUrl> realUrlList = new ArrayList<RealUrl>();
-
 
     public Integer getId() {
         return id;
@@ -121,12 +116,12 @@ public class Menu implements Serializable {
         this.icon = icon;
     }
 
-    public Byte getStatus() {
-        return status;
+    public String getAlert() {
+        return alert;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setAlert(String alert) {
+        this.alert = alert;
     }
 
     public String getLabel() {
@@ -137,12 +132,12 @@ public class Menu implements Serializable {
         this.label = label;
     }
 
-    public String getAlert() {
-        return alert;
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setAlert(String alert) {
-        this.alert = alert;
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Byte getIsDeleted() {
@@ -210,7 +205,6 @@ public class Menu implements Serializable {
     }
 
     public List<RealUrl> getRealUrlList() {
-
         return realUrlList;
     }
 

@@ -25,6 +25,7 @@ import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.UserLoginVo;
 import press.wein.home.model.vo.UserVo;
 import press.wein.home.redis.RedisClient;
+import press.wein.home.service.BaseService;
 import press.wein.home.service.LoginService;
 import press.wein.home.service.MenuService;
 import press.wein.home.service.UserService;
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
  * @create 2017-02-27 下午8:06
  */
 @Service(value = "loginService")
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl extends BaseService implements LoginService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginServiceImpl.class);
     private static final String MASTERKEY = "ein066*AOVXj276jhsMqoz!";
@@ -209,12 +210,6 @@ public class LoginServiceImpl implements LoginService {
             }
         }
 
-    }
-
-    private void checkParamNull(Object... args) throws ServiceException {
-        if (CommonUtil.isExistBlank(args)) {
-            throw ExceptionUtil.createServiceException(ExceptionCode.PARAM_NULL);
-        }
     }
 
     /**

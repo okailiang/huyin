@@ -1,13 +1,24 @@
 package press.wein.home.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 集合工具类
  */
 public class CollectionUtil {
+    public static final Logger LOG = LoggerFactory.getLogger(CommonUtil.class);
 
     public static boolean isNullOrEmpty(Collection<?> c) {
         return (null == c || c.isEmpty());
@@ -27,7 +38,7 @@ public class CollectionUtil {
      */
     public static <T> List<List<T>> splitList(List<T> inputList, int pageSize) {
         List<List<T>> resultList;
-        int pageCount = 0;
+        int pageCount;
         if (inputList.size() % pageSize == 0) {
             pageCount = inputList.size() / pageSize;
             resultList = new ArrayList<List<T>>(pageCount);
@@ -47,5 +58,118 @@ public class CollectionUtil {
             start += pageSize;
         }
         return resultList;
+    }
+
+    /**
+     * 对象转为map
+     *
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, Object> objectToMap(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                String key = property.getName();
+                if (key.compareToIgnoreCase("class") == 0) {
+                    continue;
+                }
+                Method getter = property.getReadMethod();
+                Object value = getter != null ? getter.invoke(obj) : null;
+                map.put(key, value);
+            }
+        } catch (Exception e) {
+            LOG.error("CollectionUtil objectToMap error:{}", e);
+        }
+        return map;
+    }
+
+    /**
+     * 自省实现map转Java对象
+     *
+     * @param map       map<String,Object>
+     * @param beanClass 要转为的类
+     * @return 要转化的对象类
+     * @throws Exception
+     */
+    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) {
+        if (map == null) {
+            return null;
+        }
+
+        Object obj = null;
+        try {
+            obj = beanClass.newInstance();
+            Object mapValue;
+
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                Method setter = property.getWriteMethod();
+                if (setter != null) {
+                    mapValue = map.get(property.getName());
+                    setterValue(property, mapValue, obj);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("CollectionUtil mapToObject error:{}", e);
+        }
+        return obj;
+    }
+
+
+    /**
+     * 给Java对象设置值
+     *
+     * @param property 属性对象
+     * @param mapValue 给属性赋值的值
+     * @param object   Java对象
+     */
+    private static void setterValue(PropertyDescriptor property, Object mapValue, Object object) throws
+            InvocationTargetException, IllegalAccessException, ParseException {
+        Method setter = property.getWriteMethod();
+        if (mapValue == null) {
+            setter.invoke(object, mapValue);
+            return;
+        }
+
+        Class propertyType = property.getPropertyType();
+        String type = propertyType.getName();
+        String value = mapValue.toString();
+
+        if (type.equals("java.lang.String")) {
+            setter.invoke(object, value);
+        } else if (type.equals("java.lang.Integer")) {
+            setter.invoke(object, Integer.parseInt(value));
+        } else if (type.equals("java.lang.Long")) {
+            setter.invoke(object, Long.parseLong(value));
+        } else if (type.equals("java.math.BigDecimal")) {
+            setter.invoke(object, BigDecimal.valueOf(Double.parseDouble(value)));
+        } else if (type.equals("java.math.BigInteger")) {
+            setter.invoke(object, BigInteger.valueOf(Long.parseLong(value)));
+        } else if (type.equals("java.util.Date")) {
+            setter.invoke(object, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(value));
+        } else if (type.equals("java.lang.Boolean")) {
+            setter.invoke(object, Boolean.valueOf(value));
+        } else if (type.equals("java.lang.Float")) {
+            setter.invoke(object, Float.parseFloat(value));
+        } else if (type.equals("java.lang.Double")) {
+            setter.invoke(object, Double.parseDouble(value));
+        } else if (type.equals("java.lang.byte[]")) {
+            setter.invoke(object, value.getBytes());
+        } else {
+            setter.invoke(object, value);
+        }
+    }
+
+    private CollectionUtil() {
+        //do nothing
     }
 }

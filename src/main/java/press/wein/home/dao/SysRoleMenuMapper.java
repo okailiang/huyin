@@ -3,13 +3,13 @@ package press.wein.home.dao;
 import press.wein.home.model.SysRoleMenu;
 
 public interface SysRoleMenuMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(SysRoleMenu record);
 
     int insertSelective(SysRoleMenu record);
 
-    SysRoleMenu selectByPrimaryKey(Integer id);
+    SysRoleMenu selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(SysRoleMenu record);
 

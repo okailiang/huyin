@@ -3,13 +3,13 @@ package press.wein.home.dao;
 import press.wein.home.model.SysConfig;
 
 public interface SysConfigMapper {
-    int deleteByPrimaryKey(Integer configId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(SysConfig record);
 
     int insertSelective(SysConfig record);
 
-    SysConfig selectByPrimaryKey(Integer configId);
+    SysConfig selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(SysConfig record);
 

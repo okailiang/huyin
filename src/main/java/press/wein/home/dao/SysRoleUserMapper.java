@@ -3,13 +3,13 @@ package press.wein.home.dao;
 import press.wein.home.model.SysRoleUser;
 
 public interface SysRoleUserMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(SysRoleUser record);
 
     int insertSelective(SysRoleUser record);
 
-    SysRoleUser selectByPrimaryKey(Integer id);
+    SysRoleUser selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(SysRoleUser record);
 

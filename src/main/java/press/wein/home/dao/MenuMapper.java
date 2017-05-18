@@ -17,10 +17,5 @@ public interface MenuMapper {
 
     int updateByPrimaryKey(Menu record);
 
-    /**
-     * 查询所有菜单项
-     *
-     * @return
-     */
     List<Menu> listAllMenus();
 }

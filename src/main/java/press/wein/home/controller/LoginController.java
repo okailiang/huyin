@@ -85,8 +85,8 @@ public class LoginController extends BaseController {
             redisClient.set(Constants.REGISTER_EMAIL_CODE + email, code, 5);
             EmailVerifyUtil.verifyEmail(email, code);
         } catch (Exception e) {
-            ResponseUtils.error("发送注册邮箱验证码失败！");
             LOG.error("sendEmailRegisterCode error!", e.getMessage());
+            return ResponseUtils.error("发送注册邮箱验证码失败！");
         }
 
         return ResponseUtils.success("注册邮箱验证码发送成功");
@@ -135,8 +135,8 @@ public class LoginController extends BaseController {
             redisClient.set(Constants.REGISTER_EMAIL_CODE + email, code, 5);
             EmailVerifyUtil.verifyEmail(email, code);
         } catch (Exception e) {
-            ResponseUtils.error("发送验证码失败！");
             LOG.error("resetPasswordCode error!", e.getMessage());
+            return ResponseUtils.error("发送验证码失败！");
         }
         return ResponseUtils.success("验证码发送成功");
     }
@@ -166,14 +166,9 @@ public class LoginController extends BaseController {
             throw ExceptionUtil.createServiceException(ExceptionCode.EMAIL_NOT_EXIST);
         }
 
-        try {
-            String resetCode = redisClient.get(Constants.REGISTER_EMAIL_CODE + email);
-            if (resetCode == null || !resetCode.equals(code)) {
-                throw ExceptionUtil.createServiceException(ExceptionCode.KAPTCHA_CODE_ERROR);
-            }
-        } catch (Exception e) {
-            ResponseUtils.error("重置密码验证码验证失败！");
-            LOG.error("resetPasswordCheckCode error!", e.getMessage());
+        String resetCode = redisClient.get(Constants.REGISTER_EMAIL_CODE + email);
+        if (resetCode == null || !resetCode.equals(code)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.KAPTCHA_CODE_ERROR);
         }
         Map resultMap = new HashMap<>();
         resultMap.put("id", user.getId());
@@ -182,7 +177,6 @@ public class LoginController extends BaseController {
         UserVo userVo = new UserVo();
         userVo.setId(user.getId());
         userVo.setPassword(user.getPassword());
-        resultMap.put("user", userVo);
         return ResponseUtils.success(resultMap);
     }
 

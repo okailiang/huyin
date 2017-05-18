@@ -9,6 +9,8 @@ public class SysLog {
 
     private String className;
 
+    private String serverIp;
+
     private String ipAddress;
 
     private Integer levelOneModule;
@@ -47,6 +49,14 @@ public class SysLog {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getServerIp() {
+        return serverIp;
+    }
+
+    public void setServerIp(String serverIp) {
+        this.serverIp = serverIp;
     }
 
     public String getIpAddress() {

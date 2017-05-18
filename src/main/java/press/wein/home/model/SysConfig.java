@@ -3,7 +3,7 @@ package press.wein.home.model;
 import java.util.Date;
 
 public class SysConfig {
-    private Integer configId;
+    private Integer id;
 
     private String configKey;
 
@@ -27,12 +27,12 @@ public class SysConfig {
 
     private Long modifierId;
 
-    public Integer getConfigId() {
-        return configId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setConfigId(Integer configId) {
-        this.configId = configId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getConfigKey() {

@@ -1,6 +1,6 @@
 package press.wein.home.service;
 
-import press.wein.home.common.Paper;
+import press.wein.home.common.Page;
 import press.wein.home.model.Menu;
 import press.wein.home.model.vo.MenuVo;
 
@@ -69,7 +69,7 @@ public interface MenuService {
      * @param menuVo
      * @return
      */
-    Paper<MenuVo> listMenusWithPage(Paper<MenuVo> paper, MenuVo menuVo);
+    Page<MenuVo> listMenusWithPage(Page<MenuVo> page, MenuVo menuVo);
 
     /**
      * 获得所有的菜单

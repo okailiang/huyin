@@ -3,7 +3,7 @@ package press.wein.home.model;
 import java.util.Date;
 
 public class SysRoleMenu {
-    private Integer id;
+    private Long id;
 
     private Integer roleId;
 
@@ -23,11 +23,11 @@ public class SysRoleMenu {
 
     private Long modifierId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

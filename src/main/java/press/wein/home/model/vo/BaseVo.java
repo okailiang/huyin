@@ -1,7 +1,6 @@
 package press.wein.home.model.vo;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import press.wein.home.common.Paper;
 import com.alibaba.fastjson.JSON;
 
 import java.io.Serializable;

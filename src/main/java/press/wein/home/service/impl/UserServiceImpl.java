@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import press.wein.home.common.Paper;
+import press.wein.home.common.Page;
 import press.wein.home.constant.Constants;
 import press.wein.home.dao.UserMapper;
 import press.wein.home.model.User;
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Paper<UserVo> listUsersWithPage(Paper<UserVo> paper, UserVo userVo) {
+    public Page<UserVo> listUsersWithPage(Page<UserVo> page, UserVo userVo) {
         return null;
     }
 

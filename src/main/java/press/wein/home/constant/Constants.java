@@ -113,6 +113,12 @@ public class Constants {
 
     public static final String REGISTER = "/register";
 
+    public static final String RESET_PASSWORD_CHECK_CODE = "/resetPassword/checkCode";
+
+    public static final String RESET_PASSWORD_CODE = "/resetPassword/code";
+
+    public static final String RESET_PASSWORD = "/resetPassword";
+
     /**
      * 健康检查url
      */
@@ -133,6 +139,10 @@ public class Constants {
         notAuthFilterURIList.add(HEALTH_CHECK_URI);
         notAuthFilterURIList.add(REGISTER_SEND_EMAIL_CODE);
         notAuthFilterURIList.add(REGISTER);
+        notAuthFilterURIList.add(RESET_PASSWORD_CHECK_CODE);
+        notAuthFilterURIList.add(RESET_PASSWORD_CODE);
+        notAuthFilterURIList.add(RESET_PASSWORD);
+
     }
 
     public static Set<String> getNotAuthFilterURIList() {

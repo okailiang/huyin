@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="method_name" jdbcType="VARCHAR" property="methodName" />
     <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="server_ip" jdbcType="VARCHAR" property="serverIp" />
     <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
     <result column="level_one_module" jdbcType="INTEGER" property="levelOneModule" />
     <result column="level_two_module" jdbcType="INTEGER" property="levelTwoModule" />
@@ -20,8 +21,8 @@
     <result column="message" jdbcType="LONGVARCHAR" property="message" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, method_name, class_name, ip_address, level_one_module, level_two_module, status, 
-    is_deleted, create_time, creator_id, creator
+    id, method_name, class_name, server_ip, ip_address, level_one_module, level_two_module, 
+    status, is_deleted, create_time, creator_id, creator
   </sql>
   <sql id="Blob_Column_List">
     input, result, message
@@ -40,15 +41,17 @@
   </delete>
   <insert id="insert" parameterType="press.wein.home.model.SysLogWithBLOBs">
     insert into h_sys_log (id, method_name, class_name, 
-      ip_address, level_one_module, level_two_module, 
-      status, is_deleted, create_time, 
-      creator_id, creator, input, 
-      result, message)
+      server_ip, ip_address, level_one_module, 
+      level_two_module, status, is_deleted, 
+      create_time, creator_id, creator, 
+      input, result, message
+      )
     values (#{id,jdbcType=BIGINT}, #{methodName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
-      #{ipAddress,jdbcType=VARCHAR}, #{levelOneModule,jdbcType=INTEGER}, #{levelTwoModule,jdbcType=INTEGER}, 
-      #{status,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{input,jdbcType=LONGVARCHAR}, 
-      #{result,jdbcType=LONGVARCHAR}, #{message,jdbcType=LONGVARCHAR})
+      #{serverIp,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR}, #{levelOneModule,jdbcType=INTEGER}, 
+      #{levelTwoModule,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{input,jdbcType=LONGVARCHAR}, #{result,jdbcType=LONGVARCHAR}, #{message,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="press.wein.home.model.SysLogWithBLOBs">
     insert into h_sys_log
@@ -61,6 +64,9 @@
       </if>
       <if test="className != null">
         class_name,
+      </if>
+      <if test="serverIp != null">
+        server_ip,
       </if>
       <if test="ipAddress != null">
         ip_address,
@@ -106,6 +112,9 @@
       <if test="className != null">
         #{className,jdbcType=VARCHAR},
       </if>
+      <if test="serverIp != null">
+        #{serverIp,jdbcType=VARCHAR},
+      </if>
       <if test="ipAddress != null">
         #{ipAddress,jdbcType=VARCHAR},
       </if>
@@ -150,6 +159,9 @@
       <if test="className != null">
         class_name = #{className,jdbcType=VARCHAR},
       </if>
+      <if test="serverIp != null">
+        server_ip = #{serverIp,jdbcType=VARCHAR},
+      </if>
       <if test="ipAddress != null">
         ip_address = #{ipAddress,jdbcType=VARCHAR},
       </if>
@@ -190,6 +202,7 @@
     update h_sys_log
     set method_name = #{methodName,jdbcType=VARCHAR},
       class_name = #{className,jdbcType=VARCHAR},
+      server_ip = #{serverIp,jdbcType=VARCHAR},
       ip_address = #{ipAddress,jdbcType=VARCHAR},
       level_one_module = #{levelOneModule,jdbcType=INTEGER},
       level_two_module = #{levelTwoModule,jdbcType=INTEGER},
@@ -207,6 +220,7 @@
     update h_sys_log
     set method_name = #{methodName,jdbcType=VARCHAR},
       class_name = #{className,jdbcType=VARCHAR},
+      server_ip = #{serverIp,jdbcType=VARCHAR},
       ip_address = #{ipAddress,jdbcType=VARCHAR},
       level_one_module = #{levelOneModule,jdbcType=INTEGER},
       level_two_module = #{levelTwoModule,jdbcType=INTEGER},

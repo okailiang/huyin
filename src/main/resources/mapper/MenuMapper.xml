@@ -7,7 +7,7 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
         <result column="level" jdbcType="SMALLINT" property="level"/>
-        <result column="sorting" jdbcType="VARCHAR" property="sorting"/>
+        <result column="sorting" jdbcType="TINYINT" property="sorting"/>
         <result column="translate" jdbcType="VARCHAR" property="translate"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
@@ -41,7 +41,7 @@
       creator_id, creator, modifier, 
       modifier_id)
     values (#{id,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{parentId,jdbcType=INTEGER}, #{level,jdbcType=SMALLINT}, #{sorting,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{level,jdbcType=SMALLINT}, #{sorting,jdbcType=TINYINT}, 
       #{translate,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
@@ -116,7 +116,7 @@
                 #{level,jdbcType=SMALLINT},
             </if>
             <if test="sorting != null">
-                #{sorting,jdbcType=VARCHAR},
+                #{sorting,jdbcType=TINYINT},
             </if>
             <if test="translate != null">
                 #{translate,jdbcType=VARCHAR},
@@ -166,7 +166,7 @@
                 level = #{level,jdbcType=SMALLINT},
             </if>
             <if test="sorting != null">
-                sorting = #{sorting,jdbcType=VARCHAR},
+                sorting = #{sorting,jdbcType=TINYINT},
             </if>
             <if test="translate != null">
                 translate = #{translate,jdbcType=VARCHAR},
@@ -207,7 +207,7 @@
       url = #{url,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
       level = #{level,jdbcType=SMALLINT},
-      sorting = #{sorting,jdbcType=VARCHAR},
+      sorting = #{sorting,jdbcType=TINYINT},
       translate = #{translate,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
@@ -221,10 +221,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from h_sys_menu
-        where is_deleted = 0
+    <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">  select <include
+            refid="Base_Column_List"/>  from h_sys_menu  where is_deleted = 0 
     </select>
 </mapper>
