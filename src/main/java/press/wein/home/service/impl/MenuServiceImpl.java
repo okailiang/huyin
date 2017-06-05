@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import press.wein.home.common.Page;
 import press.wein.home.dao.MenuMapper;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
 import press.wein.home.model.vo.MenuVo;
+import press.wein.home.service.BaseService;
 import press.wein.home.service.MenuService;
+import press.wein.home.util.BeanUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +23,7 @@ import java.util.List;
  * @create 2017-03-06 下午7:55
  */
 @Service(value = "menuService")
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl extends BaseService implements MenuService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MenuServiceImpl.class);
 
@@ -27,32 +31,31 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public String saveMenu(MenuVo menuVo) {
-        return null;
+    public int saveMenu(MenuVo menuVo) throws ServiceException {
+        //校验
+        this.checkParamNull(menuVo.getMenuName(), menuVo.getLevel(), menuVo.getParentId(), menuVo.getSorting());
+        Menu menu = new Menu();
+        BeanUtil.beanCopier(menuVo, menu);
+        return menuMapper.insertSelective(menu);
     }
 
     @Override
-    public String updateMenu(MenuVo menuVo) {
-        return null;
+    public int updateMenu(MenuVo menuVo) throws ServiceException {
+        //校验
+        this.checkParamNull(menuVo.getId(), menuVo.getMenuName(), menuVo.getLevel(), menuVo.getParentId(), menuVo.getSorting());
+        Menu menu = new Menu();
+        BeanUtil.beanCopier(menuVo, menu);
+        return menuMapper.updateByPrimaryKeySelective(menu);
     }
 
     @Override
-    public String removeMenuById(long id) {
-        return null;
+    public int removeMenuById(Integer id) throws ServiceException {
+        this.checkParamNull(id);
+        return menuMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public Menu getMenuByMenuName(Menu menu) {
-        return null;
-    }
-
-    @Override
-    public Menu getMenuById(String id) {
-        return null;
-    }
-
-    @Override
-    public Menu getMenu(MenuVo menuVo) {
+    public MenuVo getMenuById(Integer id) {
         return null;
     }
 
@@ -63,21 +66,35 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> listAllMenus() {
-        return menuMapper.listAllMenus();
+//        List<Menu> menuList = menuMapper.listAllMenus();
+//        List<MenuVo> menuVoList = new ArrayList<>();
+//        this.copyToMenuVoList(menuList, menuVoList);
+        return  menuMapper.listAllMenus();
     }
 
     @Override
-    public List<Menu> listMenus(MenuVo menuVo) {
+    public List<MenuVo> listMenus(MenuVo menuVo) {
+        List<Menu> menuList = menuMapper.listAllMenus();
+        List<MenuVo> menuVoList = new ArrayList<>();
+        this.copyToMenuVoList(menuList, menuVoList);
+        return menuVoList;
+    }
+
+    @Override
+    public List<MenuVo> listMenusByRoleId(Integer roleId) {
         return null;
     }
 
     @Override
-    public List<Menu> listMenusByRoleId(int roleId) {
+    public List<MenuVo> listMenusByIds(List<Integer> ids) {
         return null;
     }
 
-    @Override
-    public List<Menu> listMenusByIds(List<Long> ids) {
-        return null;
+    private void copyToMenuVoList(List<Menu> menuList, List<MenuVo> menuVoList) {
+        for (Menu menu : menuList) {
+            MenuVo menuVo = new MenuVo();
+            BeanUtil.beanCopier(menu, menuVo);
+            menuVoList.add(menuVo);
+        }
     }
 }

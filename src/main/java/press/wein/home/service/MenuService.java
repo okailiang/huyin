@@ -1,6 +1,7 @@
 package press.wein.home.service;
 
 import press.wein.home.common.Page;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
 import press.wein.home.model.vo.MenuVo;
 
@@ -21,7 +22,7 @@ public interface MenuService {
      * @param menuVo
      * @return
      */
-    String saveMenu(MenuVo menuVo);
+    int saveMenu(MenuVo menuVo) throws ServiceException;
 
     /**
      * 更新菜单信息
@@ -29,7 +30,7 @@ public interface MenuService {
      * @param menuVo
      * @return
      */
-    String updateMenu(MenuVo menuVo);
+    int updateMenu(MenuVo menuVo) throws ServiceException;
 
     /**
      * 根据菜单id逻辑查询
@@ -37,15 +38,7 @@ public interface MenuService {
      * @param id
      * @return
      */
-    String removeMenuById(long id);
-
-    /**
-     * 根据名称查询菜单
-     *
-     * @param menu
-     * @return
-     */
-    Menu getMenuByMenuName(Menu menu);
+    int removeMenuById(Integer id) throws ServiceException;
 
     /**
      * 根据id查询菜单
@@ -53,15 +46,7 @@ public interface MenuService {
      * @param id
      * @return
      */
-    Menu getMenuById(String id);
-
-    /**
-     * 根据条件查询菜单
-     *
-     * @param menuVo
-     * @return
-     */
-    Menu getMenu(MenuVo menuVo);
+    MenuVo getMenuById(Integer id) throws ServiceException;
 
     /**
      * 根据查询条件分页查询
@@ -69,7 +54,7 @@ public interface MenuService {
      * @param menuVo
      * @return
      */
-    Page<MenuVo> listMenusWithPage(Page<MenuVo> page, MenuVo menuVo);
+    Page<MenuVo> listMenusWithPage(Page<MenuVo> page, MenuVo menuVo) throws ServiceException;
 
     /**
      * 获得所有的菜单
@@ -84,7 +69,7 @@ public interface MenuService {
      * @param menuVo
      * @return
      */
-    List<Menu> listMenus(MenuVo menuVo);
+    List<MenuVo> listMenus(MenuVo menuVo) throws ServiceException;
 
     /**
      * 根据roleId查询
@@ -92,7 +77,7 @@ public interface MenuService {
      * @param roleId
      * @return
      */
-    List<Menu> listMenusByRoleId(int roleId);
+    List<MenuVo> listMenusByRoleId(Integer roleId) throws ServiceException;
 
     /**
      * 根据菜单id列表查询
@@ -100,5 +85,5 @@ public interface MenuService {
      * @param ids
      * @return
      */
-    List<Menu> listMenusByIds(List<Long> ids);
+    List<MenuVo> listMenusByIds(List<Integer> ids) throws ServiceException;
 }

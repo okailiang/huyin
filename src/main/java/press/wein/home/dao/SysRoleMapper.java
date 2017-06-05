@@ -24,8 +24,8 @@ public interface SysRoleMapper {
 
     List<SysRole> listRoles(SysRole record);
 
-    List<SysRole> listRolesByRoleIds(List<Long> roleIds);
+    List<SysRole> listRolesByIds(List<Integer> roleIds);
 
-    int deleteRole(Long roleId);
+    int deleteRole(Integer roleId);
 
 }

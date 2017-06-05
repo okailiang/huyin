@@ -47,6 +47,14 @@ public class Page<T> {
 
     private long totalCount;
 
+    public Page() {
+    }
+
+    public Page(long totalCount, List<T> resultList) {
+        this.resultList = resultList;
+        this.totalCount = totalCount;
+    }
+
     public final long getTotalCount() {
         return totalCount;
     }

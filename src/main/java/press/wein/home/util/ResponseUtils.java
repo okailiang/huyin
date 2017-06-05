@@ -2,6 +2,7 @@ package press.wein.home.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import press.wein.home.constant.TipConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class ResponseUtils {
      * @return 返回实体类
      */
     public static ResponseEntity<Object> error() {
-        Map<String, Object> map = initMessage("系统异常，请稍后再试");
+        Map<String, Object> map = initMessage(TipConstants.SYS_ERROR);
         return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -110,7 +111,7 @@ public class ResponseUtils {
      * @return 返回实体类
      */
     public static ResponseEntity<Object> forbidden() {
-        Map<String, Object> map = initMessage("权限不足，请联系管理员");
+        Map<String, Object> map = initMessage(TipConstants.PERMISSION_ERROR);
         return new ResponseEntity<Object>(map, HttpStatus.FORBIDDEN);
     }
 

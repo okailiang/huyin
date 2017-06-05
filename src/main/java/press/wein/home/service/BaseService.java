@@ -1,10 +1,15 @@
 package press.wein.home.service;
 
 import org.springframework.stereotype.Service;
+import press.wein.home.common.Page;
 import press.wein.home.exception.ExceptionCode;
 import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
+import press.wein.home.util.BeanUtil;
 import press.wein.home.util.CommonUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基本的service
@@ -27,4 +32,13 @@ public class BaseService {
         }
     }
 
+    /**
+     * 设置分页查询参数
+     *
+     * @throws ServiceException
+     */
+    public void setPageParam(Map<String, Object> queryParam, Page page) throws ServiceException {
+        queryParam.put("start", page.getStart());
+        queryParam.put("pageSize", page.getPageSize());
+    }
 }

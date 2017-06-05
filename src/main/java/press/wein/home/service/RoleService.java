@@ -58,13 +58,13 @@ public interface RoleService {
      * @return
      * @throws ServiceException
      */
-    List<RoleVo> listRolesByRoleIds(List<Integer> roleIds) throws ServiceException;
+    List<RoleVo> listRolesByIds(List<Integer> roleIds) throws ServiceException;
 
     /**
      * 根据id逻辑删除
      * @param roleId
      * @return
      */
-    int deleteRole(Integer roleId);
+    int removeRole(Integer roleId) throws ServiceException;
 }
 

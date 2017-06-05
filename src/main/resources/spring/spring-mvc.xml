@@ -39,10 +39,10 @@
         <property name="favorPathExtension" value="true"/>
         <property name="favorParameter" value="true"/>
         <property name="mediaTypes">
-            <value>
-                json=application/json
-                xml=application/xml
-            </value>
+            <props>
+                <prop key="json">application/json;charset=UTF-8</prop>
+                <prop key="xml">application/xml;charset=UTF-8</prop>
+            </props>
         </property>
     </bean>
 

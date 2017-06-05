@@ -14,6 +14,7 @@ import press.wein.home.enumerate.Enums;
 import press.wein.home.model.Menu;
 import press.wein.home.model.bo.RoleMenu;
 import press.wein.home.redis.RedisClient;
+import press.wein.home.service.MenuService;
 import press.wein.home.util.CollectionUtil;
 import press.wein.home.util.StringUtil;
 
@@ -28,10 +29,11 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/menu")
-public class MenuController extends BaseController{
+public class MenuController extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MenuController.class);
-
+    @Autowired
+    private MenuService menuService;
     @Autowired
     private RedisClient redisClient;
 
@@ -52,7 +54,7 @@ public class MenuController extends BaseController{
 
         List<Menu> menuList = ApplicationUserContext.getUser().getMenuList();
         if (CollectionUtil.isNotEmpty(menuList)) {
-            convertToRoleMenu(menuList, roleMenuList);
+            this.convertToRoleMenu(menuList, roleMenuList);
             return JSON.toJSONString(roleMenuList);
         }
         String roleMenu = redisClient.get(Constants.CACHE_MENU_ROLE);

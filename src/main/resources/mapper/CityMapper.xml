@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="press.wein.home.dao.CityMapper">
+  <resultMap id="BaseResultMap" type="press.wein.home.model.City">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="district_code" jdbcType="INTEGER" property="districtCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="level" jdbcType="TINYINT" property="level" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="abbr" jdbcType="VARCHAR" property="abbr" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, district_code, name, level, type, pinyin, longitude, latitude, parent_id, abbr, 
+    full_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from h_city
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from h_city
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="press.wein.home.model.City">
+    insert into h_city (id, district_code, name, 
+      level, type, pinyin, 
+      longitude, latitude, parent_id, 
+      abbr, full_name)
+    values (#{id,jdbcType=INTEGER}, #{districtCode,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{level,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}, #{pinyin,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{parentId,jdbcType=INTEGER}, 
+      #{abbr,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="press.wein.home.model.City">
+    insert into h_city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="districtCode != null">
+        district_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="pinyin != null">
+        pinyin,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="abbr != null">
+        abbr,
+      </if>
+      <if test="fullName != null">
+        full_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="districtCode != null">
+        #{districtCode,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="pinyin != null">
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="abbr != null">
+        #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.City">
+    update h_city
+    <set>
+      <if test="districtCode != null">
+        district_code = #{districtCode,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="pinyin != null">
+        pinyin = #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="abbr != null">
+        abbr = #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.City">
+    update h_city
+    set district_code = #{districtCode,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      type = #{type,jdbcType=TINYINT},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      abbr = #{abbr,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

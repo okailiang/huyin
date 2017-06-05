@@ -20,45 +20,48 @@
         id, role_name, status, is_deleted, create_time, modify_time, creator_id, creator,
         modifier, modifier_id, data_level, sms_verify, assign_authority
     </sql>
-    <sql id="Where_Search_Condition"> 
-        <where> 
-            <if test="roleId != null"> 
-                and role_id = #{roleId,jdbcType=VARCHAR} 
+    <sql id="Where_Search_Condition">
+        <where>
+            is_deleted = 0
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
             </if>
-             <if test="roleName != null and roleName = ''"> 
-                and role_name = #{roleName,jdbcType=VARCHAR}
-                 </if> 
-            <if test="status != null"> 
-                and status = #{status,jdbcType=TINYINT} 
-            </if> 
-            <if test="createTime != null"> 
-                and create_time = #{createTime,jdbcType=TIMESTAMP} 
-            </if> 
-            <if test="modifyTime != null"> 
-                and modify_time = #{modifyTime,jdbcType=TIMESTAMP} 
+            <if test="roleName != null and roleName != ''">
+                and instr(role_name, #{roleName,jdbcType=VARCHAR}) > 0
             </if>
-            <if test="creatorId != null"> 
-                and creator_id = #{creatorId,jdbcType=BIGINT} 
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
             </if>
-            <if test="creator != null and creator = ''"> 
-                and creator = #{creator,jdbcType=VARCHAR} 
+            <if test="isDeleted != null">
+                and is_deleted = #{isDeleted,jdbcType=TINYINT}
             </if>
-             <if test="modifier != null and modifier = ''"> 
-                and modifier = #{modifier,jdbcType=VARCHAR} 
-            </if> 
-            <if test="modifierId != null"> 
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="modifyTime != null">
+                and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorId != null">
+                and creator_id = #{creatorId,jdbcType=BIGINT}
+            </if>
+            <if test="creator != null">
+                and creator = #{creator,jdbcType=VARCHAR}
+            </if>
+            <if test="modifier != null">
+                and modifier = #{modifier,jdbcType=VARCHAR}
+            </if>
+            <if test="modifierId != null">
                 and modifier_id = #{modifierId,jdbcType=BIGINT}
-                 </if> 
-            <if test="dataLevel != null"> 
-                and data_level = #{dataLevel,jdbcType=SMALLINT} 
-            </if> 
-            <if test="smsVerify != null"> 
-                and sms_verify = #{smsVerify,jdbcType=TINYINT} 
             </if>
-             <if test="assignAuthority != null"> 
-                and assign_authority =#{assignAuthority,jdbcType=TINYINT}
-                 </if> 
-            and is_deleted = 0 
+            <if test="dataLevel != null">
+                and data_level = #{dataLevel,jdbcType=SMALLINT}
+            </if>
+            <if test="smsVerify != null">
+                and sms_verify = #{smsVerify,jdbcType=TINYINT}
+            </if>
+            <if test="assignAuthority != null">
+                and assign_authority = #{assignAuthority,jdbcType=TINYINT}
+            </if>
         </where>
     </sql>
 
@@ -227,18 +230,18 @@
         assign_authority = #{assignAuthority,jdbcType=TINYINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="countRoles" resultType="java.lang.Long"> 
-        select count(1)  from h_sys_role  
-        <include refid="Where_Search_Condition"/> 
+    <select id="countRoles" resultType="java.lang.Long">
+        select count(1) from h_sys_role
+        <include refid="Where_Search_Condition"/>
     </select>
 
-    <select id="listRolesByPage" resultMap="BaseResultMap"> 
+    <select id="listRolesByPage" resultMap="BaseResultMap">
         select
-         <include refid="Base_Column_List"/> 
-        from h_sys_role 
-        <include refid="Where_Search_Condition"/> 
-        order by id DESC  
-        limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER} 
+        <include refid="Base_Column_List"/>
+        from h_sys_role
+        <include refid="Where_Search_Condition"/>
+        order by id desc
+        limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     </select>
 
     <select id="listRoles" resultMap="BaseResultMap" parameterType="press.wein.home.model.SysRole">
@@ -248,7 +251,7 @@
         <include refid="Where_Search_Condition"/>
     </select>
 
-    <select id="listRolesByRoleIds" parameterType="java.util.List" resultMap="BaseResultMap"> 
+    <select id="listRolesByIds" parameterType="java.util.List" resultMap="BaseResultMap"> 
         select
          <include refid="Base_Column_List"/> 
         from h_sys_role 
@@ -257,10 +260,10 @@
             #{item} 
         </foreach> 
     </select>
-    
-    <update id="deleteRole"> 
-        UPDATE h_sys_role  
-        set is_deleted = 1 
-        where role_id = #{roleId,jdbcType=INTEGER} 
+
+    <update id="deleteRole">
+        UPDATE h_sys_role
+        set is_deleted = 1
+        WHERE id = #{id, jdbcType=INTEGER}
     </update>
 </mapper>

@@ -221,7 +221,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">  select <include
-            refid="Base_Column_List"/>  from h_sys_menu  where is_deleted = 0 
+    <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from h_sys_menu
+        where is_deleted = 0
     </select>
 </mapper>
