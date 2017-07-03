@@ -241,7 +241,7 @@
         from h_sys_role
         <include refid="Where_Search_Condition"/>
         order by id desc
-        limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+        limit #{pageSize,jdbcType=INTEGER} offset #{start,jdbcType=INTEGER}
     </select>
 
     <select id="listRoles" resultMap="BaseResultMap" parameterType="press.wein.home.model.SysRole">

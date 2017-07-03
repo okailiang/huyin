@@ -38,7 +38,7 @@ public interface MenuService {
      * @param id
      * @return
      */
-    int removeMenuById(Integer id) throws ServiceException;
+    int removeMenu(Integer id) throws ServiceException;
 
     /**
      * 根据id查询菜单
@@ -46,7 +46,7 @@ public interface MenuService {
      * @param id
      * @return
      */
-    MenuVo getMenuById(Integer id) throws ServiceException;
+    Menu getMenuById(Integer id) throws ServiceException;
 
     /**
      * 根据查询条件分页查询

@@ -18,4 +18,8 @@ public interface MenuMapper {
     int updateByPrimaryKey(Menu record);
 
     List<Menu> listAllMenus();
+
+    List<Menu> listMenus(Menu menu);
+
+    int checkRepeatName(Menu menu);
 }

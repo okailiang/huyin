@@ -83,7 +83,7 @@ public interface Enums {
         ONE_LEVEL(1, "一级菜单"),
         TWO_LEVEL(2, "二级菜单"),
         THREE_LEVEL(3, "三级菜单"),
-        FOUR_LEVEL(4, "三级菜单");
+        FOUR_LEVEL(4, "四级菜单");
 
         private Integer value;
         private String name;

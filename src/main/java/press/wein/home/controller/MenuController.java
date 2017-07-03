@@ -4,20 +4,25 @@ import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.constant.Constants;
+import press.wein.home.constant.TipConstants;
 import press.wein.home.enumerate.Enums;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
 import press.wein.home.model.bo.RoleMenu;
+import press.wein.home.model.bo.UserSession;
+import press.wein.home.model.vo.MenuVo;
 import press.wein.home.redis.RedisClient;
 import press.wein.home.service.MenuService;
 import press.wein.home.util.CollectionUtil;
+import press.wein.home.util.ResponseUtils;
 import press.wein.home.util.StringUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +49,7 @@ public class MenuController extends BaseController {
      */
     @RequestMapping(value = "/getRoleMenu", method = RequestMethod.GET)
     @ResponseBody
-    private String getMenuByRole() {
+    private String getMenuByMenu() {
         List<RoleMenu> roleMenuList = new ArrayList<>();
         RoleMenu mainRoleMenu = new RoleMenu();
         mainRoleMenu.setHeading("true");
@@ -62,6 +67,109 @@ public class MenuController extends BaseController {
     }
 
     /**
+     * 获取所有菜单
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAllMenu", method = RequestMethod.GET)
+    @ResponseBody
+    private ResponseEntity<Object> getAllMenu() {
+
+        return ResponseUtils.success(menuService.listAllMenus());
+    }
+
+    /**
+     * 获取菜单
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getMenu", method = RequestMethod.GET)
+    @ResponseBody
+    private ResponseEntity<Object> getMenu(@RequestParam(value = "id") Integer id) throws ServiceException {
+        return ResponseUtils.success(menuService.getMenuById(id));
+    }
+
+    /**
+     * 新增
+     *
+     * @param menuVo
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> saveMenu(@RequestBody MenuVo menuVo, HttpServletRequest request) throws ServiceException {
+
+        try {
+            this.setCreatorAndModifier(menuVo);
+            menuService.saveMenu(menuVo);
+        } catch (ServiceException e) {
+            LOG.error("MenuController.saveMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error(e.getMessage());
+        } catch (Exception e) {
+            LOG.error("MenuController.saveMenu Exception, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error();
+        }
+        return ResponseUtils.success(TipConstants.SAVE_SUCCESS);
+    }
+
+    private void setCreatorAndModifier(MenuVo menuVo) {
+        UserSession userSession = ApplicationUserContext.getUser();
+        menuVo.setCreator(userSession.getName());
+        menuVo.setModifier(userSession.getName());
+        menuVo.setCreatorId(userSession.getId());
+        menuVo.setModifierId(userSession.getId());
+    }
+
+    /**
+     * 更新
+     *
+     * @param menuVo
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> updateMenu(@RequestBody MenuVo menuVo, HttpServletRequest request) throws ServiceException {
+
+        try {
+            menuService.updateMenu(menuVo);
+        } catch (ServiceException e) {
+            LOG.error("MenuController.updateMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error(e.getMessage());
+        } catch (Exception e) {
+            LOG.error("MenuController.updateMenu Exception, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error();
+        }
+        return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
+    }
+
+    /* 删除
+     *
+     * @param menuVo
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @RequestMapping(value = "/removeMenu", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> removeMenu(@RequestBody MenuVo menuVo, HttpServletRequest request) throws ServiceException {
+
+        try {
+            menuService.removeMenu(menuVo.getId());
+        } catch (ServiceException e) {
+            LOG.error("MenuController.removeMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error(e.getMessage());
+        } catch (Exception e) {
+            LOG.error("MenuController.removeMenu Exception, input param [{}]", menuVo.toString(), e);
+            return ResponseUtils.error();
+        }
+        return ResponseUtils.success(TipConstants.DELETE_SUCCESS);
+    }
+
+    /**
      * @param menuList
      * @param roleMenuList
      */
@@ -74,11 +182,11 @@ public class MenuController extends BaseController {
             List<Menu> subMenuList = menu.getChildMenu();
             convertToRoleMenu(subMenuList, subRoleMenuList);
 
-            RoleMenu roleMenu = getRoleMenu(menu);
+            RoleMenu roleMenu = this.getRoleMenu(menu);
             if (menu.getLevel().intValue() == Enums.MenuLevel.ONE_LEVEL.getValue()) {
                 roleMenu.setAlert(String.valueOf(subMenuList.size()));
             }
-            if (CollectionUtil.isNotEmpty(subRoleMenuList)) {
+            if (CollectionUtil.isNotEmpty(subRoleMenuList) && menu.getLevel().intValue() < Enums.MenuLevel.TWO_LEVEL.getValue()) {
                 roleMenu.setSubmenu(subRoleMenuList);
             }
             roleMenuList.add(roleMenu);

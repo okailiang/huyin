@@ -27,7 +27,7 @@
         select
         <include refid="Base_Column_List"/>
         from h_sys_menu
-        where id = #{id,jdbcType=INTEGER}
+        where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from h_sys_menu
@@ -221,10 +221,84 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+    <sql id="Search_Condition">
+        is_deleted = 0
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="menuName != null">
+            and menu_name = #{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="menuName != null">
+            and menu_name = #{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="url != null">
+            and url = #{url,jdbcType=VARCHAR}
+        </if>
+        <if test="parentId != null">
+            and parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="level != null">
+            and level = #{level,jdbcType=SMALLINT}
+        </if>
+        <if test="sorting != null">
+            and sorting = #{sorting,jdbcType=TINYINT}
+        </if>
+        <if test="translate != null">
+            and translate = #{translate,jdbcType=VARCHAR}
+        </if>
+        <if test="icon != null">
+            and icon = #{icon,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT}
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted,jdbcType=TINYINT}
+        </if>
+        <if test="createTime != null">
+            and  create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="modifyTime != null">
+            and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="creatorId != null">
+            and creator_id = #{creatorId,jdbcType=BIGINT}
+        </if>
+        <if test="creator != null">
+            and  creator = #{creator,jdbcType=VARCHAR}
+        </if>
+        <if test="modifier != null">
+            and modifier = #{modifier,jdbcType=VARCHAR}
+        </if>
+        <if test="modifierId != null">
+            and modifier_id = #{modifierId,jdbcType=BIGINT}
+        </if>
+    </sql>
+
     <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from h_sys_menu
+        where is_deleted = 0 order by level,sorting,create_time
+    </select>
+
+    <select id="listMenus" parameterType="press.wein.home.model.Menu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from h_sys_menu
+        where <include refid="Search_Condition"/>
+    </select>
+
+    <select id="checkRepeatName" resultType="java.lang.Integer" parameterType="press.wein.home.model.Menu">
+        select count(1)
+        from h_sys_menu
         where is_deleted = 0
+        <if test="menuName != null || menuName != ''">
+           and menu_name = #{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="id != null">
+           and id != #{id,jdbcType=BIGINT}
+        </if>
     </select>
 </mapper>

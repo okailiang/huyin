@@ -411,43 +411,8 @@ public class LoginServiceImpl extends BaseService implements LoginService {
             //return JSON.parseArray(roleMenu, Menu.class);
         }
 
-        List<Menu> menuList = menuService.listAllMenus();
-        //一级菜单
-        List<Menu> oneLevelMenuList = new ArrayList<>();
-        List<Menu> twoLevelMenuList = new ArrayList<>();
-        List<Menu> threeLevelMenuList = new ArrayList<>();
-        //按菜单级别分类
-        menuList.stream().forEach(m -> {
-            if (Short.toUnsignedInt(m.getLevel()) == Enums.MenuLevel.ONE_LEVEL.getValue()) {
-                oneLevelMenuList.add(m);
-            }
-            if (Short.toUnsignedInt(m.getLevel()) == Enums.MenuLevel.TWO_LEVEL.getValue()) {
-                twoLevelMenuList.add(m);
-            }
-            if (Short.toUnsignedInt(m.getLevel()) == Enums.MenuLevel.THREE_LEVEL.getValue()) {
-                threeLevelMenuList.add(m);
-            }
-        });
-        //将菜单按父菜单id分类
-        Map<Integer, List<Menu>> twoMenuMap = twoLevelMenuList.stream().collect(Collectors.groupingBy(Menu::getParentId));
-        Map<Integer, List<Menu>> threeMenuMap = threeLevelMenuList.stream().collect(Collectors.groupingBy(Menu::getParentId));
-        oneLevelMenuList.stream().forEach(menu -> {
-            List<Menu> subTwoMenu = twoMenuMap.get(menu.getId());
-            if (CollectionUtil.isNotEmpty(subTwoMenu)) {
-                subTwoMenu.stream().forEach(twoMenu -> {
-                    List<Menu> subThreeMenu = threeMenuMap.get(menu.getId());
-                    if (CollectionUtil.isNotEmpty(subThreeMenu)) {
-                        twoMenu.setChildMenu(subThreeMenu);
-                    }
-                });
-                menu.setChildMenu(subTwoMenu);
-            }
-        });
-        //给一级菜单添加子菜单个数提示
-        oneLevelMenuList.stream().forEach(oneMenu -> {
-            oneMenu.setAlert(String.valueOf(oneMenu.getChildMenu().size()));
-            oneMenu.setLabel("label label-info");
-        });
+        List<Menu> oneLevelMenuList = menuService.listAllMenus();
+
         redisClient.set(Constants.CACHE_MENU_ROLE, oneLevelMenuList, 60);
         return oneLevelMenuList;
     }

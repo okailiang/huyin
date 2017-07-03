@@ -11,6 +11,8 @@ public class Menu {
 
     private String url;
 
+    private String parentMenuName;
+
     private Integer parentId;
 
     private Short level;
@@ -74,6 +76,14 @@ public class Menu {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getParentMenuName() {
+        return parentMenuName;
+    }
+
+    public void setParentMenuName(String parentMenuName) {
+        this.parentMenuName = parentMenuName;
     }
 
     public Integer getParentId() {

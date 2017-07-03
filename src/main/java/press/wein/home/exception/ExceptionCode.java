@@ -27,6 +27,7 @@ public enum ExceptionCode {
     SERVICE_DOWNGRADING("SERVICE_DOWNGRADING", "服务关闭"),
     NOT_FIND_OBJECT("NOT_FIND_OBJECT", "找不到对象"),
     NOT_EXIST("NOT_EXIST", "该条数据已不存在"),
+    NAME_EXISTED("NAME_EXISTED", "该名称已经存在，请换个名吧"),
 
     /* ==================================== 注册登录 ==================================== */
     PHONE_ERROR("PHONE_ERROR", "手机号格式不正确"),
@@ -40,6 +41,9 @@ public enum ExceptionCode {
     KAPTCHA_CODE_INVALID("KAPTCHA_CODE_INVALID", "验证码失效"),
     ACCOUNT_PASSWORD_ERROR("ACCOUNT_PASSWORD_ERROR", "账户名和密码不匹配"),
     PASSWORD_ERROR_TIME_TIP("PASSWORD_ERROR_TIME_TIP", "输入密码错误%d次，%s分钟后再试"),
+
+    /* ==================================== 菜单 ==================================== */
+    MENU_LEVEL_MAX("MENU_LEVEL_MAX", "最大只允许添加四级菜单"),
 
 	/* ==================================== 消息异常 ==================================== */
 

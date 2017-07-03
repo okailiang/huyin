@@ -29,6 +29,11 @@ public class MenuVo implements Serializable {
     private String url;
 
     /**
+     * 父菜单
+     */
+    private String parentMenuName;
+
+    /**
      * 父菜单id
      */
     private Integer parentId;
@@ -245,5 +250,13 @@ public class MenuVo implements Serializable {
 
     public void setRealUrlList(List<RealUrl> realUrlList) {
         this.realUrlList = realUrlList;
+    }
+
+    public String getParentMenuName() {
+        return parentMenuName;
+    }
+
+    public void setParentMenuName(String parentMenuName) {
+        this.parentMenuName = parentMenuName;
     }
 }

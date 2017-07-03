@@ -33,6 +33,18 @@ public class BaseService {
     }
 
     /**
+     * 校验重名
+     *
+     * @param count
+     * @throws ServiceException
+     */
+    public void checkRepeatName(int count) throws ServiceException {
+        if (count > 0) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.NAME_EXISTED);
+        }
+    }
+
+    /**
      * 设置分页查询参数
      *
      * @throws ServiceException

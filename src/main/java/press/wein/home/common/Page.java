@@ -31,7 +31,7 @@ public class Page<T> {
     /**
      * 每页显示数量limit
      */
-    private int pageSize = 20;
+    private int pageSize = 10;
 
     /**
      * 排序asc,desc

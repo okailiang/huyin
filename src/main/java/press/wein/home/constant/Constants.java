@@ -30,6 +30,11 @@ public class Constants {
      * 失败
      */
     public static final String FAIL = "fail";
+
+    /**
+     * deleted
+     */
+    public static final byte IS_DELETED = 1;
     /**
      * domain
      */
