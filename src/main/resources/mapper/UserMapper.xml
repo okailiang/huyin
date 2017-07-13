@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="press.wein.home.model.User">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
+        <result column="password" jdbcType="VARCHAR" property="password" />
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="role" jdbcType="TINYINT" property="role"/>
         <result column="phone_no" jdbcType="VARCHAR" property="phoneNo"/>
@@ -117,7 +117,7 @@
                 and id = #{id,jdbcType=BIGINT}
             </if>
             <if test="userName != null and userName != ''">
-                and user_name = #{userName,jdbcType=VARCHAR}
+                and instr(user_name,#{userName,jdbcType=VARCHAR}) > 0
             </if>
             <if test="password != null and password != ''">
                 and password = #{password,jdbcType=VARCHAR}
@@ -441,13 +441,13 @@
     </select>
 
     <!-- 查询总数-->
-    <select id="countTotalUsers" parameterType="press.wein.home.model.vo.UserVo" resultType="java.lang.Long">
+    <select id="countTotalUsers" resultType="java.lang.Long">
         select count(1) from h_user
         <include refid="Sql_Where_Column_Query"/>
     </select>
 
     <!-- 分页查询-->
-    <select id="listUsersWithPage" parameterType="press.wein.home.model.vo.UserVo" resultMap="BaseResultMapQuery">
+    <select id="listUsersWithPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from h_user

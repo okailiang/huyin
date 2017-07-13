@@ -7,18 +7,23 @@ import org.springframework.stereotype.Service;
 import press.wein.home.common.Page;
 import press.wein.home.constant.Constants;
 import press.wein.home.dao.MenuMapper;
+import press.wein.home.dao.SysRoleMapper;
+import press.wein.home.dao.SysRoleMenuMapper;
 import press.wein.home.enumerate.Enums;
 import press.wein.home.exception.ExceptionCode;
 import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
+import press.wein.home.model.SysRoleMenu;
 import press.wein.home.model.vo.MenuVo;
 import press.wein.home.service.BaseService;
 import press.wein.home.service.MenuService;
+import press.wein.home.service.RoleService;
 import press.wein.home.util.BeanUtil;
 import press.wein.home.util.CollectionUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,11 +42,14 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     @Autowired
     private MenuMapper menuMapper;
 
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
+
     @Override
     public int saveMenu(MenuVo menuVo) throws ServiceException {
         //校验
         this.checkParamNull(menuVo.getMenuName(), menuVo.getLevel(), menuVo.getParentId(), menuVo.getSorting());
-        if(menuVo.getLevel() > Enums.MenuLevel.FOUR_LEVEL.getValue().shortValue()){
+        if (menuVo.getLevel() > Enums.MenuLevel.FOUR_LEVEL.getValue().shortValue()) {
             throw ExceptionUtil.createServiceException(ExceptionCode.MENU_LEVEL_MAX);
         }
 
@@ -70,6 +78,11 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     @Override
     public int removeMenu(Integer id) throws ServiceException {
         this.checkParamNull(id);
+
+        List<SysRoleMenu> roleMenus = sysRoleMenuMapper.listRoleMenusByMenuIds(Arrays.asList(id));
+        if (CollectionUtil.isNotEmpty(roleMenus)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.MENU_NO_REMOVE);
+        }
         Menu menu = new Menu();
         menu.setId(id);
         menu.setIsDeleted(Constants.IS_DELETED);
@@ -101,8 +114,21 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public List<MenuVo> listMenusByRoleId(Integer roleId) {
-        return null;
+    public List<Menu> listMenusByRoleId(Integer roleId) throws ServiceException {
+        List<Menu> menuList = menuMapper.listAllMenus();
+        if (CollectionUtil.isNullOrEmpty(menuList)) {
+            return new ArrayList<>();
+        }
+        List<SysRoleMenu> roleMenuList = sysRoleMenuMapper.listRoleMenusByRoleIds(Arrays.asList(roleId));
+        if (CollectionUtil.isNotEmpty(roleMenuList)) {
+            Map<Integer, SysRoleMenu> menuIdMap = roleMenuList.stream().collect(Collectors.toMap(rm -> rm.getMenuId(), rm -> rm));
+            for (Menu menu : menuList) {
+                if (menuIdMap.get(menu.getId()) != null) {
+                    menu.setStatus((byte) 1);
+                }
+            }
+        }
+        return this.handleMenu(menuList);
     }
 
     @Override
@@ -162,11 +188,11 @@ public class MenuServiceImpl extends BaseService implements MenuService {
                     List<Menu> subThreeMenu = threeMenuMap.get(twoMenu.getId());
 
                     if (CollectionUtil.isNotEmpty(subThreeMenu)) {
-                        subThreeMenu.stream().forEach(threeMenu->{
+                        subThreeMenu.stream().forEach(threeMenu -> {
                             threeMenu.setParentMenuName(twoMenu.getMenuName());
                             List<Menu> subFourMenu = fourMenuMap.get(threeMenu.getId());
 
-                            if(CollectionUtil.isNotEmpty(subFourMenu)){
+                            if (CollectionUtil.isNotEmpty(subFourMenu)) {
                                 for (Menu fourMenu : subFourMenu) {
                                     fourMenu.setParentMenuName(threeMenu.getMenuName());
                                 }

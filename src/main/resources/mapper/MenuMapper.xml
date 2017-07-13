@@ -33,7 +33,7 @@
     delete from h_sys_menu
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="press.wein.home.model.Menu">
+    <insert id="insert"  useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu">
     insert into h_sys_menu (id, menu_name, url, 
       parent_id, level, sorting, 
       translate, icon, status, 
@@ -47,7 +47,7 @@
       #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
       #{modifierId,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective" parameterType="press.wein.home.model.Menu">
+    <insert id="insertSelective"  useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu">
         insert into h_sys_menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

@@ -4,6 +4,7 @@ import press.wein.home.model.User;
 import press.wein.home.model.vo.UserVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
@@ -41,17 +42,17 @@ public interface UserMapper {
 
     /**
      * 根据查询条件查询总数
-     * @param userVo
+     * @param paramMap
      * @return
      */
-    long countTotalUsers(UserVo userVo);
+    long countTotalUsers(Map<String, Object> paramMap);
 
     /**
      * 根据查询条件分页查询
-     * @param userVo
+     * @param paramMap
      * @return
      */
-    List<User> listUsersWithPage(UserVo userVo);
+    List<User> listUsersWithPage(Map<String, Object> paramMap);
 
     /**
      * 根据查询条件查询

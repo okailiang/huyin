@@ -222,7 +222,7 @@ public class LoginServiceImpl extends BaseService implements LoginService {
         String account = userLoginVo.getAccount();
         User user = new User();
         this.matchAccount(user, userLoginVo.getAccount());
-        User currentUser = null;
+        User currentUser = new User();
         if (userLoginVo.getType() == 1) {
             currentUser = userMapper.getUserByUserName(user);
         }

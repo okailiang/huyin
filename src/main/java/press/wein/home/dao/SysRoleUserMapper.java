@@ -2,6 +2,8 @@ package press.wein.home.dao;
 
 import press.wein.home.model.SysRoleUser;
 
+import java.util.List;
+
 public interface SysRoleUserMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,12 @@ public interface SysRoleUserMapper {
     int updateByPrimaryKeySelective(SysRoleUser record);
 
     int updateByPrimaryKey(SysRoleUser record);
+
+    List<SysRoleUser> listRoleUsersByRoleIds(List<Long> roleIds);
+
+    List<SysRoleUser> listRoleUsersByUserId(List<Long> userIds);
+
+    SysRoleUser getRoleUserByUserId(Long userId);
+
+    int removeRoleUser(Long id);
 }

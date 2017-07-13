@@ -5,7 +5,7 @@ public class UserVo extends BaseVo {
 
     private String userName;
 
-    private transient String password;
+    private String password;
 
     private String email;
 
@@ -24,6 +24,11 @@ public class UserVo extends BaseVo {
     private Byte phoneVertify;
 
     private String wxOpenid;
+
+    private String roleName;
+
+    public UserVo() {
+    }
 
     public Long getId() {
         return id;
@@ -119,5 +124,32 @@ public class UserVo extends BaseVo {
 
     public void setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    @Override
+    public String toString() {
+        return "UserVo{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", phoneNo='" + phoneNo + '\'' +
+                ", status=" + status +
+                ", token='" + token + '\'' +
+                ", errorTimes=" + errorTimes +
+                ", emailVerify=" + emailVerify +
+                ", phoneVertify=" + phoneVertify +
+                ", wxOpenid='" + wxOpenid + '\'' +
+                ", roleName='" + roleName + '\'' +
+                '}';
     }
 }

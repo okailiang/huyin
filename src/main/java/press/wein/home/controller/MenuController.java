@@ -13,6 +13,7 @@ import press.wein.home.constant.TipConstants;
 import press.wein.home.enumerate.Enums;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
+import press.wein.home.model.SysRoleMenu;
 import press.wein.home.model.bo.RoleMenu;
 import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.MenuVo;
@@ -105,10 +106,10 @@ public class MenuController extends BaseController {
             this.setCreatorAndModifier(menuVo);
             menuService.saveMenu(menuVo);
         } catch (ServiceException e) {
-            LOG.error("MenuController.saveMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.saveMenu ServiceException, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("MenuController.saveMenu Exception, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.saveMenu Exception, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.SAVE_SUCCESS);
@@ -119,6 +120,12 @@ public class MenuController extends BaseController {
         menuVo.setCreator(userSession.getName());
         menuVo.setModifier(userSession.getName());
         menuVo.setCreatorId(userSession.getId());
+        menuVo.setModifierId(userSession.getId());
+    }
+
+    private void setModifier(MenuVo menuVo) {
+        UserSession userSession = ApplicationUserContext.getUser();
+        menuVo.setModifier(userSession.getName());
         menuVo.setModifierId(userSession.getId());
     }
 
@@ -135,12 +142,13 @@ public class MenuController extends BaseController {
     public ResponseEntity<Object> updateMenu(@RequestBody MenuVo menuVo, HttpServletRequest request) throws ServiceException {
 
         try {
+            setModifier(menuVo);
             menuService.updateMenu(menuVo);
         } catch (ServiceException e) {
-            LOG.error("MenuController.updateMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.updateMenu ServiceException, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("MenuController.updateMenu Exception, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.updateMenu Exception, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
@@ -160,10 +168,10 @@ public class MenuController extends BaseController {
         try {
             menuService.removeMenu(menuVo.getId());
         } catch (ServiceException e) {
-            LOG.error("MenuController.removeMenu ServiceException, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.removeMenu ServiceException, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("MenuController.removeMenu Exception, input param [{}]", menuVo.toString(), e);
+            LOG.error("MenuController.removeMenu Exception, inputParam [{}]", menuVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.DELETE_SUCCESS);
@@ -213,6 +221,7 @@ public class MenuController extends BaseController {
         if (StringUtil.isNotBlank(menu.getTranslate())) {
             roleMenu.setTranslate(menu.getTranslate());
         }
+
         return roleMenu;
     }
 }

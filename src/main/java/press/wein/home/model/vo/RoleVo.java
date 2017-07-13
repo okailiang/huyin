@@ -1,6 +1,9 @@
 package press.wein.home.model.vo;
 
+import press.wein.home.model.Menu;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author oukailiang
@@ -20,6 +23,8 @@ public class RoleVo extends BaseVo {
     private Byte smsVerify;
 
     private Byte assignAuthority;
+
+    private List<Integer> menuIds;
 
     public RoleVo() {
     }
@@ -72,6 +77,14 @@ public class RoleVo extends BaseVo {
         this.assignAuthority = assignAuthority;
     }
 
+    public List<Integer> getMenuIds() {
+        return menuIds;
+    }
+
+    public void setMenuIds(List<Integer> menuIds) {
+        this.menuIds = menuIds;
+    }
+
     @Override
     public String toString() {
         return "RoleVo{" +
@@ -81,6 +94,7 @@ public class RoleVo extends BaseVo {
                 ", dataLevel=" + dataLevel +
                 ", smsVerify=" + smsVerify +
                 ", assignAuthority=" + assignAuthority +
+                ", menuIds=" + menuIds +
                 '}';
     }
 }

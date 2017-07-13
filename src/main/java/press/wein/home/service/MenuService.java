@@ -77,7 +77,7 @@ public interface MenuService {
      * @param roleId
      * @return
      */
-    List<MenuVo> listMenusByRoleId(Integer roleId) throws ServiceException;
+    List<Menu> listMenusByRoleId(Integer roleId) throws ServiceException;
 
     /**
      * 根据菜单id列表查询

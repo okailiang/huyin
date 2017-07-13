@@ -1,6 +1,7 @@
 package press.wein.home.service;
 
 import press.wein.home.common.Page;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.User;
 import press.wein.home.model.vo.UserVo;
 
@@ -22,7 +23,7 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    String saveUser(UserVo userVo);
+    int saveUser(UserVo userVo) throws ServiceException;
 
     /**
      * 更新用户信息
@@ -30,7 +31,34 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    String updateUser(UserVo userVo);
+    int updateUser(UserVo userVo) throws ServiceException;
+
+    /**
+     * 禁用用户
+     *
+     * @param userVo
+     * @return
+     * @throws ServiceException
+     */
+    int enableUser(UserVo userVo) throws ServiceException;
+
+    /**
+     * 禁用用户
+     *
+     * @param userVo
+     * @return
+     * @throws ServiceException
+     */
+    int disableUser(UserVo userVo) throws ServiceException;
+
+    /**
+     * 重置密码
+     *
+     * @param userVo
+     * @return
+     * @throws ServiceException
+     */
+    int resetPassword(UserVo userVo) throws ServiceException;
 
     /**
      * 根据用户id逻辑查询
@@ -38,7 +66,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    String removeUserById(long id);
+    String removeUserById(long id) throws ServiceException;
 
     /**
      * 根据wxOpenid逻辑删除
@@ -46,7 +74,7 @@ public interface UserService {
      * @param wxOpenid
      * @return
      */
-    String removeUserByWxOpenid(String wxOpenid);
+    String removeUserByWxOpenid(String wxOpenid) throws ServiceException;
 
     /**
      * 根据名称查询用户
@@ -54,7 +82,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    User getUserByUserName(User user);
+    User getUserByUserName(User user) throws ServiceException;
 
     /**
      * 根据wxOpenid查询用户
@@ -62,7 +90,7 @@ public interface UserService {
      * @param wxOpenid
      * @return
      */
-    User getUserByWxOpenid(String wxOpenid);
+    User getUserByWxOpenid(String wxOpenid) throws ServiceException;
 
     /**
      * 根据条件查询用户
@@ -70,7 +98,7 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    User getUser(UserVo userVo);
+    User getUser(UserVo userVo) throws ServiceException;
 
     /**
      * 根据查询条件分页查询
@@ -78,7 +106,7 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    Page<UserVo> listUsersWithPage(Page<UserVo> page, UserVo userVo);
+    Page<UserVo> listUsersWithPage(Page<UserVo> page, UserVo userVo) throws ServiceException;
 
     /**
      * 根据查询条件查询
@@ -86,7 +114,7 @@ public interface UserService {
      * @param userVo
      * @return
      */
-    List<User> listUsers(UserVo userVo);
+    List<User> listUsers(UserVo userVo) throws ServiceException;
 
     /**
      * 根据用户id列表查询
@@ -94,5 +122,5 @@ public interface UserService {
      * @param ids
      * @return
      */
-    List<User> listUsersByIds(List<Long> ids);
+    List<User> listUsersByIds(List<Long> ids) throws ServiceException;
 }

@@ -17,6 +17,10 @@ public class SysUserVo extends BaseVo{
 
     private Integer errorTimes;
 
+    private Long roleId;
+
+    private String roleName;
+
     public Long getId() {
         return id;
     }
@@ -79,5 +83,21 @@ public class SysUserVo extends BaseVo{
 
     public void setErrorTimes(Integer errorTimes) {
         this.errorTimes = errorTimes;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

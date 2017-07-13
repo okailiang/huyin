@@ -3,10 +3,12 @@ package press.wein.home.user;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import press.wein.home.base.BaseTest;
+import press.wein.home.exception.ServiceException;
 import press.wein.home.model.vo.UserVo;
 import press.wein.home.service.UserService;
 import press.wein.home.util.MD5Util;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.Date;
 
 /**
@@ -20,7 +22,7 @@ public class UserTest extends BaseTest {
 
 
     @Test
-    public void testSaveUser() {
+    public void testSaveUser() throws ServiceException {
         UserVo userVo = new UserVo();
 
         userVo.setCreator("okl");
@@ -39,6 +41,6 @@ public class UserTest extends BaseTest {
         userVo.setModifier("okl");
         userVo.setModifierId(1l);
         userVo.setModifyTime(new Date());
-        String result = userService.saveUser(userVo);
+        userService.saveUser(userVo);
     }
 }

@@ -60,6 +60,33 @@ public class CollectionUtil {
         return resultList;
     }
 
+    public static <T, E> List<E> copyToDescList(List<T> srcList, List<E> descList, Class<E> descClass) {
+        if (srcList == null) {
+            return null;
+        }
+        if (descList == null) {
+            descList = new ArrayList<>();
+        }
+
+        try {
+            for (T t : srcList) {
+                E obj = descClass.newInstance();
+                BeanUtil.beanCopier(t, obj);
+                descList.add(obj);
+            }
+        } catch (InstantiationException e) {
+            LOG.error("copyToDescList class newInstance InstantiationException ", e);
+        } catch (IllegalAccessException e) {
+            LOG.error("copyToDescList class newInstance IllegalAccessException ", e);
+        }
+
+        return descList;
+    }
+
+    public static <T, E> List<E> copyToDescList(List<T> srcList, Class<E> descClass) {
+        return copyToDescList(srcList, null, descClass);
+    }
+
     /**
      * 对象转为map
      *

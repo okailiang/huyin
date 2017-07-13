@@ -18,6 +18,7 @@ import press.wein.home.exception.ExceptionCode;
 import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.User;
+import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.UserLoginVo;
 import press.wein.home.model.vo.UserVo;
 import press.wein.home.redis.RedisClient;
@@ -241,13 +242,32 @@ public class LoginController extends BaseController {
         return JSON.toJSONString(loginService.login(userLoginVo, request, response));
     }
 
+
+    /**
+     *  获取用户信息
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> getUserInfo(HttpServletRequest request) throws ServiceException {
+
+        UserSession userSession = ApplicationUserContext.getUser();
+        if(userSession == null){
+            throw ExceptionUtil.createServiceException(ExceptionCode.SESSION_INVALID);
+        }
+        return ResponseUtils.success(userSession);
+    }
+
     /**
      * 退出页面
      *
      * @return
      */
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
+    @RequestMapping(value = "/logout",  produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response) throws ServiceException{
 
         CookieManager cookieManager = new CookieManager(request, response);
         if (ApplicationUserContext.getUser() != null) {
@@ -264,8 +284,9 @@ public class LoginController extends BaseController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         String userName = cookieManager.getCookieValue(Constants.CREDIT_LOGIN_COOKIE_NAME);
-        model.addAttribute("userName", userName);
-        return "login";
+        Map resultMap = new HashMap<>();
+        resultMap.put("userName", userName);
+        return ResponseUtils.success(resultMap);
     }
 
     /**
