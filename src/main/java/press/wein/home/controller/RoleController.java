@@ -62,7 +62,7 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 分页获取角色列表
+     * 获取角色列表
      *
      * @return
      */

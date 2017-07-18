@@ -57,6 +57,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         BeanUtil.beanCopier(sysUserVo, sysUser);
         //检验重名
         this.checkRepeat(sysUser);
+        sysUser.setPassword(MD5Util.md5Hex(sysUser.getPassword()));
         sysUserMapper.insertSelective(sysUser);
 
         //保存用户和角色对应关系

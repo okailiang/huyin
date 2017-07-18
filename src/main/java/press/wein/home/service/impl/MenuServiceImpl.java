@@ -208,8 +208,10 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         //给一级菜单添加子菜单个数提示
         oneLevelMenuList.stream().forEach(oneMenu -> {
-            oneMenu.setAlert(String.valueOf(oneMenu.getChildMenu().size()));
-            oneMenu.setLabel("label label-info");
+            if (CollectionUtil.isNotEmpty(oneMenu.getChildMenu())) {
+                oneMenu.setAlert(String.valueOf(oneMenu.getChildMenu().size()));
+                oneMenu.setLabel("label label-info");
+            }
         });
         return oneLevelMenuList;
     }

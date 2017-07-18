@@ -412,7 +412,7 @@
         select password,
         <include refid="Base_Column_List"/>
         from h_user
-        where status = 0 and is_deleted = 0
+        where is_deleted = 0
         <if test="userName != null">
             and user_name = #{userName,jdbcType=VARCHAR}
         </if>

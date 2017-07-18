@@ -1,6 +1,7 @@
 package press.wein.home.dao;
 
 import press.wein.home.model.SysUser;
+import press.wein.home.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface SysUserMapper {
     List<SysUser> listSysUsersByIds(List<Long> sysUserIds);
 
     int checkRepeatName(SysUser sysUser);
+
+    SysUser getUserByUserName(Map<String, Object> paramMap);
 }

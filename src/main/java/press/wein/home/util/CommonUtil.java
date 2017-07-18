@@ -15,6 +15,8 @@ public class CommonUtil {
 
     //邮件正则表达式
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$");
+    //字幕正则表达式
+    public static final Pattern LETTER_PATTERN = Pattern.compile("^[a-zA-Z]+$");
 
     public static String getUUID() {
         UUID uuid = UUID.randomUUID();
@@ -355,6 +357,19 @@ public class CommonUtil {
      */
     public static Boolean isMatchEmail(String email) {
         if (EMAIL_PATTERN.matcher(email).matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 验证是否是否是字母
+     *
+     * @param letter
+     * @return
+     */
+    public static Boolean isLetter(String letter) {
+        if (LETTER_PATTERN.matcher(letter).matches()) {
             return true;
         }
         return false;

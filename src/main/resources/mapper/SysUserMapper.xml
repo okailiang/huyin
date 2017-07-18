@@ -306,4 +306,21 @@
             and id != #{id,jdbcType=BIGINT}
         </if>
     </select>
+
+    <!-- 根据登录名获取用户信息 -->
+    <select id="getUserByUserName" resultMap="BaseResultMap">
+        select password,
+        <include refid="Base_Column_List"/>
+        from h_sys_user
+        where is_deleted = 0
+        <if test="userName != null">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            and email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="phoneNo != null">
+            and phone_no = #{phoneNo,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

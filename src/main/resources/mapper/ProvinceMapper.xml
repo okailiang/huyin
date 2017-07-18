@@ -114,4 +114,10 @@
       full_name = #{fullName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="listAllProvince" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from h_province
+  </select>
 </mapper>

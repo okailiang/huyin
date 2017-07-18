@@ -133,23 +133,4 @@ public class UserVo extends BaseVo {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-
-    @Override
-    public String toString() {
-        return "UserVo{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", phoneNo='" + phoneNo + '\'' +
-                ", status=" + status +
-                ", token='" + token + '\'' +
-                ", errorTimes=" + errorTimes +
-                ", emailVerify=" + emailVerify +
-                ", phoneVertify=" + phoneVertify +
-                ", wxOpenid='" + wxOpenid + '\'' +
-                ", roleName='" + roleName + '\'' +
-                '}';
-    }
 }

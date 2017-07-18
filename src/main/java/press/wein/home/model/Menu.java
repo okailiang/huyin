@@ -50,9 +50,9 @@ public class Menu {
     private Long modifierId;
 
     // 子菜单
-    private List<Menu> childMenu = new ArrayList<Menu>();
+    private List<Menu> childMenu = new ArrayList<>();
 
-    private List<RealUrl> realUrlList = new ArrayList<RealUrl>();
+    private List<RealUrl> realUrlList = new ArrayList<>();
 
     public Integer getId() {
         return id;

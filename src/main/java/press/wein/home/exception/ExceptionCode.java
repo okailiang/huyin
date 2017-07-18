@@ -34,6 +34,7 @@ public enum ExceptionCode {
     PHONE_ERROR("PHONE_ERROR", "手机号格式不正确"),
     EMAIL_ERROR("EMAIL_ERROR", "邮箱格式不正确"),
     ACCOUNT_EXIST("ACCOUNT_EXIST", "该账户已存在"),
+    ACCOUNT_NOT_EXIST("ACCOUNT_NOT_EXIST", "该账户不存在"),
     PHONE_EXIST("PHONE_EXIST", "该手机号已注册"),
     EMAIL_EXIST("EMAIL_EXIST", "该邮箱已注册"),
     EMAIL_NOT_EXIST("EMAIL_NOT_EXIST", "该邮箱还未注册"),
@@ -45,6 +46,7 @@ public enum ExceptionCode {
     SESSION_INVALID("SESSION_INVALID", "登录失效，请重新登录"),
     PHONE_EXISTED("PHONE_EXISTED", "该手机号已经存在，请换个名吧"),
     EMAIL_EXISTED("EMAIL_EXISTED", "该邮箱已经存在，请换个名吧"),
+    USER_DENY("USER_DENY", "该用户被禁用，请联系管理员"),
 
     /* ==================================== 菜单 ==================================== */
     MENU_LEVEL_MAX("MENU_LEVEL_MAX", "最大只允许添加四级菜单"),

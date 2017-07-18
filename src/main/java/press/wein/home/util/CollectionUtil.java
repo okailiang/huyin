@@ -62,7 +62,7 @@ public class CollectionUtil {
 
     public static <T, E> List<E> copyToDescList(List<T> srcList, List<E> descList, Class<E> descClass) {
         if (srcList == null) {
-            return null;
+            return new ArrayList<>();
         }
         if (descList == null) {
             descList = new ArrayList<>();

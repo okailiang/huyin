@@ -185,8 +185,9 @@ public class MenuController extends BaseController {
         if (CollectionUtil.isNullOrEmpty(menuList)) {
             return;
         }
-        List<RoleMenu> subRoleMenuList = new ArrayList<RoleMenu>();
-        menuList.stream().forEach(menu -> {
+
+        for (Menu menu : menuList) {
+            List<RoleMenu> subRoleMenuList = new ArrayList<>();
             List<Menu> subMenuList = menu.getChildMenu();
             convertToRoleMenu(subMenuList, subRoleMenuList);
 
@@ -198,8 +199,7 @@ public class MenuController extends BaseController {
                 roleMenu.setSubmenu(subRoleMenuList);
             }
             roleMenuList.add(roleMenu);
-        });
-
+        }
     }
 
     /**

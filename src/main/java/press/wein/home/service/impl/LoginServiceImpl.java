@@ -20,6 +20,7 @@ import press.wein.home.exception.ExceptionCode;
 import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
+import press.wein.home.model.SysUser;
 import press.wein.home.model.User;
 import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.UserLoginVo;
@@ -106,7 +107,10 @@ public class LoginServiceImpl extends BaseService implements LoginService {
 
             //2.验证用户名密码
             // 按类型找到当前用户
-            setUserLoginVoByType(userLoginVo);
+            result = setUserLoginVoByType(userLoginVo);
+            if (result != null) {
+                return result;
+            }
             //检查用户的和密码,如果返回的不是null,说明验证密码不对,或者超过最大次数了
             result = checkUserAndPassWord(userLoginVo);
             if (!"true".equals(result)) {
@@ -218,17 +222,33 @@ public class LoginServiceImpl extends BaseService implements LoginService {
      * @param userLoginVo
      * @return
      */
-    private void setUserLoginVoByType(UserLoginVo userLoginVo) {
+    private String setUserLoginVoByType(UserLoginVo userLoginVo) {
         String account = userLoginVo.getAccount();
         User user = new User();
         this.matchAccount(user, userLoginVo.getAccount());
-        User currentUser = new User();
+        User currentUser = null;
         if (userLoginVo.getType() == 1) {
             currentUser = userMapper.getUserByUserName(user);
+        } else if (userLoginVo.getType() == 2) {
+            SysUser sysUser = sysUserMapper.getUserByUserName(CollectionUtil.objectToMap(user));
+            if (sysUser != null) {
+                currentUser = new User();
+                currentUser.setId(sysUser.getId());
+                currentUser.setPassword(sysUser.getPassword());
+                currentUser.setErrorTimes(sysUser.getErrorTimes());
+                currentUser.setStatus(sysUser.getStatus());
+            }
+        }
+        if (currentUser == null) {
+            return ExceptionCode.ACCOUNT_NOT_EXIST.getMsg();
+        }
+        if (Enums.Status.DENY.getValue().intValue() == currentUser.getStatus()) {
+            return ExceptionCode.USER_DENY.getMsg();
         }
         userLoginVo.setId(currentUser.getId());
         userLoginVo.setPasswordMd5(currentUser.getPassword());
         userLoginVo.setErrorTimes(currentUser.getErrorTimes());
+        return null;
     }
 
     private void matchAccount(User user, String account) {
@@ -381,14 +401,15 @@ public class LoginServiceImpl extends BaseService implements LoginService {
         userVo.setId(userId);
         // 创建用户信息
         UserSession user = new UserSession();
-        User sysUser = userMapper.getUser(userVo);
+//        User sysUser = userMapper.getUser(userVo);
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         user.setId(sysUser.getId());
         user.setName(sysUser.getUserName());
         user.setLoginName(sysUser.getUserName());
         user.setIpAddress(ipAddress);
         // 登陆当前时间为续命时间初始时间
         user.setLastExtension(new Date());
-        user.setMenuList(findMenuForUser(sysUser));
+        user.setMenuList(this.findMenuForUser(sysUser));
         return user;
     }
 
@@ -404,7 +425,7 @@ public class LoginServiceImpl extends BaseService implements LoginService {
      * @param user
      * @return
      */
-    public List<Menu> findMenuForUser(User user) {
+    public List<Menu> findMenuForUser(SysUser user) {
 
         String roleMenu = redisClient.get(Constants.CACHE_MENU_ROLE);
         if (StringUtils.isNotBlank(roleMenu)) {
