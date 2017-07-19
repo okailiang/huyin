@@ -27,7 +27,7 @@ import java.util.List;
  * @create 2017-07-17 上午10:36
  */
 @Controller
-@RequestMapping(value = "/common/city")
+@RequestMapping(value = "/")
 public class CityController extends BaseController {
     public static final Logger LOG = LoggerFactory.getLogger(CityController.class);
 
@@ -42,7 +42,7 @@ public class CityController extends BaseController {
      * @return
      * @throws ServiceException
      */
-    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/admin/city/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public ResponseEntity<Object> updateCity(@RequestBody CityVo cityVo, HttpServletRequest request) throws ServiceException {
 
@@ -58,12 +58,13 @@ public class CityController extends BaseController {
         }
         return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
     }
+
     /**
      * 分页获取城市列表
      *
      * @return
      */
-    @RequestMapping(value = "/listCitysWithPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/city/listCitysWithPage", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> listCitysWithPage(Page<CityVo> page, CityVo cityVo) throws ServiceException {
         Page<CityVo> cityVoPage;
@@ -97,7 +98,7 @@ public class CityController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/listProvince", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/city/listProvince", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> listProvince() throws ServiceException {
         List cityVoPage;
@@ -118,7 +119,7 @@ public class CityController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/listCitysByParentId", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/city/listCitysByParentId", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> listCitysByParentId(@RequestParam(value = "parentId") Integer parentId) throws ServiceException {
         List<CityVo> cityVoList;
@@ -139,7 +140,7 @@ public class CityController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/getCityById", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/city/getCityById", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> getCityById(@RequestParam(value = "cityId") Integer cityId) throws ServiceException {
         CityVo cityVo;

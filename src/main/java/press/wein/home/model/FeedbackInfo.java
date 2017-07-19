@@ -11,6 +11,12 @@ public class FeedbackInfo {
 
     private String feedImage;
 
+    private String feedInfo;
+
+    private Byte status;
+
+    private Byte type;
+
     private Byte isDeleted;
 
     private Date createTime;
@@ -24,8 +30,6 @@ public class FeedbackInfo {
     private String modifier;
 
     private Long modifierId;
-
-    private String feedInfo;
 
     public Long getId() {
         return id;
@@ -57,6 +61,30 @@ public class FeedbackInfo {
 
     public void setFeedImage(String feedImage) {
         this.feedImage = feedImage;
+    }
+
+    public String getFeedInfo() {
+        return feedInfo;
+    }
+
+    public void setFeedInfo(String feedInfo) {
+        this.feedInfo = feedInfo;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
     }
 
     public Byte getIsDeleted() {
@@ -113,13 +141,5 @@ public class FeedbackInfo {
 
     public void setModifierId(Long modifierId) {
         this.modifierId = modifierId;
-    }
-
-    public String getFeedInfo() {
-        return feedInfo;
-    }
-
-    public void setFeedInfo(String feedInfo) {
-        this.feedInfo = feedInfo;
     }
 }

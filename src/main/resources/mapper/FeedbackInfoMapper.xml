@@ -6,6 +6,9 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="feed_image" jdbcType="VARCHAR" property="feedImage" />
+    <result column="feed_info" jdbcType="VARCHAR" property="feedInfo" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="TINYINT" property="type" />
     <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -14,21 +17,13 @@
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modifier_id" jdbcType="BIGINT" property="modifierId" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="press.wein.home.model.FeedbackInfo">
-    <result column="feed_info" jdbcType="LONGVARCHAR" property="feedInfo" />
-  </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, user_name, feed_image, is_deleted, create_time, modify_time, creator_id, 
-    creator, modifier, modifier_id
+    id, user_id, user_name, feed_image, feed_info, status, type, is_deleted, create_time, 
+    modify_time, creator_id, creator, modifier, modifier_id
   </sql>
-  <sql id="Blob_Column_List">
-    feed_info
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from h_feedback_info
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -38,15 +33,15 @@
   </delete>
   <insert id="insert" parameterType="press.wein.home.model.FeedbackInfo">
     insert into h_feedback_info (id, user_id, user_name, 
-      feed_image, is_deleted, create_time, 
+      feed_image, feed_info, status, 
+      type, is_deleted, create_time, 
       modify_time, creator_id, creator, 
-      modifier, modifier_id, feed_info
-      )
+      modifier, modifier_id)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
-      #{feedImage,jdbcType=VARCHAR}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{feedImage,jdbcType=VARCHAR}, #{feedInfo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modifyTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
-      #{modifier,jdbcType=VARCHAR}, #{modifierId,jdbcType=BIGINT}, #{feedInfo,jdbcType=LONGVARCHAR}
-      )
+      #{modifier,jdbcType=VARCHAR}, #{modifierId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="press.wein.home.model.FeedbackInfo">
     insert into h_feedback_info
@@ -62,6 +57,15 @@
       </if>
       <if test="feedImage != null">
         feed_image,
+      </if>
+      <if test="feedInfo != null">
+        feed_info,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
       </if>
       <if test="isDeleted != null">
         is_deleted,
@@ -84,9 +88,6 @@
       <if test="modifierId != null">
         modifier_id,
       </if>
-      <if test="feedInfo != null">
-        feed_info,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -100,6 +101,15 @@
       </if>
       <if test="feedImage != null">
         #{feedImage,jdbcType=VARCHAR},
+      </if>
+      <if test="feedInfo != null">
+        #{feedInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
       </if>
       <if test="isDeleted != null">
         #{isDeleted,jdbcType=TINYINT},
@@ -122,9 +132,6 @@
       <if test="modifierId != null">
         #{modifierId,jdbcType=BIGINT},
       </if>
-      <if test="feedInfo != null">
-        #{feedInfo,jdbcType=LONGVARCHAR},
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.FeedbackInfo">
@@ -138,6 +145,15 @@
       </if>
       <if test="feedImage != null">
         feed_image = #{feedImage,jdbcType=VARCHAR},
+      </if>
+      <if test="feedInfo != null">
+        feed_info = #{feedInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
       </if>
       <if test="isDeleted != null">
         is_deleted = #{isDeleted,jdbcType=TINYINT},
@@ -160,25 +176,7 @@
       <if test="modifierId != null">
         modifier_id = #{modifierId,jdbcType=BIGINT},
       </if>
-      <if test="feedInfo != null">
-        feed_info = #{feedInfo,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="press.wein.home.model.FeedbackInfo">
-    update h_feedback_info
-    set user_id = #{userId,jdbcType=BIGINT},
-      user_name = #{userName,jdbcType=VARCHAR},
-      feed_image = #{feedImage,jdbcType=VARCHAR},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      creator = #{creator,jdbcType=VARCHAR},
-      modifier = #{modifier,jdbcType=VARCHAR},
-      modifier_id = #{modifierId,jdbcType=BIGINT},
-      feed_info = #{feedInfo,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="press.wein.home.model.FeedbackInfo">
@@ -186,6 +184,9 @@
     set user_id = #{userId,jdbcType=BIGINT},
       user_name = #{userName,jdbcType=VARCHAR},
       feed_image = #{feedImage,jdbcType=VARCHAR},
+      feed_info = #{feedInfo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      type = #{type,jdbcType=TINYINT},
       is_deleted = #{isDeleted,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
@@ -195,4 +196,67 @@
       modifier_id = #{modifierId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <sql id="Where_Search_Condition">
+    <where>
+      is_deleted = 0
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="feedImage != null">
+        feed_image = #{feedImage,jdbcType=VARCHAR},
+      </if>
+      <if test="feedInfo != null">
+        feed_info = #{feedInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null">
+        modifier_id = #{modifierId,jdbcType=BIGINT},
+      </if>
+    </where>
+  </sql>
+
+  <select id="countFeedbackInfos" resultType="java.lang.Long">
+    select count(1) from h_feedback_info
+    <include refid="Where_Search_Condition" />
+  </select>
+
+  <select id="listFeedbackInfosWithPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from h_feedback_info
+    <include refid="Where_Search_Condition" />
+    order by id desc
+    limit #{pageSize,jdbcType=INTEGER} offset #{start,jdbcType=INTEGER}
+  </select>
+
 </mapper>

@@ -2,6 +2,9 @@ package press.wein.home.dao;
 
 import press.wein.home.model.FeedbackInfo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface FeedbackInfoMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -13,7 +16,9 @@ public interface FeedbackInfoMapper {
 
     int updateByPrimaryKeySelective(FeedbackInfo record);
 
-    int updateByPrimaryKeyWithBLOBs(FeedbackInfo record);
-
     int updateByPrimaryKey(FeedbackInfo record);
+
+    long countFeedbackInfos(Map<String, Object> param);
+
+    List<FeedbackInfo> listFeedbackInfosWithPage(Map<String, Object> param);
 }

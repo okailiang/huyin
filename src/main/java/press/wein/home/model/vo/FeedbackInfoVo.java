@@ -11,6 +11,10 @@ public class FeedbackInfoVo extends BaseVo{
 
     private String feedInfo;
 
+    private Byte status;
+
+    private Byte type;
+
     public Long getId() {
         return id;
     }
@@ -49,5 +53,21 @@ public class FeedbackInfoVo extends BaseVo{
 
     public void setFeedInfo(String feedInfo) {
         this.feedInfo = feedInfo;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 }
