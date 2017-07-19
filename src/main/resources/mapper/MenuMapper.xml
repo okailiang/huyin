@@ -1,242 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="press.wein.home.dao.MenuMapper">
-  <resultMap id="BaseResultMap" type="press.wein.home.model.Menu">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="level" jdbcType="SMALLINT" property="level" />
-    <result column="sorting" jdbcType="TINYINT" property="sorting" />
-    <result column="translate" jdbcType="VARCHAR" property="translate" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modifier_id" jdbcType="BIGINT" property="modifierId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, menu_name, url, parent_id, level, sorting, translate, icon, status, is_deleted, 
-    create_time, modify_time, creator_id, creator, modifier, modifier_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from h_sys_menu
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from h_sys_menu
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="press.wein.home.model.Menu">
-    insert into h_sys_menu (id, menu_name, url, 
-      parent_id, level, sorting, 
-      translate, icon, status, 
-      is_deleted, create_time, modify_time, 
-      creator_id, creator, modifier, 
-      modifier_id)
-    values (#{id,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{parentId,jdbcType=INTEGER}, #{level,jdbcType=SMALLINT}, #{sorting,jdbcType=TINYINT}, 
-      #{translate,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
-      #{modifierId,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertSelective" parameterType="press.wein.home.model.Menu">
-    insert into h_sys_menu
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="menuName != null">
-        menu_name,
-      </if>
-      <if test="url != null">
-        url,
-      </if>
-      <if test="parentId != null">
-        parent_id,
-      </if>
-      <if test="level != null">
-        level,
-      </if>
-      <if test="sorting != null">
-        sorting,
-      </if>
-      <if test="translate != null">
-        translate,
-      </if>
-      <if test="icon != null">
-        icon,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="isDeleted != null">
-        is_deleted,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-      <if test="creatorId != null">
-        creator_id,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="modifier != null">
-        modifier,
-      </if>
-      <if test="modifierId != null">
-        modifier_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="menuName != null">
-        #{menuName,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="parentId != null">
-        #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="level != null">
-        #{level,jdbcType=SMALLINT},
-      </if>
-      <if test="sorting != null">
-        #{sorting,jdbcType=TINYINT},
-      </if>
-      <if test="translate != null">
-        #{translate,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        #{icon,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="modifier != null">
-        #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="modifierId != null">
-        #{modifierId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.Menu">
-    update h_sys_menu
-    <set>
-      <if test="menuName != null">
-        menu_name = #{menuName,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=SMALLINT},
-      </if>
-      <if test="sorting != null">
-        sorting = #{sorting,jdbcType=TINYINT},
-      </if>
-      <if test="translate != null">
-        translate = #{translate,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        icon = #{icon,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="modifier != null">
-        modifier = #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="modifierId != null">
-        modifier_id = #{modifierId,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.Menu">
-    update h_sys_menu
-    set menu_name = #{menuName,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=INTEGER},
-      level = #{level,jdbcType=SMALLINT},
-      sorting = #{sorting,jdbcType=TINYINT},
-      translate = #{translate,jdbcType=VARCHAR},
-      icon = #{icon,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      creator = #{creator,jdbcType=VARCHAR},
-      modifier = #{modifier,jdbcType=VARCHAR},
-      modifier_id = #{modifierId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
     <resultMap id="BaseResultMap" type="press.wein.home.model.Menu">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
-        <result column="url" jdbcType="VARCHAR" property="url" />
-        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-        <result column="level" jdbcType="SMALLINT" property="level" />
-        <result column="sorting" jdbcType="TINYINT" property="sorting" />
-        <result column="translate" jdbcType="VARCHAR" property="translate" />
-        <result column="icon" jdbcType="VARCHAR" property="icon" />
-        <result column="status" jdbcType="TINYINT" property="status" />
-        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-        <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
-        <result column="creator" jdbcType="VARCHAR" property="creator" />
-        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-        <result column="modifier_id" jdbcType="BIGINT" property="modifierId" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="level" jdbcType="SMALLINT" property="level"/>
+        <result column="sorting" jdbcType="TINYINT" property="sorting"/>
+        <result column="translate" jdbcType="VARCHAR" property="translate"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+        <result column="modifier_id" jdbcType="BIGINT" property="modifierId"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, menu_name, url, parent_id, level, sorting, translate, icon, status, is_deleted, 
@@ -244,7 +25,7 @@
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from h_sys_menu
         where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
     </select>
@@ -252,7 +33,7 @@
     delete from h_sys_menu
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu" useGeneratedKeys="true">
+    <insert id="insert"  useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu">
     insert into h_sys_menu (id, menu_name, url, 
       parent_id, level, sorting, 
       translate, icon, status, 
@@ -266,7 +47,7 @@
       #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
       #{modifierId,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu" useGeneratedKeys="true">
+    <insert id="insertSelective"  useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="press.wein.home.model.Menu">
         insert into h_sys_menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -497,19 +278,19 @@
 
     <select id="listAllMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from h_sys_menu
         where is_deleted = 0 order by level,sorting,create_time
     </select>
 
     <select id="listMenus" parameterType="press.wein.home.model.Menu" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from h_sys_menu
-        where <include refid="Search_Condition" />
+        where <include refid="Search_Condition"/>
     </select>
 
-    <select id="checkRepeatName" parameterType="press.wein.home.model.Menu" resultType="java.lang.Integer">
+    <select id="checkRepeatName" resultType="java.lang.Integer" parameterType="press.wein.home.model.Menu">
         select count(1)
         from h_sys_menu
         where is_deleted = 0
