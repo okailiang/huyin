@@ -231,4 +231,234 @@
       creator = #{creator,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <resultMap id="BaseResultMap" type="press.wein.home.model.SysLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="server_ip" jdbcType="VARCHAR" property="serverIp" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="level_one_module" jdbcType="INTEGER" property="levelOneModule" />
+    <result column="level_two_module" jdbcType="INTEGER" property="levelTwoModule" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="press.wein.home.model.SysLogWithBLOBs">
+    <result column="input" jdbcType="LONGVARCHAR" property="input" />
+    <result column="result" jdbcType="LONGVARCHAR" property="result" />
+    <result column="message" jdbcType="LONGVARCHAR" property="message" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, method_name, class_name, server_ip, ip_address, level_one_module, level_two_module, 
+    status, is_deleted, create_time, creator_id, creator
+  </sql>
+  <sql id="Blob_Column_List">
+    input, result, message
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from h_sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from h_sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="press.wein.home.model.SysLogWithBLOBs">
+    insert into h_sys_log (id, method_name, class_name, 
+      server_ip, ip_address, level_one_module, 
+      level_two_module, status, is_deleted, 
+      create_time, creator_id, creator, 
+      input, result, message
+      )
+    values (#{id,jdbcType=BIGINT}, #{methodName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
+      #{serverIp,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR}, #{levelOneModule,jdbcType=INTEGER}, 
+      #{levelTwoModule,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{input,jdbcType=LONGVARCHAR}, #{result,jdbcType=LONGVARCHAR}, #{message,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="press.wein.home.model.SysLogWithBLOBs">
+    insert into h_sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="methodName != null">
+        method_name,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="serverIp != null">
+        server_ip,
+      </if>
+      <if test="ipAddress != null">
+        ip_address,
+      </if>
+      <if test="levelOneModule != null">
+        level_one_module,
+      </if>
+      <if test="levelTwoModule != null">
+        level_two_module,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="input != null">
+        input,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="methodName != null">
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="serverIp != null">
+        #{serverIp,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null">
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="levelOneModule != null">
+        #{levelOneModule,jdbcType=INTEGER},
+      </if>
+      <if test="levelTwoModule != null">
+        #{levelTwoModule,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="input != null">
+        #{input,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.SysLogWithBLOBs">
+    update h_sys_log
+    <set>
+      <if test="methodName != null">
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="serverIp != null">
+        server_ip = #{serverIp,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null">
+        ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="levelOneModule != null">
+        level_one_module = #{levelOneModule,jdbcType=INTEGER},
+      </if>
+      <if test="levelTwoModule != null">
+        level_two_module = #{levelTwoModule,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="input != null">
+        input = #{input,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="press.wein.home.model.SysLogWithBLOBs">
+    update h_sys_log
+    set method_name = #{methodName,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      server_ip = #{serverIp,jdbcType=VARCHAR},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+      level_one_module = #{levelOneModule,jdbcType=INTEGER},
+      level_two_module = #{levelTwoModule,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      input = #{input,jdbcType=LONGVARCHAR},
+      result = #{result,jdbcType=LONGVARCHAR},
+      message = #{message,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.SysLog">
+    update h_sys_log
+    set method_name = #{methodName,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      server_ip = #{serverIp,jdbcType=VARCHAR},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+      level_one_module = #{levelOneModule,jdbcType=INTEGER},
+      level_two_module = #{levelTwoModule,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

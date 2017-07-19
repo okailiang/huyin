@@ -1,6 +1,7 @@
 package press.wein.home.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class City {
     private Integer id;
@@ -24,6 +25,12 @@ public class City {
     private String abbr;
 
     private String fullName;
+
+    private Date modifyTime;
+
+    private String modifier;
+
+    private Long modifierId;
 
     public Integer getId() {
         return id;
@@ -111,5 +118,29 @@ public class City {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public Long getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(Long modifierId) {
+        this.modifierId = modifierId;
     }
 }

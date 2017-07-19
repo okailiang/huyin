@@ -6,18 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.common.Page;
+import press.wein.home.constant.TipConstants;
 import press.wein.home.exception.ServiceException;
-import press.wein.home.model.Province;
+import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.CityVo;
 import press.wein.home.model.vo.ProvinceVo;
-import press.wein.home.model.vo.RoleVo;
 import press.wein.home.service.CityService;
 import press.wein.home.util.CommonUtil;
 import press.wein.home.util.ResponseUtils;
 import press.wein.home.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,30 @@ public class CityController extends BaseController {
     @Autowired
     private CityService cityService;
 
+    /**
+     * 更新
+     *
+     * @param cityVo
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Object> updateCity(@RequestBody CityVo cityVo, HttpServletRequest request) throws ServiceException {
+
+        try {
+            this.setModifier(cityVo);
+            cityService.updateCity(cityVo);
+        } catch (ServiceException e) {
+            LOG.error("CityController.updateCity ServiceException inputParam = [{}]", cityVo.toString(), e);
+            return ResponseUtils.error(e.getMessage());
+        } catch (Exception e) {
+            LOG.error("CityController.updateCity Exception inputParam = [{}]", cityVo.toString(), e);
+            return ResponseUtils.error();
+        }
+        return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
+    }
     /**
      * 分页获取城市列表
      *
@@ -74,9 +100,9 @@ public class CityController extends BaseController {
     @RequestMapping(value = "/listProvince", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> listProvince() throws ServiceException {
-        List<ProvinceVo> cityVoPage;
+        List cityVoPage;
         try {
-            cityVoPage = cityService.listAllProvince();
+            cityVoPage = cityService.listProvinces();
         } catch (ServiceException e) {
             LOG.error("CityController.listCitysWithPage ServiceException", e);
             return ResponseUtils.error(e.getMessage());
@@ -127,5 +153,12 @@ public class CityController extends BaseController {
             return ResponseUtils.error();
         }
         return ResponseUtils.success(cityVo);
+    }
+
+    private void setModifier(CityVo vo) {
+        UserSession userSession = ApplicationUserContext.getUser();
+        vo.setModifier(userSession.getName());
+        vo.setModifierId(userSession.getId());
+        vo.setModifyTime(new Date());
     }
 }

@@ -1,5 +1,6 @@
 package press.wein.home.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Service;
 import press.wein.home.common.Page;
 import press.wein.home.dao.CityMapper;
 import press.wein.home.dao.ProvinceMapper;
+import press.wein.home.enumerate.CityEnum;
+import press.wein.home.exception.ExceptionCode;
+import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.City;
 import press.wein.home.model.Province;
@@ -26,6 +30,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
+ * type: 0:省或特别行政区 1：直辖市 2：省会城市 3：市 4：区
+ *
  * @author oukailiang
  * @create 2017-07-13 下午8:16
  */
@@ -42,11 +48,22 @@ public class CityServiceImpl extends BaseService implements CityService {
 
     private static List<ProvinceVo> provinceVoList;
 
+    @Override
+    public int updateCity(CityVo cityVo) throws ServiceException {
+        checkParamNull(cityVo, cityVo.getId());
+        City city = cityMapper.selectByPrimaryKey(cityVo.getId());
+        if (city == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.NOT_EXIST);
+        }
+        BeanUtil.beanCopier(cityVo, city);
+        return cityMapper.updateByPrimaryKeySelective(city);
+    }
 
     @Override
     public List<ProvinceVo> listAllProvince() throws ServiceException {
         if (CollectionUtil.isNullOrEmpty(provinceVoList)) {
             List<Province> provinceList = provinceMapper.listAllProvince();
+
             provinceVoList = CollectionUtil.copyToDescList(provinceList, ProvinceVo.class);
         }
         return provinceVoList;
@@ -61,6 +78,15 @@ public class CityServiceImpl extends BaseService implements CityService {
     @Override
     public ProvinceVo getProvince(Integer provinceId) throws ServiceException {
         return this.getProvinceMap().get(provinceId);
+    }
+
+    @Override
+    public List<CityVo> listProvinces() throws ServiceException{
+        List<City> cityList = cityMapper.listCitysByParentId(0);
+        if (CollectionUtil.isNullOrEmpty(cityList)) {
+            return Collections.emptyList();
+        }
+        return CollectionUtil.copyToDescList(cityList, CityVo.class);
     }
 
     @Override
@@ -140,9 +166,15 @@ public class CityServiceImpl extends BaseService implements CityService {
     @Override
     public CityVo getCityById(Integer cityId) throws ServiceException {
         checkParamNull(cityId);
+
         City city = cityMapper.selectByPrimaryKey(cityId);
+        if (city == null) {
+            return null;
+        }
         CityVo cityVo = new CityVo();
         BeanUtil.beanCopier(city, cityVo);
+
+        this.setProvinceCityArea(cityVo);
         return cityVo;
     }
 
@@ -161,9 +193,47 @@ public class CityServiceImpl extends BaseService implements CityService {
         List<City> resultCityList = new ArrayList<>();
         List<City> cityList = cityMapper.listCitysByParentId(provinceId);
         for (City city : cityList) {
-            
+
         }
 
         return null;
+    }
+
+    private void setProvinceCityArea(CityVo cityVo) {
+        LOG.info("setProvinceCityArea CityVo = [{}]", JSON.toJSONString(cityVo));
+        City city;
+        StringBuilder sb = new StringBuilder();
+        if (cityVo.getType().intValue() == CityEnum.Type.FOUR.getValue()) {
+            cityVo.setAreaName(StringUtil.isBlank(cityVo.getFullName()) ? cityVo.getName() : cityVo.getFullName());
+            city = cityMapper.selectByPrimaryKey(cityVo.getParentId());
+            if (city == null) {
+                return;
+            }
+            cityVo.setCityName(city.getFullName());
+            sb.append(cityVo.getCityName()).append("-").append(cityVo.getAreaName());
+
+            city = cityMapper.selectByPrimaryKey(city.getParentId());
+            if (city == null) {
+                return;
+            }
+            cityVo.setProvinceName(city.getFullName());
+            sb.insert(0, "-").insert(0, cityVo.getProvinceName());
+            cityVo.setProvinceCityArea(sb.toString());
+        }
+        if (cityVo.getType().intValue() == CityEnum.Type.THREE.getValue()
+                || cityVo.getType().intValue() == CityEnum.Type.TWO.getValue()
+                || cityVo.getType().intValue() == CityEnum.Type.ONE.getValue()) {
+            cityVo.setCityName(cityVo.getFullName());
+            city = cityMapper.selectByPrimaryKey(cityVo.getParentId());
+            if (city != null) {
+                cityVo.setProvinceName(city.getFullName());
+                sb.append(cityVo.getProvinceName()).append("-").append(cityVo.getCityName());
+            }
+            cityVo.setProvinceCityArea(sb.toString());
+        }
+        if (cityVo.getType().intValue() == CityEnum.Type.ZERO.getValue()) {
+            cityVo.setProvinceName(cityVo.getFullName());
+            cityVo.setProvinceCityArea(cityVo.getFullName());
+        }
     }
 }

@@ -9,6 +9,155 @@
     <result column="region" jdbcType="VARCHAR" property="region" />
     <result column="abbr" jdbcType="VARCHAR" property="abbr" />
     <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifier_id" jdbcType="BIGINT" property="modifierId" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, district_code, name, pinyin, region, abbr, full_name, modifier, modifier_id, 
+    modify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from h_province
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from h_province
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="press.wein.home.model.Province">
+    insert into h_province (id, district_code, name, 
+      pinyin, region, abbr, 
+      full_name, modifier, modifier_id, 
+      modify_time)
+    values (#{id,jdbcType=INTEGER}, #{districtCode,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{pinyin,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{abbr,jdbcType=VARCHAR}, 
+      #{fullName,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{modifierId,jdbcType=BIGINT}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="press.wein.home.model.Province">
+    insert into h_province
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="districtCode != null">
+        district_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="pinyin != null">
+        pinyin,
+      </if>
+      <if test="region != null">
+        region,
+      </if>
+      <if test="abbr != null">
+        abbr,
+      </if>
+      <if test="fullName != null">
+        full_name,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifierId != null">
+        modifier_id,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="districtCode != null">
+        #{districtCode,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyin != null">
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="abbr != null">
+        #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null">
+        #{modifierId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="press.wein.home.model.Province">
+    update h_province
+    <set>
+      <if test="districtCode != null">
+        district_code = #{districtCode,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyin != null">
+        pinyin = #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="abbr != null">
+        abbr = #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null">
+        modifier_id = #{modifierId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="press.wein.home.model.Province">
+    update h_province
+    set district_code = #{districtCode,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      abbr = #{abbr,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modifier_id = #{modifierId,jdbcType=BIGINT},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="press.wein.home.model.Province">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="district_code" jdbcType="INTEGER" property="districtCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="abbr" jdbcType="VARCHAR" property="abbr" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
   </resultMap>
   <sql id="Base_Column_List">
     id, district_code, name, pinyin, region, abbr, full_name

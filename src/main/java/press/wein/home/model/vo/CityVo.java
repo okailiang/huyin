@@ -2,6 +2,7 @@ package press.wein.home.model.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author oukailiang
@@ -32,6 +33,20 @@ public class CityVo implements Serializable {
     private String abbr;
 
     private String fullName;
+
+    private String provinceName;
+
+    private String cityName;
+
+    private String areaName;
+
+    private String provinceCityArea;
+
+    private Date modifyTime;
+
+    private String modifier;
+
+    private Long modifierId;
 
     public CityVo() {
     }
@@ -124,6 +139,63 @@ public class CityVo implements Serializable {
         this.fullName = fullName;
     }
 
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getProvinceCityArea() {
+        return provinceCityArea;
+    }
+
+    public void setProvinceCityArea(String provinceCityArea) {
+        this.provinceCityArea = provinceCityArea;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public Long getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(Long modifierId) {
+        this.modifierId = modifierId;
+    }
+
     @Override
     public String toString() {
         return "CityVo{" +
@@ -138,6 +210,13 @@ public class CityVo implements Serializable {
                 ", parentId=" + parentId +
                 ", abbr='" + abbr + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", provinceName='" + provinceName + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", areaName='" + areaName + '\'' +
+                ", provinceCityArea='" + provinceCityArea + '\'' +
+                ", modifyTime=" + modifyTime +
+                ", modifier='" + modifier + '\'' +
+                ", modifierId=" + modifierId +
                 '}';
     }
 }

@@ -1,8 +1,6 @@
 package press.wein.home.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Menu {
     private Integer id;
@@ -11,27 +9,15 @@ public class Menu {
 
     private String url;
 
-    private String parentMenuName;
-
     private Integer parentId;
 
     private Short level;
 
-    private String sorting;
+    private Byte sorting;
 
     private String translate;
 
     private String icon;
-
-    /**
-     * 提醒菜单个数
-     */
-    private String alert;
-
-    /**
-     * 提醒标签样式
-     */
-    private String label;
 
     private Byte status;
 
@@ -48,11 +34,6 @@ public class Menu {
     private String modifier;
 
     private Long modifierId;
-
-    // 子菜单
-    private List<Menu> childMenu = new ArrayList<>();
-
-    private List<RealUrl> realUrlList = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -78,14 +59,6 @@ public class Menu {
         this.url = url;
     }
 
-    public String getParentMenuName() {
-        return parentMenuName;
-    }
-
-    public void setParentMenuName(String parentMenuName) {
-        this.parentMenuName = parentMenuName;
-    }
-
     public Integer getParentId() {
         return parentId;
     }
@@ -102,11 +75,11 @@ public class Menu {
         this.level = level;
     }
 
-    public String getSorting() {
+    public Byte getSorting() {
         return sorting;
     }
 
-    public void setSorting(String sorting) {
+    public void setSorting(Byte sorting) {
         this.sorting = sorting;
     }
 
@@ -124,22 +97,6 @@ public class Menu {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getAlert() {
-        return alert;
-    }
-
-    public void setAlert(String alert) {
-        this.alert = alert;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public Byte getStatus() {
@@ -204,21 +161,5 @@ public class Menu {
 
     public void setModifierId(Long modifierId) {
         this.modifierId = modifierId;
-    }
-
-    public List<Menu> getChildMenu() {
-        return childMenu;
-    }
-
-    public void setChildMenu(List<Menu> childMenu) {
-        this.childMenu = childMenu;
-    }
-
-    public List<RealUrl> getRealUrlList() {
-        return realUrlList;
-    }
-
-    public void setRealUrlList(List<RealUrl> realUrlList) {
-        this.realUrlList = realUrlList;
     }
 }

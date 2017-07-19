@@ -35,25 +35,25 @@
         <!--<table tableName="h_user_info" domainObjectName="UserInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
-        <table tableName="h_sys_config" domainObjectName="SysConfig" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
-        <table tableName="h_sys_log" domainObjectName="SysLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
-        <table tableName="h_sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
-        <table tableName="h_sys_role_menu" domainObjectName="SysRoleMenu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
-        <table tableName="h_sys_role_user" domainObjectName="SysRoleUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
+        <!--<table tableName="h_sys_config" domainObjectName="SysConfig" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_log" domainObjectName="SysLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_role" domainObjectName="SysRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_role_menu" domainObjectName="SysRoleMenu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_sys_role_user" domainObjectName="SysRoleUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
 
-        <table tableName="h_sys_menu" domainObjectName="Menu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
+        <!--<table tableName="h_sys_menu" domainObjectName="Menu" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
         <!--<table tableName="h_files" domainObjectName="Files" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
@@ -69,9 +69,9 @@
         <!--<table tableName="china_address" domainObjectName="ChinaAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
-        <!--<table tableName="h_feedback_info" domainObjectName="FeedbackInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
-        <!--</table>-->
+        <table tableName="h_feedback_info" domainObjectName="FeedbackInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--<property name="useActualColumnNames" value="true" />-->
+        </table>
         <!--<table tableName="h_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
@@ -87,12 +87,12 @@
         <!--<table tableName="h_print_shop_notice" domainObjectName="PrintShopNotice" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
-        <table tableName="h_province" domainObjectName="Province" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
-        <table tableName="h_city" domainObjectName="City" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
+        <!--<table tableName="h_province" domainObjectName="Province" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="h_city" domainObjectName="City" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>

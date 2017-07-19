@@ -19,11 +19,15 @@ import java.util.Map;
 
 public interface CityService {
 
+    int updateCity(CityVo cityVo) throws ServiceException;
+
     List<ProvinceVo> listAllProvince() throws ServiceException;
 
     Map<Integer, ProvinceVo> getProvinceMap() throws ServiceException;
 
     ProvinceVo getProvince(Integer provinceId) throws ServiceException;
+
+    List<CityVo> listProvinces() throws ServiceException;
 
     List<CityVo> listAllCitys() throws ServiceException;
 

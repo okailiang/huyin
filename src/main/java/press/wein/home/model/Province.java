@@ -1,5 +1,7 @@
 package press.wein.home.model;
 
+import java.util.Date;
+
 public class Province {
     private Integer id;
 
@@ -14,6 +16,12 @@ public class Province {
     private String abbr;
 
     private String fullName;
+
+    private String modifier;
+
+    private Long modifierId;
+
+    private Date modifyTime;
 
     public Integer getId() {
         return id;
@@ -69,5 +77,29 @@ public class Province {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public Long getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(Long modifierId) {
+        this.modifierId = modifierId;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }
