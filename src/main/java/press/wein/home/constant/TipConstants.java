@@ -20,5 +20,6 @@ public class TipConstants {
     public static final String RESET_PASSWORD_SUCCESS = "重置成功";
     public static final String ADD_MENU_PERMISSION_SUCCESS = "添加菜单成功";
     public static final String REMOVE_MENU_PERMISSION_SUCCESS = "取消菜单成功";
+    public static final String FEEDBACK_SUCCESS = "反馈成功";
 
 }

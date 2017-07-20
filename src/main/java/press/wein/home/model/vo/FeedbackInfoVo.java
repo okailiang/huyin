@@ -15,6 +15,10 @@ public class FeedbackInfoVo extends BaseVo{
 
     private Byte type;
 
+    private String statusDesc;
+
+    private String typeDesc;
+
     public Long getId() {
         return id;
     }
@@ -69,5 +73,21 @@ public class FeedbackInfoVo extends BaseVo{
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
+    public String getTypeDesc() {
+        return typeDesc;
+    }
+
+    public void setTypeDesc(String typeDesc) {
+        this.typeDesc = typeDesc;
     }
 }

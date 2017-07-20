@@ -59,7 +59,7 @@ public class FeedbackInfoController extends BaseController {
             LOG.error("FeedbackInfoController.saveFeedbackInfo Exception inputParam = [{}]", vo.toString(), e);
             return ResponseUtils.error();
         }
-        return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
+        return ResponseUtils.success(TipConstants.FEEDBACK_SUCCESS);
     }
 
     /**

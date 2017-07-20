@@ -56,7 +56,10 @@ public class FeedbackInfoServiceImpl extends BaseService implements FeedbackInfo
      */
     @Override
     public int updateFeedbackInfoStatus(FeedbackInfoVo feedbackInfoVo) throws ServiceException {
-        checkParamNull(feedbackInfoVo, feedbackInfoVo.getId());
+        checkParamNull(feedbackInfoVo, feedbackInfoVo.getId(),feedbackInfoVo.getStatus());
+        if(FeedbackEnum.Status.HANDLED.getValue().byteValue() != feedbackInfoVo.getStatus()){
+            throw ExceptionUtil.createServiceException(ExceptionCode.INVALID_STATUS_VALUE);
+        }
         FeedbackInfo feedbackInfo = feedbackInfoMapper.selectByPrimaryKey(feedbackInfoVo.getId());
         if (feedbackInfo == null) {
             throw ExceptionUtil.createServiceException(ExceptionCode.NOT_EXIST);
@@ -101,6 +104,8 @@ public class FeedbackInfoServiceImpl extends BaseService implements FeedbackInfo
         }
         FeedbackInfoVo feedbackInfoVo = new FeedbackInfoVo();
         BeanUtil.beanCopier(feedbackInfo, feedbackInfoVo);
+        feedbackInfoVo.setStatusDesc(FeedbackEnum.Status.getNameByValue(feedbackInfoVo.getStatus()));
+        feedbackInfoVo.setTypeDesc(FeedbackEnum.Type.getNameByValue(feedbackInfoVo.getType()));
         return feedbackInfoVo;
     }
 
@@ -122,7 +127,12 @@ public class FeedbackInfoServiceImpl extends BaseService implements FeedbackInfo
             return new Page<>(0, Collections.emptyList());
         }
         List<FeedbackInfo> feedbackInfoList = feedbackInfoMapper.listFeedbackInfosWithPage(param);
-        return new Page<>(totalCount, CollectionUtil.copyToDescList(feedbackInfoList, FeedbackInfoVo.class));
+        List<FeedbackInfoVo> feedbackInfoVoList = CollectionUtil.copyToDescList(feedbackInfoList, FeedbackInfoVo.class);
+        for (FeedbackInfoVo infoVo : feedbackInfoVoList) {
+            infoVo.setStatusDesc(FeedbackEnum.Status.getNameByValue(infoVo.getStatus()));
+            infoVo.setTypeDesc(FeedbackEnum.Type.getNameByValue(infoVo.getType()));
+        }
+        return new Page<>(totalCount, feedbackInfoVoList);
     }
 
 }

@@ -28,7 +28,7 @@ public enum ExceptionCode {
     NOT_FIND_OBJECT("NOT_FIND_OBJECT", "找不到对象"),
     NOT_EXIST("NOT_EXIST", "该条数据已不存在"),
     NAME_EXISTED("NAME_EXISTED", "该名称已经存在，请换个名吧"),
-    INVALID_STATUS_VALUE("INVALID_STATUS_VALUE", "状态值不正确"),
+    INVALID_STATUS_VALUE("INVALID_STATUS_VALUE", "传入状态值不正确"),
 
     /* ==================================== 注册登录 ==================================== */
     PHONE_ERROR("PHONE_ERROR", "手机号格式不正确"),

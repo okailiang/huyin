@@ -201,46 +201,52 @@
     <where>
       is_deleted = 0
       <if test="id != null">
-        id = #{id,jdbcType=BIGINT},
+        and id = #{id,jdbcType=BIGINT}
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
+        and user_id = #{userId,jdbcType=BIGINT}
       </if>
       <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
+        and user_name = #{userName,jdbcType=VARCHAR}
       </if>
       <if test="feedImage != null">
-        feed_image = #{feedImage,jdbcType=VARCHAR},
+        and feed_image = #{feedImage,jdbcType=VARCHAR}
       </if>
       <if test="feedInfo != null">
-        feed_info = #{feedInfo,jdbcType=VARCHAR},
+        and feed_info = #{feedInfo,jdbcType=VARCHAR}
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        and status = #{status,jdbcType=TINYINT}
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
+        and type = #{type,jdbcType=TINYINT}
       </if>
       <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=TINYINT},
+        and is_deleted = #{isDeleted,jdbcType=TINYINT}
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        and create_time = #{createTimeFrom,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTimeFrom != null and createTimeFrom !=''">
+        and create_time &gt;= #{createTimeFrom,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeTo != null and createTimeTo != ''">
+        and create_time &lt;= DATE_ADD(#{createTimeTo,jdbcType=VARCHAR},INTERVAL 1 DAY)
       </if>
       <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
       </if>
       <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+        and creator_id = #{creatorId,jdbcType=BIGINT}
       </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=VARCHAR},
+      <if test="creator != null and creator !=''">
+        and instr(creator, #{creator,jdbcType=VARCHAR}) > 0
       </if>
       <if test="modifier != null">
-        modifier = #{modifier,jdbcType=VARCHAR},
+        and modifier = #{modifier,jdbcType=VARCHAR}
       </if>
       <if test="modifierId != null">
-        modifier_id = #{modifierId,jdbcType=BIGINT},
+        and modifier_id = #{modifierId,jdbcType=BIGINT}
       </if>
     </where>
   </sql>

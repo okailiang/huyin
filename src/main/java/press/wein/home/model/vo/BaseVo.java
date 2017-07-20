@@ -33,11 +33,11 @@ public class BaseVo implements Serializable {
     /**
      * 用于查询时间段开始
      */
-    private Date createTimeFrom;
+    private String createTimeFrom;
     /**
      * 用于查询时间段结束
      */
-    private Date createTimeTo;
+    private String createTimeTo;
 
 
     public Byte getIsDeleted() {
@@ -98,20 +98,19 @@ public class BaseVo implements Serializable {
         this.modifierId = modifierId;
     }
 
-    public Date getCreateTimeFrom() {
+    public String getCreateTimeFrom() {
         return createTimeFrom;
     }
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public void setCreateTimeFrom(Date createTimeFrom) {
+    public void setCreateTimeFrom(String createTimeFrom) {
         this.createTimeFrom = createTimeFrom;
     }
 
-    public Date getCreateTimeTo() {
+    public String getCreateTimeTo() {
         return createTimeTo;
     }
 
-    public void setCreateTimeTo(Date createTimeTo) {
+    public void setCreateTimeTo(String createTimeTo) {
         this.createTimeTo = createTimeTo;
     }
 
