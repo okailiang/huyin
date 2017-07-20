@@ -12,9 +12,10 @@ public interface Enums {
      * 共用状态
      */
     enum UserRole {
-        USER(1, "系统管理员"),
-        PRINTER(2, "打印店员"),
-        ADMIN(3, "普通用户");
+        ADMIN(1, "系统管理员"),
+        PRINTER(2, "打印管理员"),
+        USER(3, "普通用户"),
+        ANONYMOUS(4,"匿名用户");
 
         private Integer value;
         private String name;

@@ -57,6 +57,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         BeanUtil.beanCopier(sysUserVo, sysUser);
         //检验重名
         this.checkRepeat(sysUser);
+        sysUser.setRole(Enums.UserRole.PRINTER.getValue().byteValue());
         sysUser.setPassword(MD5Util.md5Hex(sysUser.getPassword()));
         sysUserMapper.insertSelective(sysUser);
 
@@ -79,8 +80,12 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     public int updateSysUser(SysUserVo sysUserVo) throws ServiceException {
         //check param
         checkParamNull(sysUserVo.getId(), sysUserVo.getRoleId(), sysUserVo.getEmail(), sysUserVo.getPhoneNo(), sysUserVo.getUserName());
+        sysUserVo.setPassword(null);
 
-        SysUser sysUser = new SysUser();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(sysUserVo.getId());
+        if (sysUser == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.NOT_EXIST);
+        }
         BeanUtil.beanCopier(sysUserVo, sysUser);
 
         //检验重名
@@ -122,8 +127,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             throw ExceptionUtil.createServiceException(ExceptionCode.INVALID_STATUS_VALUE);
         }
         SysUser user = new SysUser();
-        user.setId(sysUserVo.getId());
-        user.setStatus(sysUserVo.getStatus());
+        BeanUtil.beanCopier(sysUserVo, user);
         return sysUserMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -142,8 +146,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
             throw ExceptionUtil.createServiceException(ExceptionCode.INVALID_STATUS_VALUE);
         }
         SysUser user = new SysUser();
-        user.setId(sysUserVo.getId());
-        user.setStatus(sysUserVo.getStatus());
+        BeanUtil.beanCopier(sysUserVo, user);
         return sysUserMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -160,7 +163,7 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
         checkParamNull(sysUserVo.getId(), sysUserVo.getPassword());
 
         SysUser user = new SysUser();
-        user.setId(sysUserVo.getId());
+        BeanUtil.beanCopier(sysUserVo, user);
         user.setPassword(MD5Util.md5Hex(sysUserVo.getPassword()));
         return sysUserMapper.updateByPrimaryKeySelective(user);
     }
@@ -168,17 +171,17 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     /**
      * 根据用户id逻辑查询
      *
-     * @param id
+     * @param sysUserVo
      * @return
      */
     @Override
-    public int removeSysUser(Long id) throws ServiceException {
-        this.checkParamNull(id);
+    public int removeSysUser(SysUserVo sysUserVo) throws ServiceException {
+        this.checkParamNull(sysUserVo, sysUserVo.getId());
         SysUser sysUser = new SysUser();
-        sysUser.setId(id);
+        BeanUtil.beanCopier(sysUserVo, sysUser);
         sysUser.setIsDeleted(Constants.IS_DELETED);
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
-        SysRoleUser roleUser = sysRoleUserMapper.getRoleUserByUserId(id);
+        SysRoleUser roleUser = sysRoleUserMapper.getRoleUserByUserId(sysUserVo.getId());
         if (roleUser == null) {
             return 1;
         }

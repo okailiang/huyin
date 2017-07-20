@@ -59,10 +59,10 @@ public interface SysUserService {
     /**
      * 根据用户id逻辑查询
      *
-     * @param id
+     * @param userVo
      * @return
      */
-    int removeSysUser(Long id) throws ServiceException;
+    int removeSysUser(SysUserVo userVo) throws ServiceException;
 
     /**
      * 根据名称查询用户

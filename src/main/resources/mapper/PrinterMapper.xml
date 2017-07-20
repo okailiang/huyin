@@ -6,7 +6,6 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="role" jdbcType="TINYINT" property="role" />
     <result column="phone_no" jdbcType="VARCHAR" property="phoneNo" />
@@ -24,7 +23,7 @@
     <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, real_name, id_number, password, email, role, phone_no, status, error_times, 
+    id, user_name, real_name, id_number, email, role, phone_no, status, error_times,
     email_verify, phone_vertify, wx_openid, create_time, modify_time, creator_id, creator, 
     modifier, modifier_id, is_deleted
   </sql>
@@ -32,7 +31,7 @@
     select 
     <include refid="Base_Column_List" />
     from h_printer
-    where id = #{id,jdbcType=BIGINT}
+    where is_deleted = 0 and id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from h_printer
@@ -267,4 +266,133 @@
       is_deleted = #{isDeleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <sql id="Where_Search_Condition">
+    <where>
+      is_deleted = 0
+      <if test="id != null">
+        and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="userName != null and userName ">
+        and user_name = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="realName != null">
+        and real_name = #{realName,jdbcType=VARCHAR}
+      </if>
+      <if test="idNumber != null">
+        and id_number = #{idNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null">
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null">
+        and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="role != null">
+        and role = #{role,jdbcType=TINYINT}
+      </if>
+      <if test="phoneNo != null">
+        phone_no = #{phoneNo,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="errorTimes != null">
+        and error_times = #{errorTimes,jdbcType=INTEGER}
+      </if>
+      <if test="emailVerify != null">
+        email_verify = #{emailVerify,jdbcType=TINYINT}
+      </if>
+      <if test="phoneVertify != null">
+        and phone_vertify = #{phoneVertify,jdbcType=TINYINT}
+      </if>
+      <if test="wxOpenid != null">
+        and wx_openid = #{wxOpenid,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="modifyTime != null">
+        and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="creatorId != null">
+        and creator_id = #{creatorId,jdbcType=BIGINT}
+      </if>
+      <if test="creator != null">
+        and creator = #{creator,jdbcType=VARCHAR}
+      </if>
+      <if test="modifier != null">
+        and modifier = #{modifier,jdbcType=VARCHAR}
+      </if>
+      <if test="modifierId != null">
+        and modifier_id = #{modifierId,jdbcType=BIGINT}
+      </if>
+    </where>
+  </sql>
+
+  <select id="countPrinters" resultType="java.lang.Long">
+    select count(1) from h_printer
+    <include refid="Where_Search_Condition"/>
+  </select>
+
+  <select id="listPrintersByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from h_printer
+    <include refid="Where_Search_Condition"/>
+    order by id desc
+    limit #{pageSize,jdbcType=INTEGER} offset #{start,jdbcType=INTEGER}
+  </select>
+
+  <select id="listPrinters" resultMap="BaseResultMap" parameterType="press.wein.home.model.Printer">
+    select
+    <include refid="Base_Column_List"/>
+    from h_printer
+    <include refid="Where_Search_Condition"/>
+  </select>
+
+  <select id="listPrintersByIds" parameterType="java.util.List" resultMap="BaseResultMap"> 
+    select
+     <include refid="Base_Column_List"/> 
+    from h_printer 
+    where is_deleted = 0 and id in 
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")"> 
+      #{item} 
+    </foreach> 
+  </select>
+
+  <select id="checkRepeatName" resultType="java.lang.Integer" parameterType="press.wein.home.model.Printer">
+    select count(1)
+    from h_printer
+    where is_deleted = 0
+    <if test="userName != null and userName != ''">
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null and email !=''">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="phoneNo != null and phoneNo !=''">
+      and phone_no = #{phoneNo,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null">
+      and id != #{id,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <!-- 根据登录名获取用户信息 -->
+  <select id="getUserByNameOrEmailOrPhone" resultMap="BaseResultMap">
+    select password,
+    <include refid="Base_Column_List"/>
+    from h_printer
+    where is_deleted = 0
+    <if test="userName != null">
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="phoneNo != null">
+      and phone_no = #{phoneNo,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

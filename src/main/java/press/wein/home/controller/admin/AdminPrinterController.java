@@ -12,9 +12,8 @@ import press.wein.home.constant.TipConstants;
 import press.wein.home.controller.BaseController;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.bo.UserSession;
-import press.wein.home.model.vo.SysUserVo;
-import press.wein.home.model.vo.UserVo;
-import press.wein.home.service.SysUserService;
+import press.wein.home.model.vo.PrinterVo;
+import press.wein.home.service.PrinterService;
 import press.wein.home.util.ResponseUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +25,12 @@ import javax.servlet.http.HttpServletRequest;
  * @create 2017-07-05 下午6:27
  */
 @Controller
-@RequestMapping(value = "/sysUser")
-public class SysUserController extends BaseController {
-    private static final Logger LOG = LoggerFactory.getLogger(SysUserController.class);
+@RequestMapping(value = "/admin/printer")
+public class AdminPrinterController extends BaseController {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminPrinterController.class);
 
     @Autowired
-    private SysUserService sysUserService;
+    private PrinterService printerService;
 
     /**
      * 分页获取角色列表
@@ -40,18 +39,18 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    private ResponseEntity<Object> listSysUsersWithPage(Page<SysUserVo> page, SysUserVo sysUserVo) throws ServiceException {
-        Page<SysUserVo> sysUserVoListPage;
+    private ResponseEntity<Object> listPrintersWithPage(Page<PrinterVo> page, PrinterVo printerVo) throws ServiceException {
+        Page<PrinterVo> printerVoListPage;
         try {
-            sysUserVoListPage = sysUserService.listSysUsersWithPage(page, sysUserVo);
+            printerVoListPage = printerService.listPrintersWithPage(page, printerVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.listSysUsersWithPage inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.listPrintersWithPage inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.listSysUsersWithPage inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.listPrintersWithPage inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error();
         }
-        return ResponseUtils.success(sysUserVoListPage);
+        return ResponseUtils.success(printerVoListPage);
     }
 
 
@@ -60,33 +59,33 @@ public class SysUserController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/getSysUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPrinter", method = RequestMethod.GET)
     @ResponseBody
     private ResponseEntity<Object> getMenu(@RequestParam(value = "id") Long id) throws ServiceException {
-        return ResponseUtils.success(sysUserService.getSysUser(id));
+        return ResponseUtils.success(printerService.getPrinter(id));
     }
 
     /**
      * 新增
      *
-     * @param sysUserVo
+     * @param printerVo
      * @param request
      * @return
      * @throws ServiceException
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> saveSysUser(@RequestBody SysUserVo sysUserVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> savePrinter(@RequestBody PrinterVo printerVo, HttpServletRequest request) throws ServiceException {
 
         try {
-            sysUserVo.setPassword("SysUser@666");
-            this.setCreatorAndModifier(sysUserVo);
-            sysUserService.saveSysUser(sysUserVo);
+            printerVo.setPassword("Printer@666");
+            this.setCreatorAndModifier(printerVo);
+            printerService.savePrinter(printerVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.saveSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.savePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.saveSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.savePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.SAVE_SUCCESS);
@@ -95,23 +94,23 @@ public class SysUserController extends BaseController {
     /**
      * 更新
      *
-     * @param sysUserVo
+     * @param printerVo
      * @param request
      * @return
      * @throws ServiceException
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> updateSysUser(@RequestBody SysUserVo sysUserVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> updatePrinter(@RequestBody PrinterVo printerVo, HttpServletRequest request) throws ServiceException {
 
         try {
-            this.setModifier(sysUserVo);
-            sysUserService.updateSysUser(sysUserVo);
+            this.setModifier(printerVo);
+            printerService.updatePrinter(printerVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.updateSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.updatePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.updateSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.updatePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.UPDATE_SUCCESS);
@@ -121,23 +120,23 @@ public class SysUserController extends BaseController {
     /* 删除
      * 更新
      *
-     * @param sysUserVo
+     * @param printerVo
      * @param request
      * @return
      * @throws ServiceException
      */
     @RequestMapping(value = "/remove", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> removeSysUser(@RequestBody SysUserVo sysUserVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> removePrinter(@RequestBody PrinterVo printerVo, HttpServletRequest request) throws ServiceException {
 
         try {
-            this.setModifier(sysUserVo);
-            sysUserService.removeSysUser(sysUserVo);
+            this.setModifier(printerVo);
+            printerService.removePrinter(printerVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.removeSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.removePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.removeSysUser inputParam = [{}]", sysUserVo.toString(), e);
+            LOG.error("PrinterController.removePrinter inputParam = [{}]", printerVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.DELETE_SUCCESS);
@@ -153,16 +152,16 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/enableUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> enableUser(@RequestBody SysUserVo userVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> enableUser(@RequestBody PrinterVo userVo, HttpServletRequest request) throws ServiceException {
 
         try {
             this.setModifier(userVo);
-            sysUserService.enableSysUser(userVo);
+            printerService.enablePrinter(userVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.enableUser inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.enableUser inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.enableUser inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.enableUser inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.ENABLE_SUCCESS);
@@ -178,16 +177,16 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/disableUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> disableUser(@RequestBody SysUserVo userVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> disableUser(@RequestBody PrinterVo userVo, HttpServletRequest request) throws ServiceException {
 
         try {
             this.setModifier(userVo);
-            sysUserService.disableSysUser(userVo);
+            printerService.disablePrinter(userVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.disableUser inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.disableUser inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.disableUser inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.disableUser inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.DISABLE_SUCCESS);
@@ -203,35 +202,35 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> resetPassword(@RequestBody SysUserVo userVo, HttpServletRequest request) throws ServiceException {
+    public ResponseEntity<Object> resetPassword(@RequestBody PrinterVo userVo, HttpServletRequest request) throws ServiceException {
 
         try {
-            userVo.setPassword("SysUser@666");
+            userVo.setPassword("Printer@666");
             this.setModifier(userVo);
-            sysUserService.resetPassword(userVo);
+            printerService.resetPassword(userVo);
         } catch (ServiceException e) {
-            LOG.error("SysUserController.resetPassword inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.resetPassword inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
-            LOG.error("SysUserController.resetPassword inputParam [{}]", userVo.toString(), e);
+            LOG.error("PrinterController.resetPassword inputParam [{}]", userVo.toString(), e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(TipConstants.RESET_PASSWORD_SUCCESS);
     }
 
 
-    private void setCreatorAndModifier(SysUserVo sysUserVo) {
+    private void setCreatorAndModifier(PrinterVo printerVo) {
         UserSession userSession = ApplicationUserContext.getUser();
-        sysUserVo.setCreator(userSession.getName());
-        sysUserVo.setModifier(userSession.getName());
-        sysUserVo.setCreatorId(userSession.getId());
-        sysUserVo.setModifierId(userSession.getId());
+        printerVo.setCreator(userSession.getName());
+        printerVo.setModifier(userSession.getName());
+        printerVo.setCreatorId(userSession.getId());
+        printerVo.setModifierId(userSession.getId());
     }
 
-    private void setModifier(SysUserVo sysUserVo) {
+    private void setModifier(PrinterVo printerVo) {
         UserSession userSession = ApplicationUserContext.getUser();
-        sysUserVo.setModifier(userSession.getName());
-        sysUserVo.setModifierId(userSession.getId());
+        printerVo.setModifier(userSession.getName());
+        printerVo.setModifierId(userSession.getId());
     }
 
 }

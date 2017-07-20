@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="press.wein.home.model.SysUser">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="role" jdbcType="TINYINT" property="role"/>
         <result column="phone_no" jdbcType="VARCHAR" property="phoneNo"/>
@@ -19,7 +18,7 @@
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_name, password, email, role, phone_no, status, error_times, create_time, 
+    id, user_name, email, role, phone_no, status, error_times, create_time,
     modify_time, creator_id, creator, modifier, modifier_id, is_deleted
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
