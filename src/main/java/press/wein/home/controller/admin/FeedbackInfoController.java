@@ -1,4 +1,4 @@
-package press.wein.home.controller;
+package press.wein.home.controller.admin;
 
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.common.Page;
 import press.wein.home.constant.TipConstants;
+import press.wein.home.controller.BaseController;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.FeedbackInfoVo;

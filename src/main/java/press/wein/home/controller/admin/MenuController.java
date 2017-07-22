@@ -1,4 +1,4 @@
-package press.wein.home.controller;
+package press.wein.home.controller.admin;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.constant.Constants;
 import press.wein.home.constant.TipConstants;
+import press.wein.home.controller.BaseController;
 import press.wein.home.enumerate.Enums;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.Menu;
-import press.wein.home.model.SysRoleMenu;
 import press.wein.home.model.bo.RoleMenu;
 import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.MenuVo;

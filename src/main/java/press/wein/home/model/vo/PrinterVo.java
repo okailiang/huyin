@@ -2,7 +2,7 @@ package press.wein.home.model.vo;
 
 import java.util.Date;
 
-public class PrinterVo {
+public class PrinterVo extends BaseVo{
     private Long id;
 
     private String userName;
@@ -28,20 +28,6 @@ public class PrinterVo {
     private Byte phoneVertify;
 
     private String wxOpenid;
-
-    private Date createTime;
-
-    private Date modifyTime;
-
-    private Long creatorId;
-
-    private String creator;
-
-    private String modifier;
-
-    private Long modifierId;
-
-    private Byte isDeleted;
 
     public Long getId() {
         return id;
@@ -145,61 +131,5 @@ public class PrinterVo {
 
     public void setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public Long getModifierId() {
-        return modifierId;
-    }
-
-    public void setModifierId(Long modifierId) {
-        this.modifierId = modifierId;
-    }
-
-    public Byte getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
     }
 }

@@ -239,6 +239,12 @@
             <if test="createTime != null">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="createTimeFrom != null and createTimeFrom !=''">
+                and create_time &gt;= #{createTimeFrom,jdbcType=VARCHAR}
+            </if>
+            <if test="createTimeTo != null and createTimeTo != ''">
+                and create_time &lt;= DATE_ADD(#{createTimeTo,jdbcType=VARCHAR},INTERVAL 1 DAY)
+            </if>
             <if test="modifyTime != null">
                 and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
             </if>

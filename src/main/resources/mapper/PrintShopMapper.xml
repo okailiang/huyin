@@ -32,16 +32,16 @@
     status, is_deleted, create_time, modify_time, creator_id, creator, modifier, modifier_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from h_print_shop
-    where id = #{id,jdbcType=BIGINT}
+    where is_deleted = 0 and id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from h_print_shop
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="press.wein.home.model.PrintShop">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="press.wein.home.model.PrintShop">
     insert into h_print_shop (id, printer_id, printer_name, 
       address, detail_address, phone_no, 
       address_type, longitude, latitude, 
@@ -302,4 +302,169 @@
       modifier_id = #{modifierId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <sql id="Where_Search_Condition">
+    <where>
+      is_deleted = 0
+      <if test="id != null">
+        and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="printerId != null">
+        and printer_id = #{printerId,jdbcType=BIGINT}
+      </if>
+      <if test="printerName != null and printerName !=''">
+        and instr(printer_name, #{printerName,jdbcType=VARCHAR}) > 0
+      </if>
+      <if test="address != null and address !=''">
+        and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="detailAddress != null and detailAddress !=''">
+        and detail_address = #{detailAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="phoneNo != null and phoneNo !=''">
+        and phone_no = #{phoneNo,jdbcType=VARCHAR}
+      </if>
+      <if test="addressType != null">
+        and address_type = #{addressType,jdbcType=TINYINT}
+      </if>
+      <if test="longitude != null">
+        and longitude = #{longitude,jdbcType=DECIMAL}
+      </if>
+      <if test="latitude != null">
+        and latitude = #{latitude,jdbcType=DECIMAL}
+      </if>
+      <if test="printShopName != null and printShopName !=''">
+        and print_shop_name = #{printShopName,jdbcType=VARCHAR}
+      </if>
+      <if test="printShopImage != null and createTimeFrom !=''">
+        and print_shop_image = #{printShopImage,jdbcType=VARCHAR}
+      </if>
+      <if test="praise != null">
+        and praise = #{praise,jdbcType=TINYINT}
+      </if>
+      <if test="provinceId != null">
+        and province_id = #{provinceId,jdbcType=INTEGER}
+      </if>
+      <if test="cityId != null">
+        and city_id = #{cityId,jdbcType=INTEGER}
+      </if>
+      <if test="cityAreaId != null">
+        and  city_area_Id = #{cityAreaId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTimeFrom != null and createTimeFrom !=''">
+        and create_time &gt;= #{createTimeFrom,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeTo != null and createTimeTo != ''">
+        and create_time &lt;= DATE_ADD(#{createTimeTo,jdbcType=VARCHAR},INTERVAL 1 DAY)
+      </if>
+      <if test="modifyTime != null">
+        and modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="creatorId != null">
+        and creator_id = #{creatorId,jdbcType=BIGINT}
+      </if>
+      <if test="creator != null and creator !=''">
+        and creator = #{creator,jdbcType=VARCHAR}
+      </if>
+      <if test="modifier != null and modifier !=''">
+        and modifier = #{modifier,jdbcType=VARCHAR}
+      </if>
+      <if test="modifierId != null">
+        and modifier_id = #{modifierId,jdbcType=BIGINT}
+      </if>
+    </where>
+  </sql>
+
+  <select id="countPrintShops" resultType="java.lang.Long">
+    select count(1) from h_print_shop
+    <include refid="Where_Search_Condition"/>
+  </select>
+
+  <select id="listPrintShopsByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from h_print_shop
+    <include refid="Where_Search_Condition"/>
+    order by id desc
+    limit #{pageSize,jdbcType=INTEGER} offset #{start,jdbcType=INTEGER}
+  </select>
+
+  <select id="listPrintShops" resultMap="BaseResultMap" parameterType="press.wein.home.model.PrintShop">
+    select
+    <include refid="Base_Column_List"/>
+    from h_print_shop
+    <include refid="Where_Search_Condition"/>
+  </select>
+
+  <select id="listPrintShopsByIds" parameterType="java.util.List" resultMap="BaseResultMap"> 
+    select
+     <include refid="Base_Column_List"/> 
+    from h_print_shop 
+    where is_deleted = 0 and id in 
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")"> 
+      #{item} 
+    </foreach> 
+  </select>
+
+  <select id="checkRepeatName" resultType="java.lang.Integer" parameterType="press.wein.home.model.PrintShop">
+    select count(1)
+    from h_print_shop
+    where is_deleted = 0
+    <if test="printShopName != null and printShopName != ''">
+      and print_shop_name = #{printShopName,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null">
+      and id != #{id,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <select id="getPrintShopByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from h_print_shop
+    where is_deleted = 0
+    <if test="printShopName != null">
+      and print_shop_name = #{printShopName,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="getPrintShopByPrinterId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from h_print_shop
+      where is_deleted = 0 and printer_id = #{printerId,jdbcType=BIGINT}
+  </select>
+
+    <select id="listPrintShopsByPrinterIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from h_print_shop
+        where is_deleted = 0 and printer_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listPrintShopsByAreaIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from h_print_shop
+        where is_deleted = 0 and city_area_Id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listPrintShopsByAreaId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from h_print_shop
+        where is_deleted = 0 and city_area_Id = #{cityAreaId,jdbcType=INTEGER}
+    </select>
 </mapper>
