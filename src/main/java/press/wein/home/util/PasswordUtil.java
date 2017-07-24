@@ -129,7 +129,7 @@ public class PasswordUtil {
 
     public static void main(String[] args) {
         System.out.println(checkPassword1("TApss>"));
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             String str = getRandomPassword();
             System.out.println(str);
             boolean result = checkPassword(str);

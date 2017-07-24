@@ -1,9 +1,11 @@
 package press.wein.home.model.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PrintShopVo {
+public class PrintShopVo extends BaseVo {
     private Long id;
 
     private Long printerId;
@@ -17,6 +19,8 @@ public class PrintShopVo {
     private String phoneNo;
 
     private Byte addressType;
+
+    private String addressTypeDesc;
 
     private BigDecimal longitude;
 
@@ -34,21 +38,31 @@ public class PrintShopVo {
 
     private Integer cityAreaId;
 
+    private String cityName;
+
+    private String provinceCityArea;
+
     private Byte status;
 
-    private Byte isDeleted;
+    private String statusDesc;
 
-    private Date createTime;
+    private String userName;
 
-    private Date modifyTime;
+    private String realName;
 
-    private Long creatorId;
+    private String idNumber;
 
-    private String creator;
+    private String password;
 
-    private String modifier;
+    private String email;
 
-    private Long modifierId;
+    private String accountPhone;
+
+    private Byte role;
+
+    private Byte accountStatus;
+
+    private MultipartFile shopImageFile;
 
     public Long getId() {
         return id;
@@ -178,59 +192,107 @@ public class PrintShopVo {
         this.status = status;
     }
 
-    public Byte getIsDeleted() {
-        return isDeleted;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public Date getModifyTime() {
-        return modifyTime;
+    public String getIdNumber() {
+        return idNumber;
     }
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getModifier() {
-        return modifier;
+    public String getAccountPhone() {
+        return accountPhone;
     }
 
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
+    public void setAccountPhone(String accountPhone) {
+        this.accountPhone = accountPhone;
     }
 
-    public Long getModifierId() {
-        return modifierId;
+    public Byte getRole() {
+        return role;
     }
 
-    public void setModifierId(Long modifierId) {
-        this.modifierId = modifierId;
+    public void setRole(Byte role) {
+        this.role = role;
+    }
+
+    public Byte getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(Byte accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public String getAddressTypeDesc() {
+        return addressTypeDesc;
+    }
+
+    public void setAddressTypeDesc(String addressTypeDesc) {
+        this.addressTypeDesc = addressTypeDesc;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getProvinceCityArea() {
+        return provinceCityArea;
+    }
+
+    public void setProvinceCityArea(String provinceCityArea) {
+        this.provinceCityArea = provinceCityArea;
+    }
+
+    public MultipartFile getShopImageFile() {
+        return shopImageFile;
+    }
+
+    public void setShopImageFile(MultipartFile shopImageFile) {
+        this.shopImageFile = shopImageFile;
     }
 }

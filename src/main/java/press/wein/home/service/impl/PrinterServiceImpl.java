@@ -17,10 +17,7 @@ import press.wein.home.model.vo.PrinterVo;
 import press.wein.home.service.BaseService;
 import press.wein.home.service.PrinterService;
 import press.wein.home.service.RoleService;
-import press.wein.home.util.BeanUtil;
-import press.wein.home.util.CollectionUtil;
-import press.wein.home.util.CommonUtil;
-import press.wein.home.util.MD5Util;
+import press.wein.home.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +39,16 @@ public class PrinterServiceImpl extends BaseService implements PrinterService {
      * 保存打印店管理员信息
      *
      * @param printerVo
-     * @return
+     * @return 返回id
      */
     @Override
-    public int savePrinter(PrinterVo printerVo) throws ServiceException {
+    public long savePrinter(PrinterVo printerVo) throws ServiceException {
         //check param
         checkParamNull(printerVo.getEmail(), printerVo.getPhoneNo(), printerVo.getUserName(), printerVo.getPassword());
+
+        if (PasswordUtil.checkPassword(printerVo.getPassword())) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PASSWORD_RULE);
+        }
 
         Printer printer = new Printer();
         BeanUtil.beanCopier(printerVo, printer);
@@ -55,7 +56,8 @@ public class PrinterServiceImpl extends BaseService implements PrinterService {
         this.checkRepeat(printer);
         printer.setRole(Enums.UserRole.PRINTER.getValue().byteValue());
         printer.setPassword(MD5Util.md5Hex(printer.getPassword()));
-        return printerMapper.insertSelective(printer);
+        printerMapper.insertSelective(printer);
+        return printer.getId();
     }
 
     /**
@@ -67,8 +69,9 @@ public class PrinterServiceImpl extends BaseService implements PrinterService {
     @Override
     public int updatePrinter(PrinterVo printerVo) throws ServiceException {
         //check param
-        checkParamNull(printerVo.getId(), printerVo.getEmail(), printerVo.getPhoneNo(), printerVo.getUserName());
+        checkParamNull(printerVo.getId(), printerVo.getEmail(), printerVo.getPhoneNo());
         printerVo.setPassword(null);
+        printerVo.setUserName(null);
 
         Printer printer = printerMapper.selectByPrimaryKey(printerVo.getId());
         if (printer == null) {

@@ -21,7 +21,7 @@ public interface PrinterService {
      * @param printerVo
      * @return
      */
-    int savePrinter(PrinterVo printerVo) throws ServiceException;
+    long savePrinter(PrinterVo printerVo) throws ServiceException;
 
     /**
      * 更新打印管理员信息

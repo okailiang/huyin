@@ -1,7 +1,5 @@
 package press.wein.home.model.vo;
 
-import java.util.Date;
-
 public class PrinterVo extends BaseVo{
     private Long id;
 

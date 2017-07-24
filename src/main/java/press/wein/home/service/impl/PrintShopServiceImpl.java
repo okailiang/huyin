@@ -4,28 +4,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import press.wein.home.common.Page;
+import press.wein.home.common.SysConfigProperty;
 import press.wein.home.constant.Constants;
 import press.wein.home.dao.PrintShopMapper;
 import press.wein.home.dao.PrinterMapper;
 import press.wein.home.enumerate.Enums;
+import press.wein.home.enumerate.PrintShopEnum;
 import press.wein.home.exception.ExceptionCode;
 import press.wein.home.exception.ExceptionUtil;
 import press.wein.home.exception.ServiceException;
 import press.wein.home.model.PrintShop;
 import press.wein.home.model.Printer;
+import press.wein.home.model.vo.CityVo;
 import press.wein.home.model.vo.PrintShopVo;
+import press.wein.home.model.vo.PrinterVo;
 import press.wein.home.service.BaseService;
+import press.wein.home.service.CityService;
 import press.wein.home.service.PrintShopService;
-import press.wein.home.util.BeanUtil;
-import press.wein.home.util.CollectionUtil;
-import press.wein.home.util.CommonUtil;
-import press.wein.home.util.MD5Util;
+import press.wein.home.service.PrinterService;
+import press.wein.home.util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 打印店
@@ -43,6 +46,12 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     @Autowired
     private PrinterMapper printerMapper;
 
+    @Autowired
+    private PrinterService printerService;
+
+    @Autowired
+    private CityService cityService;
+
     /**
      * 保存打印店信息
      *
@@ -53,12 +62,29 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     public int savePrintShop(PrintShopVo printShopVo) throws ServiceException {
         //check param
         checkParamNull(printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getAddress(), printShopVo.getLatitude(),
-                printShopVo.getLongitude(), printShopVo.getPrinterName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType());
+                printShopVo.getLongitude(), printShopVo.getPrinterName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType(),
+                printShopVo.getShopImageFile());
+        this.setAddress(printShopVo);
         //创建该打印店账号
         PrintShop printShop = new PrintShop();
         BeanUtil.beanCopier(printShopVo, printShop);
         //检验重名
         this.checkRepeatName(printShopMapper.checkRepeatName(printShop));
+
+        //存储图片
+        this.saveShopImageFile(printShopVo);
+
+        //保存账号
+        PrinterVo printerVo = new PrinterVo();
+
+        BeanUtil.beanCopier(printShopVo, printerVo);
+        printerVo.setPhoneNo(printShopVo.getAccountPhone());
+        long printerId = printerService.savePrinter(printerVo);
+        printShop.setPrinterId(printerId);
+        printShop.setPrinterName(printerVo.getUserName());
+        //
+        CityVo cityVo = cityService.getCityById(printShopVo.getCityAreaId());
+
         return printShopMapper.insertSelective(printShop);
     }
 
@@ -73,15 +99,25 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         //check param
         checkParamNull(printShopVo.getId(), printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getAddress(), printShopVo.getLatitude(),
                 printShopVo.getLongitude(), printShopVo.getPrinterName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType());
+        if (printShopVo.getShopImageFile() != null) {
+            this.saveShopImageFile(printShopVo);
+        }
 
         PrintShop printShop = printShopMapper.selectByPrimaryKey(printShopVo.getId());
         if (printShop == null) {
             throw ExceptionUtil.createServiceException(ExceptionCode.NOT_EXIST);
         }
+        this.setAddress(printShopVo);
         BeanUtil.beanCopier(printShopVo, printShop);
 
         //检验重名
         this.checkRepeatName(printShopMapper.checkRepeatName(printShop));
+
+        //保存账号
+        PrinterVo printerVo = new PrinterVo();
+        BeanUtil.beanCopier(printShopVo, printerVo);
+        printerVo.setPhoneNo(printShopVo.getAccountPhone());
+        printerService.updatePrinter(printerVo);
         return printShopMapper.updateByPrimaryKeySelective(printShop);
     }
 
@@ -172,6 +208,13 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         }
         PrintShopVo printShopVo = new PrintShopVo();
         BeanUtil.beanCopier(printShop, printShopVo);
+
+        this.buildPrintShopVo(printShopVo);
+
+        PrinterVo printerVo = printerService.getPrinter(printShopVo.getPrinterId());
+        if (printerVo != null) {
+            this.setPrinterVo(printShopVo, printerVo);
+        }
         return printShopVo;
     }
 
@@ -196,6 +239,9 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         List<PrintShop> printShopList = printShopMapper.listPrintShopsByPage(searchParam);
         if (CollectionUtil.isNotEmpty(printShopList)) {
             printShopVoList = CollectionUtil.copyToDescList(printShopList, PrintShopVo.class);
+        }
+        for (PrintShopVo shopVo : printShopVoList) {
+            this.buildPrintShopVo(shopVo);
         }
         return new Page<>(totalCount, printShopVoList);
     }
@@ -298,5 +344,61 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         }
         List<PrintShop> printShopList = printShopMapper.listPrintShopsByAreaIds(areaIds);
         return CollectionUtil.copyToDescList(printShopList, PrintShopVo.class);
+    }
+
+    private void setPrinterVo(PrintShopVo printShopVo, PrinterVo printerVo) {
+        printShopVo.setPrinterId(printerVo.getId());
+        printShopVo.setUserName(printerVo.getUserName());
+        printShopVo.setEmail(printerVo.getEmail());
+        printShopVo.setAccountPhone(printerVo.getPhoneNo());
+        printShopVo.setAccountStatus(printerVo.getStatus());
+        printShopVo.setRole(printerVo.getRole());
+    }
+
+    private void setAddress(PrintShopVo printShopVo) throws ServiceException {
+        CityVo cityVo = cityService.getCityById(printShopVo.getCityAreaId());
+        if (cityVo == null) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.CITY_ID_ERROR);
+        }
+        String provinceCityArea = cityVo.getProvinceCityArea().replaceAll("-", "");
+        printShopVo.setAddress(provinceCityArea + " " + printShopVo.getDetailAddress());
+
+    }
+
+    private void buildPrintShopVo(PrintShopVo printShopVo) throws ServiceException {
+        printShopVo.setStatusDesc(Enums.Status.getNameByValue(printShopVo.getStatus()));
+        printShopVo.setAddressTypeDesc(PrintShopEnum.Type.getNameByValue(printShopVo.getAddressType()));
+        //城市
+        CityVo cityVo = cityService.getCityById(printShopVo.getCityAreaId());
+        if (cityVo != null) {
+            printShopVo.setCityName(cityVo.getFullName());
+            printShopVo.setProvinceCityArea(cityVo.getProvinceCityArea());
+        }
+    }
+
+    private void saveShopImageFile(PrintShopVo printShopVo) throws ServiceException {
+        MultipartFile shopImageFile = printShopVo.getShopImageFile();
+        long shopImageSize = shopImageFile.getSize();
+
+        // 大于2M图片不允许上传
+        if (shopImageSize > (2 * (long) 1073741824)) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.PRINTSHOP_IMAGE_MAX);
+        }
+
+        String shopImagePath = FileUtil.getShopImagePath(null);
+        printShopVo.setPrintShopImage(shopImagePath);
+        //绝对路径
+        shopImagePath = SysConfigProperty.getProperty(Constants.WEIN_FILEPATH) + shopImagePath;
+        try {
+            File outFile = new File(shopImagePath);
+            if (!outFile.exists()) {
+                outFile.getParentFile().mkdirs();
+                outFile.createNewFile();
+            }
+            // 将图片拷贝到服务器
+            shopImageFile.transferTo(outFile);
+        } catch (IOException e) {
+            LOG.info("PrintShopServiceImpl.saveShopImageFile IOException inputParam =[{}]", printShopVo.toString(), e);
+        }
     }
 }

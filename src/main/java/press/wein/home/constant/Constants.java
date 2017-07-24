@@ -16,6 +16,7 @@ public class Constants {
      * 服务器的地址 http://localhost:8088/wein/ http://www.wein.press/wein/
      */
     public static final String WEIN_SERVER_ADDRESS = "http://localhost:8080/";
+
     /**
      * 字符集编码
      */
@@ -35,6 +36,8 @@ public class Constants {
      * deleted
      */
     public static final byte IS_DELETED = 1;
+
+    /**=============================end SystemConfig key end========================================**/
     /**
      * domain
      */
@@ -43,6 +46,13 @@ public class Constants {
      * googleAnalyticsId
      */
     public static final String GOOGLE_ANALYTICS_ID = "google.analytics.id";
+
+    /**
+     * 上传文件和图片的存取路径
+     */
+    public static final String WEIN_FILEPATH ="wein.filepath";
+
+    /**=============================end SystemConfig key end========================================**/
     /**
      * session key
      */

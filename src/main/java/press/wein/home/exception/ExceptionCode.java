@@ -42,6 +42,7 @@ public enum ExceptionCode {
     KAPTCHA_CODE_ERROR("KAPTCHA_CODE_ERROR", "验证码不正确或已失效"),
     KAPTCHA_CODE_INVALID("KAPTCHA_CODE_INVALID", "验证码失效"),
     ACCOUNT_PASSWORD_ERROR("ACCOUNT_PASSWORD_ERROR", "账户名和密码不匹配"),
+    PASSWORD_RULE("PASSWORD_RULE", "密码必须包括大小写字母、数字、特殊字符，长度6-20"),
     PASSWORD_ERROR_TIME_TIP("PASSWORD_ERROR_TIME_TIP", "输入密码错误%d次，%s分钟后再试"),
     SESSION_INVALID("SESSION_INVALID", "登录失效，请重新登录"),
     PHONE_EXISTED("PHONE_EXISTED", "该手机号已经存在，请换个名吧"),
@@ -52,6 +53,11 @@ public enum ExceptionCode {
     MENU_LEVEL_MAX("MENU_LEVEL_MAX", "最大只允许添加四级菜单"),
     NO_REMOVE_ROLE("NO_REMOVE_ROLE", "该角色已经关联用户不能删除"),
     MENU_NO_REMOVE("MENU_NO_REMOVE", "该菜单已经关联角色不能删除"),
+
+    /* ==================================== 打印店 ==================================== */
+    PRINTSHOP_IMAGE_MAX("PRINTSHOP_IMAGE_MAX", "请上传不大于2M的图片"),
+    CITY_ID_ERROR("CITY_ID_ERROR", "该城市id不存在"),
+
 
 	/* ==================================== 消息异常 ==================================== */
 

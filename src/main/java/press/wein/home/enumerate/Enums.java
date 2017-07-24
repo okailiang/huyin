@@ -26,7 +26,7 @@ public interface Enums {
         }
 
         public static String getNameByValue(int value) {
-            for (Status item : Status.values()) {
+            for (UserRole item : UserRole.values()) {
                 if (item.getValue() == value) {
                     return item.getName();
                 }
@@ -95,7 +95,7 @@ public interface Enums {
         }
 
         public static String getNameByValue(int value) {
-            for (Status item : Status.values()) {
+            for (MenuLevel item : MenuLevel.values()) {
                 if (item.getValue() == value) {
                     return item.getName();
                 }
