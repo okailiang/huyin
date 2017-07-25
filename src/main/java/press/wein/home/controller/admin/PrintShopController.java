@@ -5,15 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import press.wein.home.common.ApplicationUserContext;
 import press.wein.home.common.Page;
-import press.wein.home.common.SysConfigProperty;
-import press.wein.home.constant.Constants;
 import press.wein.home.constant.TipConstants;
 import press.wein.home.controller.BaseController;
 import press.wein.home.exception.ExceptionCode;
@@ -23,7 +18,6 @@ import press.wein.home.model.bo.UserSession;
 import press.wein.home.model.vo.PrintShopVo;
 import press.wein.home.service.PrintShopService;
 import press.wein.home.util.FileUtil;
-import press.wein.home.util.ImageUtil;
 import press.wein.home.util.MD5Util;
 import press.wein.home.util.ResponseUtils;
 
@@ -92,11 +86,8 @@ public class PrintShopController extends BaseController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Object> savePrintShop(@RequestBody PrintShopVo printShopVo, HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                @RequestParam("shopImageFile") MultipartFile shopImage) throws ServiceException {
+    public ResponseEntity<Object> savePrintShop(@RequestBody PrintShopVo printShopVo, HttpServletRequest request) throws ServiceException {
         try {
-            printShopVo.setShopImageFile(shopImage);
             this.setCreatorAndModifier(printShopVo);
             printShopService.savePrintShop(printShopVo);
         } catch (ServiceException e) {

@@ -22,10 +22,7 @@ import press.wein.home.util.BeanUtil;
 import press.wein.home.util.CollectionUtil;
 import press.wein.home.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -81,7 +78,7 @@ public class CityServiceImpl extends BaseService implements CityService {
     }
 
     @Override
-    public List<CityVo> listProvinces() throws ServiceException{
+    public List<CityVo> listProvinces() throws ServiceException {
         List<City> cityList = cityMapper.listCitysByParentId(0);
         if (CollectionUtil.isNullOrEmpty(cityList)) {
             return Collections.emptyList();
@@ -175,6 +172,9 @@ public class CityServiceImpl extends BaseService implements CityService {
         BeanUtil.beanCopier(city, cityVo);
 
         this.setProvinceCityArea(cityVo);
+        if (StringUtil.isBlank(cityVo.getFullName())) {
+            cityVo.setFullName(cityVo.getName());
+        }
         return cityVo;
     }
 
@@ -185,18 +185,36 @@ public class CityServiceImpl extends BaseService implements CityService {
     }
 
     @Override
-    public List<CityVo> listCitysByProvinceId(Integer provinceId) throws ServiceException {
+    public List<CityVo> listCityAreasByProvinceId(Integer provinceId) throws ServiceException {
         if (provinceId == null) {
             return Collections.emptyList();
+        }
+        City province = cityMapper.selectByPrimaryKey(provinceId);
+        if (province.getParentId() != 0) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.NO_PROVINCE_ID);
         }
 
         List<City> resultCityList = new ArrayList<>();
         List<City> cityList = cityMapper.listCitysByParentId(provinceId);
+        resultCityList.addAll(cityList);
+        //循环获得city下面的区
         for (City city : cityList) {
-
+            resultCityList.addAll(cityMapper.listCitysByParentId(city.getId()));
         }
+        return CollectionUtil.copyToDescList(resultCityList, CityVo.class);
+    }
 
-        return null;
+    public Map<String, List<CityVo>> listProvinceCityAreas(Integer areaId) throws ServiceException {
+        Map<String, List<CityVo>> pCityAreaMap = new HashMap<>();
+        City area = cityMapper.selectByPrimaryKey(areaId);
+        if (area == null || CityEnum.Type.FOUR.getValue().intValue() != area.getType()) {
+            throw ExceptionUtil.createServiceException(ExceptionCode.NO_AREA_ID);
+        }
+        City city = cityMapper.selectByPrimaryKey(area.getParentId());
+        pCityAreaMap.put("provinces", this.listProvinces());
+        pCityAreaMap.put("citys", this.listCitysByParentId(city.getParentId()));
+        pCityAreaMap.put("areas", this.listCitysByParentId(city.getId()));
+        return pCityAreaMap;
     }
 
     private void setProvinceCityArea(CityVo cityVo) {

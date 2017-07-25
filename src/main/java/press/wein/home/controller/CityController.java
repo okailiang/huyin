@@ -21,6 +21,7 @@ import press.wein.home.util.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author oukailiang
@@ -83,16 +84,18 @@ public class CityController extends BaseController {
 
     /**
      * 处理名称和拼音
+     *
      * @param cityVo
      */
-    private void handleCityVo(CityVo cityVo){
-        if(StringUtil.isNotBlank(cityVo.getName())){
-            if(CommonUtil.isLetter(cityVo.getName())){
+    private void handleCityVo(CityVo cityVo) {
+        if (StringUtil.isNotBlank(cityVo.getName())) {
+            if (CommonUtil.isLetter(cityVo.getName())) {
                 cityVo.setPinyin(cityVo.getName().toLowerCase());
                 cityVo.setName(null);
             }
         }
     }
+
     /**
      * 获取省列表
      *
@@ -147,13 +150,34 @@ public class CityController extends BaseController {
         try {
             cityVo = cityService.getCityById(cityId);
         } catch (ServiceException e) {
-            LOG.error("CityController.getCityById ServiceException inputParam = [{}]",cityId, e);
+            LOG.error("CityController.getCityById ServiceException inputParam = [{}]", cityId, e);
             return ResponseUtils.error(e.getMessage());
         } catch (Exception e) {
             LOG.error("CityController.getCityById Exception inputParam = [{}]", cityId, e);
             return ResponseUtils.error();
         }
         return ResponseUtils.success(cityVo);
+    }
+
+    /**
+     * 通过区id获得省市区
+     *
+     * @return
+     */
+    @RequestMapping(value = "/common/city/listProvinceCityAreas", method = RequestMethod.GET)
+    @ResponseBody
+    private ResponseEntity<Object> listProvinceCityAreas(@RequestParam(value = "areaId") Integer areaId) throws ServiceException {
+        Map<String, List<CityVo>> provinceCityAreasMap;
+        try {
+            provinceCityAreasMap = cityService.listProvinceCityAreas(areaId);
+        } catch (ServiceException e) {
+            LOG.error("CityController.listProvinceCityAreas ServiceException inputParam = [areaId:{}]", areaId, e);
+            return ResponseUtils.error(e.getMessage());
+        } catch (Exception e) {
+            LOG.error("CityController.listProvinceCityAreas Exception inputParam = [areaId:{}]", areaId, e);
+            return ResponseUtils.error();
+        }
+        return ResponseUtils.success(provinceCityAreasMap);
     }
 
     private void setModifier(CityVo vo) {

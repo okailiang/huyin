@@ -62,8 +62,6 @@ public class PrintShopVo extends BaseVo {
 
     private Byte accountStatus;
 
-    private MultipartFile shopImageFile;
-
     public Long getId() {
         return id;
     }
@@ -286,13 +284,5 @@ public class PrintShopVo extends BaseVo {
 
     public void setProvinceCityArea(String provinceCityArea) {
         this.provinceCityArea = provinceCityArea;
-    }
-
-    public MultipartFile getShopImageFile() {
-        return shopImageFile;
-    }
-
-    public void setShopImageFile(MultipartFile shopImageFile) {
-        this.shopImageFile = shopImageFile;
     }
 }

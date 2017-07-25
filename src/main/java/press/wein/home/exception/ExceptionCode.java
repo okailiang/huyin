@@ -45,8 +45,8 @@ public enum ExceptionCode {
     PASSWORD_RULE("PASSWORD_RULE", "密码必须包括大小写字母、数字、特殊字符，长度6-20"),
     PASSWORD_ERROR_TIME_TIP("PASSWORD_ERROR_TIME_TIP", "输入密码错误%d次，%s分钟后再试"),
     SESSION_INVALID("SESSION_INVALID", "登录失效，请重新登录"),
-    PHONE_EXISTED("PHONE_EXISTED", "该手机号已经存在，请换个名吧"),
-    EMAIL_EXISTED("EMAIL_EXISTED", "该邮箱已经存在，请换个名吧"),
+    PHONE_EXISTED("PHONE_EXISTED", "该手机号已经存在，请换个吧"),
+    EMAIL_EXISTED("EMAIL_EXISTED", "该邮箱已经存在，请换个吧"),
     USER_DENY("USER_DENY", "该用户被禁用，请联系管理员"),
 
     /* ==================================== 菜单 ==================================== */
@@ -57,6 +57,12 @@ public enum ExceptionCode {
     /* ==================================== 打印店 ==================================== */
     PRINTSHOP_IMAGE_MAX("PRINTSHOP_IMAGE_MAX", "请上传不大于2M的图片"),
     CITY_ID_ERROR("CITY_ID_ERROR", "该城市id不存在"),
+
+
+    /* ==================================== 城市管理 ==================================== */
+    NO_PROVINCE_ID("NO_PROVINCE_ID", "传入的不是省id"),
+    NO_CITY_ID("NO_CITY_ID", "传入的不是城市id"),
+    NO_AREA_ID("NO_AREA_ID", "传入的不是县(区)id"),
 
 
 	/* ==================================== 消息异常 ==================================== */

@@ -334,7 +334,7 @@
         and latitude = #{latitude,jdbcType=DECIMAL}
       </if>
       <if test="printShopName != null and printShopName !=''">
-        and print_shop_name = #{printShopName,jdbcType=VARCHAR}
+        and instr(print_shop_name, #{printShopName,jdbcType=VARCHAR}) > 0
       </if>
       <if test="printShopImage != null and createTimeFrom !=''">
         and print_shop_image = #{printShopImage,jdbcType=VARCHAR}
@@ -381,16 +381,55 @@
     </where>
   </sql>
 
+  <sql id="Where_Search_Condition_list">
+    <where>
+      is_deleted = 0
+      <if test="id != null">
+        and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="printerId != null">
+        and printer_id = #{printerId,jdbcType=BIGINT}
+      </if>
+      <if test="printerName != null and printerName !=''">
+        and instr(printer_name, #{printerName,jdbcType=VARCHAR}) > 0
+      </if>
+      <if test="addressType != null">
+        and address_type = #{addressType,jdbcType=TINYINT}
+      </if>
+      <if test="printShopName != null and printShopName !=''">
+        and instr(print_shop_name, #{printShopName,jdbcType=VARCHAR}) > 0
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="createTimeFrom != null and createTimeFrom !=''">
+        and create_time &gt;= #{createTimeFrom,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeTo != null and createTimeTo != ''">
+        and create_time &lt;= DATE_ADD(#{createTimeTo,jdbcType=VARCHAR},INTERVAL 1 DAY)
+      </if>
+      <if test="cityAreaId != null">
+        and  city_area_Id = #{cityAreaId,jdbcType=INTEGER}
+      </if>
+      <if test="areaIdList != null and areaIdList.size > 0">
+        and  city_area_Id in
+        <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </sql>
+
   <select id="countPrintShops" resultType="java.lang.Long">
     select count(1) from h_print_shop
-    <include refid="Where_Search_Condition"/>
+    <include refid="Where_Search_Condition_list"/>
   </select>
 
   <select id="listPrintShopsByPage" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from h_print_shop
-    <include refid="Where_Search_Condition"/>
+    <include refid="Where_Search_Condition_list"/>
     order by id desc
     limit #{pageSize,jdbcType=INTEGER} offset #{start,jdbcType=INTEGER}
   </select>

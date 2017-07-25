@@ -61,9 +61,9 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     @Override
     public int savePrintShop(PrintShopVo printShopVo) throws ServiceException {
         //check param
-        checkParamNull(printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getAddress(), printShopVo.getLatitude(),
-                printShopVo.getLongitude(), printShopVo.getPrinterName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType(),
-                printShopVo.getShopImageFile());
+        checkParamNull(printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getDetailAddress(), printShopVo.getLatitude(),
+                printShopVo.getLongitude(), printShopVo.getPrintShopName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType());
+
         this.setAddress(printShopVo);
         //创建该打印店账号
         PrintShop printShop = new PrintShop();
@@ -71,20 +71,19 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         //检验重名
         this.checkRepeatName(printShopMapper.checkRepeatName(printShop));
 
-        //存储图片
-        this.saveShopImageFile(printShopVo);
-
         //保存账号
         PrinterVo printerVo = new PrinterVo();
 
         BeanUtil.beanCopier(printShopVo, printerVo);
         printerVo.setPhoneNo(printShopVo.getAccountPhone());
         long printerId = printerService.savePrinter(printerVo);
+
+        //存储图片
+        this.saveShopImageFile(printShopVo);
+
         printShop.setPrinterId(printerId);
         printShop.setPrinterName(printerVo.getUserName());
-        //
-        CityVo cityVo = cityService.getCityById(printShopVo.getCityAreaId());
-
+        printShop.setPrintShopImage(printShopVo.getPrintShopImage());
         return printShopMapper.insertSelective(printShop);
     }
 
@@ -97,15 +96,17 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     @Override
     public int updatePrintShop(PrintShopVo printShopVo) throws ServiceException {
         //check param
-        checkParamNull(printShopVo.getId(), printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getAddress(), printShopVo.getLatitude(),
-                printShopVo.getLongitude(), printShopVo.getPrinterName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType());
-        if (printShopVo.getShopImageFile() != null) {
-            this.saveShopImageFile(printShopVo);
-        }
+        checkParamNull(printShopVo.getId(), printShopVo.getCityAreaId(), printShopVo.getPhoneNo(), printShopVo.getDetailAddress(), printShopVo.getLatitude(),
+                printShopVo.getLongitude(), printShopVo.getPrintShopName(), printShopVo.getPrintShopImage(), printShopVo.getAddressType());
 
         PrintShop printShop = printShopMapper.selectByPrimaryKey(printShopVo.getId());
         if (printShop == null) {
             throw ExceptionUtil.createServiceException(ExceptionCode.NOT_EXIST);
+        }
+        if (!printShopVo.getPrintShopImage().equals(FileUtil.imageToBase64(printShop.getPrintShopImage()))) {
+            this.saveShopImageFile(printShopVo);
+        } else {
+            printShopVo.setPrintShopImage(null);
         }
         this.setAddress(printShopVo);
         BeanUtil.beanCopier(printShopVo, printShop);
@@ -116,6 +117,7 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
         //保存账号
         PrinterVo printerVo = new PrinterVo();
         BeanUtil.beanCopier(printShopVo, printerVo);
+        printerVo.setId(printShopVo.getPrinterId());
         printerVo.setPhoneNo(printShopVo.getAccountPhone());
         printerService.updatePrinter(printerVo);
         return printShopMapper.updateByPrimaryKeySelective(printShop);
@@ -227,7 +229,7 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     @Override
     public Page<PrintShopVo> listPrintShopsWithPage(Page<PrintShopVo> page, PrintShopVo printShopVo) throws ServiceException {
         //查询条件
-        Map<String, Object> searchParam = CollectionUtil.objectToMap(printShopVo);
+        Map<String, Object> searchParam = this.buildSearchParam(printShopVo);
         //分页参数
         setPageParam(searchParam, page);
 
@@ -244,6 +246,36 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
             this.buildPrintShopVo(shopVo);
         }
         return new Page<>(totalCount, printShopVoList);
+    }
+
+    private Map<String, Object> buildSearchParam(PrintShopVo printShopVo) throws ServiceException {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", printShopVo.getId());
+        param.put("printShopName", printShopVo.getPrintShopName());
+        param.put("createTimeFrom", printShopVo.getCreateTimeFrom());
+        param.put("createTimeTo", printShopVo.getCreateTimeTo());
+        param.put("printerName", printShopVo.getPrinterName());
+        param.put("addressType", printShopVo.getAddressType());
+        param.put("status", printShopVo.getStatus());
+        param.put("printerId", printShopVo.getPrinterId());
+        param.put("cityAreaId", printShopVo.getCityAreaId());
+        if (printShopVo.getCityAreaId() != null) {
+            param.put("areaIdList", null);
+            return param;
+        }
+
+        List<Integer> areaIdList = new ArrayList<>();
+        List<CityVo> cityVoList = new ArrayList<>();
+        if (printShopVo.getCityId() != null) {
+            cityVoList.addAll(cityService.listCitysByParentId(printShopVo.getCityId()));
+        } else if (printShopVo.getProvinceId() != null) {
+            cityVoList.addAll(cityService.listCityAreasByProvinceId(printShopVo.getProvinceId()));
+        }
+        for (CityVo cityVo : cityVoList) {
+            areaIdList.add(cityVo.getId());
+        }
+        param.put("areaIdList", areaIdList);
+        return param;
     }
 
     /**
@@ -349,6 +381,8 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     private void setPrinterVo(PrintShopVo printShopVo, PrinterVo printerVo) {
         printShopVo.setPrinterId(printerVo.getId());
         printShopVo.setUserName(printerVo.getUserName());
+        printShopVo.setRealName(printerVo.getRealName());
+        printShopVo.setIdNumber(printerVo.getIdNumber());
         printShopVo.setEmail(printerVo.getEmail());
         printShopVo.setAccountPhone(printerVo.getPhoneNo());
         printShopVo.setAccountStatus(printerVo.getStatus());
@@ -377,28 +411,30 @@ public class PrintShopServiceImpl extends BaseService implements PrintShopServic
     }
 
     private void saveShopImageFile(PrintShopVo printShopVo) throws ServiceException {
-        MultipartFile shopImageFile = printShopVo.getShopImageFile();
-        long shopImageSize = shopImageFile.getSize();
-
-        // 大于2M图片不允许上传
-        if (shopImageSize > (2 * (long) 1073741824)) {
-            throw ExceptionUtil.createServiceException(ExceptionCode.PRINTSHOP_IMAGE_MAX);
-        }
+//        MultipartFile shopImageFile = printShopVo.getShopImageFile();
+//        long shopImageSize = shopImageFile.getSize();
+//
+//        // 大于2M图片不允许上传
+//        if (shopImageSize > (2 * (long) 1073741824)) {
+//            throw ExceptionUtil.createServiceException(ExceptionCode.PRINTSHOP_IMAGE_MAX);
+//        }
 
         String shopImagePath = FileUtil.getShopImagePath(null);
+        //保存图片
+        FileUtil.saveImage(printShopVo.getPrintShopImage(), shopImagePath);
         printShopVo.setPrintShopImage(shopImagePath);
-        //绝对路径
-        shopImagePath = SysConfigProperty.getProperty(Constants.WEIN_FILEPATH) + shopImagePath;
-        try {
-            File outFile = new File(shopImagePath);
-            if (!outFile.exists()) {
-                outFile.getParentFile().mkdirs();
-                outFile.createNewFile();
-            }
-            // 将图片拷贝到服务器
-            shopImageFile.transferTo(outFile);
-        } catch (IOException e) {
-            LOG.info("PrintShopServiceImpl.saveShopImageFile IOException inputParam =[{}]", printShopVo.toString(), e);
-        }
+//        //绝对路径
+//        shopImagePath = SysConfigProperty.getProperty(Constants.WEIN_FILEPATH) + shopImagePath;
+//        try {
+//            File outFile = new File(shopImagePath);
+//            if (!outFile.exists()) {
+//                outFile.getParentFile().mkdirs();
+//                outFile.createNewFile();
+//            }
+//            // 将图片拷贝到服务器
+//            shopImageFile.transferTo(outFile);
+//        } catch (IOException e) {
+//            LOG.info("PrintShopServiceImpl.saveShopImageFile IOException inputParam =[{}]", printShopVo.toString(), e);
+//        }
     }
 }

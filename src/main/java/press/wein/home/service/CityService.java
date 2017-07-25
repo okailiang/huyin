@@ -51,5 +51,7 @@ public interface CityService {
 
     Map<Integer, CityVo> getCityMap() throws ServiceException;
 
-    List<CityVo> listCitysByProvinceId(Integer provinceId) throws ServiceException;
+    List<CityVo> listCityAreasByProvinceId(Integer provinceId) throws ServiceException;
+
+    public Map<String, List<CityVo>> listProvinceCityAreas(Integer areaId) throws ServiceException;
 }

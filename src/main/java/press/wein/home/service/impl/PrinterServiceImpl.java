@@ -46,7 +46,7 @@ public class PrinterServiceImpl extends BaseService implements PrinterService {
         //check param
         checkParamNull(printerVo.getEmail(), printerVo.getPhoneNo(), printerVo.getUserName(), printerVo.getPassword());
 
-        if (PasswordUtil.checkPassword(printerVo.getPassword())) {
+        if (!PasswordUtil.checkPassword(printerVo.getPassword())) {
             throw ExceptionUtil.createServiceException(ExceptionCode.PASSWORD_RULE);
         }
 
@@ -70,8 +70,6 @@ public class PrinterServiceImpl extends BaseService implements PrinterService {
     public int updatePrinter(PrinterVo printerVo) throws ServiceException {
         //check param
         checkParamNull(printerVo.getId(), printerVo.getEmail(), printerVo.getPhoneNo());
-        printerVo.setPassword(null);
-        printerVo.setUserName(null);
 
         Printer printer = printerMapper.selectByPrimaryKey(printerVo.getId());
         if (printer == null) {
