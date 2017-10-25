@@ -69,9 +69,9 @@
         <!--<table tableName="china_address" domainObjectName="ChinaAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
-        <table tableName="h_feedback_info" domainObjectName="FeedbackInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--<property name="useActualColumnNames" value="true" />-->
-        </table>
+        <!--<table tableName="ticket_log" domainObjectName="ticketLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
         <!--<table tableName="h_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--&lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
         <!--</table>-->
