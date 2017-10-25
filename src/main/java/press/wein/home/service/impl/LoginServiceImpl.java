@@ -150,6 +150,9 @@ public class LoginServiceImpl extends BaseService implements LoginService {
         if (StringUtils.isBlank(registerCode) || !registerCode.equals(userLoginVo.getRegisterCode())) {
             throw ExceptionUtil.createServiceException(ExceptionCode.KAPTCHA_CODE_ERROR);
         }
+        if(!CommonUtil.isMatchEmail(userLoginVo.getEmail())){
+            throw new ServiceException("请输入正确的邮箱格式");
+        }
 
         //校验该手机号或邮箱是否已注册
         this.checkAccountExist(userLoginVo.getAccount());

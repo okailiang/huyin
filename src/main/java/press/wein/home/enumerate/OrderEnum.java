@@ -1,5 +1,7 @@
 package press.wein.home.enumerate;
 
+import java.util.LinkedList;
+
 /**
  * 订单相关的枚举类型
  *

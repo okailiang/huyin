@@ -8,7 +8,7 @@ public class GenerateNumber {
 	private static String date;
 	private static long FileNum = 0l;
 	private static String fielDate;
-
+	private static String MACHINE_ID = "1";
 	/**
 	 * 
 	 * @Description：生成订单编号
@@ -21,9 +21,10 @@ public class GenerateNumber {
 			orderNum = 0l;
 		}
 		orderNum++;
-		long orderNo = Long.parseLong((date)) * 100000;
+		Long orderNo = Long.parseLong((date)) * 100000;
 		orderNo += orderNum;
-		return orderNo + "";
+
+		return new StringBuilder(MACHINE_ID).append(orderNo.toString()).toString();
 	}
 
 	/**
